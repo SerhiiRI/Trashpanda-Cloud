@@ -22,9 +22,6 @@
 # no i tak dalej.
 
 
-
-
-
 import MySQLdb
 
 class IOrm(object):
