@@ -13,7 +13,7 @@ class IPermission(object):
 
     def login(self):
         ''' decorator to checking autentification '''
-        raise NotImplementedError('[*] You mast implement decorator to checking logined functionality'):
+        raise NotImplementedError('[*] You mast implement decorator to checking logined functionality')
 
     def addUser(self, login : str, NickName : str) -> bool:
         ''' Function for add user to '''
