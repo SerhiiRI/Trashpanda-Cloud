@@ -6,13 +6,13 @@
 # Generowania drzewa katalogu, danch użytkownika, uwiadomien
 # kontrole linków i tak dalej.
 
- 
+
 class IUserControllerBase(object):
-        ''' User functionality '''
+    ''' User functionality '''
 
     def getInfo(self) -> str:
         ''' decorator to checking autentification '''
-        raise NotImplementedError('[*] You mast implement decorator to checking logined functionality'):
+        raise NotImplementedError('[*] You mast implement decorator to checking logined functionality')
 
     def getTreeView(self) -> str:
         ''' return a tree of main user directory '''
