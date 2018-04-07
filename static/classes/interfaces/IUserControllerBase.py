@@ -6,7 +6,7 @@
 # Generowania drzewa katalogu, danch użytkownika, uwiadomien
 # kontrole linków i tak dalej.
 
-
+ 
 class IUserControllerBase(object):
         ''' User functionality '''
 
