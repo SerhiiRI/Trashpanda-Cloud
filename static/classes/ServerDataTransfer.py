@@ -15,11 +15,13 @@ class ServerDataTransfer(object):
         ''' if transmission of data mast be blocked for user '''
         ''' set user in blockList with status and timeStamp '''
         raise NotImplementedError('[*] not implement download')
+        '''przykladowa wartosc, do korekty w pozniejszym czasie'''
+        return 0
 
-    def setLockServer(self, status=0 : int) -> bool:
+    def setLockServer(self, status : int) -> bool:
         ''' lock for server '''
         self.__SERVER_LOCK = status
         return True
 
     def getLockServer(self):
-        return False if self.__SERVER_LOCK == 0 else False
+        return False if self.__SERVER_LOCK == 0 else True
