@@ -7,7 +7,6 @@ app = Flask(__name__)
 def index():
     info = [{
         'title':'Trushpanda Cloud',
-        'info':'Trashpanda!',
     }]
     return render_template('index.html', info=info)
 

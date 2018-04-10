@@ -1,31 +1,36 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta name="google-signin-scope" content="profile email">
+    {#    <meta name="google-signin-scope" content="profile email">#}
     <meta name="google-signin-client_id"
-          content="557305630089-vn9p4fa7mv7m8tula62tkpejst1mgm3b.apps.googleusercontent.com">
+          content="421574370091-aml7mds2j5ovgg2q0lbjfdbuttm5k4b7.apps.googleusercontent.com">
     <script src="https://apis.google.com/js/platform.js" async defer></script>
-
     {% for inf in info %}
         <meta charset="UTF-8">
         <link rel=stylesheet type=text/css href="/static/style/first-page-style.css">
-        <title>{{ inf.title }}</title>  
+        <title>{{ inf.title }}</title>
         </head>
         <body>
 
         <div id="alx-gbtn">
             <div class="alx-gbtn">
                 <h2>Zaloguj sie przez Google!</h2>
-                    <div class="g-signin2" data-width="300" data-height="50" data-onsuccess="onSignIn"
-                         data-theme="dark"></div>
-                <button class="alx-btn exit-gbtn" onclick="closeLogin()">Zamknij</button>
+                <div class="g-signin2" align="center" data-width="300" data-height="50" data-onsuccess="onSignIn"
+                     data-theme="dark"></div>
+                <div>
+                    <button class="alx-btn" onclick="loginData()">Login Test</button>
+                    <button class="alx-btn" onclick="closeLoginForm()">Zamknij</button>
+                </div>
             </div>
+        </div>
+        <div class="alx-avatar-FP">
+            <img src="/static/pic/raccoon.gif" id="avatar-FP">
         </div>
         <div class="alx-cont">
             <div class="alx-flex">
                 <div class="alx-flex-box">
                     <img src="/static/pic/logo.png">
-                    <h1>{{ inf.info }}</h1>
+                    <h1>Trashpanda</h1>
                 </div>
                 <div class="alx-flex-box">
                     <form>
@@ -33,28 +38,102 @@
                         <button type="submit" class="search-btn">Szukaj</button>
                     </form>
                 </div>
-                <div class="alx-flex-box">
-                    <button class="alx-btn" onclick="login()">Zaloguj się</button>
+                <div class="alx-flex-box" id="func-btn">
+                    <button class="alx-btn" onclick="openLoginForm()"><span id="isSignIn"></span></button>
                     <button class="alx-btn">Info</button>
                 </div>
             </div>
         </div>
     {% endfor %}
-    <script>
-        var glogin = document.getElementById("alx-gbtn");
 
-        function login() {
-            glogin.style.transition = "all 200ms";
-            glogin.style.opacity = "1";
-            glogin.style.zIndex = "10";
+    <script>
+        {#-------------------------------------------------
+        isSignIn odpowiada za to, czy przycisk logowania
+        przekieruje do logowania google (jeśli false),
+        czy na chmurę (jeśli true)
+        -------------------------------------------------#}
+        var isSignIn = false;
+        var autoID = 23487623874623764;
+        var autoPic = "/static/pic/testpic.jpg";
+        var userID;
+        var userPic;
+
+        {#-------------------------------------------------
+        Pobranie ciasteczek i sprawdzenie czy istnie userID
+        -------------------------------------------------#}
+        var cookies = document.cookie.split(";");
+        var cookbook = [];
+        for (var i = 0; i < cookies.length; i++) {
+            let tmp = cookies[i].split("=");
+            cookbook.push(tmp[1]);
+        }
+        if (cookbook[0] == autoID) {
+            userID = autoID;
+            userPic = autoPic;
+            isSignIn = true;
         }
 
-        function closeLogin() {
+        {#-------------------------------------------------
+        Edycja przycisku logowania i wylogowania
+        -------------------------------------------------#}
+        LoginButton();
+
+        function LoginButton() {
+            if (isSignIn) {
+                document.getElementById("isSignIn").innerText = "My Trashbox";
+                document.getElementById("avatar-FP").src = userPic;
+                {#document.getElementById("func-btn").innerHTML = '<button class="alx-btn" onclick="logout()">Wyloguj</button>';#}
+                let btn = document.createElement("BUTTON");
+                btn.className = "alx-btn";
+                btn.innerText = "Wyloguj";
+                btn.addEventListener("click", logout);
+                document.getElementById("func-btn").appendChild(btn);
+            } else {
+                document.getElementById("isSignIn").innerText = "Zaloguj się";
+                document.getElementById("avatar-FP").src = "/static/pic/raccoon.gif";
+            }
+        }
+
+        function logout() {
+            document.cookie = "userID=";
+            document.cookie = "userPic=";
+            location.reload();
+        }
+
+        {#-------------------------------------------------
+        open/closeLoginForm otwierają i zamykają okno
+        z przyciskiem do logowania przez google
+        -------------------------------------------------#}
+        var glogin = document.getElementById("alx-gbtn");
+
+        function openLoginForm() {
+            if (isSignIn) {
+                alert("My Trashbox will be able soon!");
+            } else {
+                glogin.style.transition = "all 200ms";
+                glogin.style.opacity = "1";
+                glogin.style.zIndex = "10";
+            }
+        }
+
+        function closeLoginForm() {
             glogin.style.opacity = "0";
             glogin.style.zIndex = "-10";
         }
+
+        function loginData() {
+            document.cookie = "userID=" + autoID;
+            document.cookie = "userPic=" + autoPic;
+            location.reload();
+        }
+
     </script>
     <script>
+        {#-------------------------------------------------
+        Skrypt odpowiedzialny zaz przycisk google,
+        zwracający dane do konsoli po poprawnym logowaniu
+        -------------------------------------------------#}
+
         function onSignIn(googleUser) {
             // Useful data for your client-side scripts:
             var profile = googleUser.getBasicProfile();

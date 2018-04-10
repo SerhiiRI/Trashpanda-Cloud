@@ -8,26 +8,79 @@
     body{
         background: linear-gradient(20deg, #161F40 25%, #fff 25%);
         color: #161F40;
+        font-size: 1rem;
     }
 
+    /*
+    ------------------
+    ---   Avatar   ---
+    ------------------
+    */
+
+    .alx-avatar-FP{
+        position: fixed;
+        top: 5vh;
+        z-index: -1;
+        width: 100vw;
+        text-align: center;
+    }
+    #avatar-FP{
+        height: 20vh;
+        border-radius: 100vh;
+        border: solid 0.4vh #161F40;
+        padding: 10px;
+    }
+
+    /*
+    ----------------
+    ---   Logo   ---
+    ----------------
+    */
+
+    h1{
+        position: relative;
+        font-size: 2.5rem;
+        top: 27px;
+        color:black;
+    }
+
+    .alx-img-logo{
+        height: 45vh;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px black;
+        margin: 20px 0px;
+    }
+
+    /*
+    -------------------------
+    ---   Google button   ---
+    -------------------------
+    */
+
     #alx-gbtn{
-        width: 100%;
-        height: 100%;
+        width: 100vw;
+        height: 100vh;
         background-color: #fff;
         position: fixed;
         z-index: -10;
         opacity: 0;
-        display: inline-block;
+        text-align:center;
+        display: flex;
+        align-items:center;
+        justify-content:center;
     }
     .alx-gbtn{
-        position:fixed;
-        top: calc(50vh - 150px);
-        left: calc(50vw - 250px);
         padding: 50px 100px;
-        box-shadow: 4px 4px 10px #aaa;
+        box-shadow: 4px 4px 15px #888;
         color: #161F40;
-        text-align: center;
     }
+
+
+    /*
+    ---------------------
+    ---   Flex boxy   ---
+    ---------------------
+    */
 
     .alx-cont, .alx-flex-box{
         min-width: 400px;
@@ -43,13 +96,6 @@
         flex-direction: row;
     }
 
-    h1{
-        position: relative;
-        font-size: 2.5rem;
-        top: 27px;
-        color:black;
-    }
-
     .alx-flex-box:first-child{
         position: relative;
         justify-content:left;
@@ -62,12 +108,12 @@
         justify-content: center;
     }
 
-    .alx-img-logo{
-        height: 45vh;
-        border-radius: 10px;
-        box-shadow: 0px 0px 10px black;
-        margin: 20px 0px;
-    }
+
+    /*
+    ----------------------------
+    ---   Inputs & Buttons   ---
+    ----------------------------
+    */
 
     .search-in{
         border: none;
@@ -81,7 +127,7 @@
         transition: all 200ms;
     }
 
-    .search-btn, .alx-btn{
+    .search-btn{
         border: none;
         border-radius: 0px 10px 10px 0px;
         width: 150px;
@@ -103,20 +149,31 @@
         background: #fff;
     }
 
-    .alx-btn:last-child, .alx-btn:first-child{
-        background: none;
+    /*.alx-btn:nth-child(2){*/
+        /*background: none;*/
+        /*color: #161F40;*/
+        /*border-radius: 0;*/
+        /*margin: 5px;*/
+    /*}*/
+
+    .alx-btn{
+        border: none;
+        margin: 5px;
+        width: 150px;
+        height: 40px;
+        box-shadow: 3px 3px 10px #555;
         color: #161F40;
+        background: none;
+        transition: all 200ms;
     }
     .alx-btn:first-child{
         border-radius: 10px 0px 0px 10px;
-        margin: 5px;
+    }
+    .alx-btn:last-child{
+        border-radius: 0px 10px 10px 0px;
     }
     .alx-btn:hover{
         cursor: pointer;
         color: #fff;
         background: #161F40;
-    }
-    .exit-gbtn{
-        border-radius: 5px;
-        margin: 10px;
     }
