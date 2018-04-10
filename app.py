@@ -6,8 +6,7 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     info = [{
-        'title':'Trushpanda',
-        'info':'Jakoś to działa!',
+        'title':'Trushpanda Cloud',
     }]
     return render_template('index.html', info=info)
 
