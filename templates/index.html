@@ -2,44 +2,73 @@
 <html lang="pl">
 <head>
     <meta name="google-signin-scope" content="profile email">
-    <meta name="google-signin-client_id" content="557305630089-vn9p4fa7mv7m8tula62tkpejst1mgm3b.apps.googleusercontent.com">
+    <meta name="google-signin-client_id"
+          content="557305630089-vn9p4fa7mv7m8tula62tkpejst1mgm3b.apps.googleusercontent.com">
     <script src="https://apis.google.com/js/platform.js" async defer></script>
+
     {% for inf in info %}
-    <meta charset="UTF-8">
-    <title>{{ inf.title }}</title>
-        <!-- sdfaadsf -->
-</head>
-<body>
-    <h1>Hello world!</h1>
-        <h2>{{ inf.info }}</h2>
+        <meta charset="UTF-8">
+        <link rel=stylesheet type=text/css href="/static/style/first-page-style.css">
+        <title>{{ inf.title }}</title>  
+        </head>
+        <body>
+
+        <div id="alx-gbtn">
+            <div class="alx-gbtn">
+                <h2>Zaloguj sie przez Google!</h2>
+                    <div class="g-signin2" data-width="300" data-height="50" data-onsuccess="onSignIn"
+                         data-theme="dark"></div>
+                <button class="alx-btn exit-gbtn" onclick="closeLogin()">Zamknij</button>
+            </div>
+        </div>
+        <div class="alx-cont">
+            <div class="alx-flex">
+                <div class="alx-flex-box">
+                    <img src="/static/pic/logo.png">
+                    <h1>{{ inf.info }}</h1>
+                </div>
+                <div class="alx-flex-box">
+                    <form>
+                        <input type="text" class="search-in" placeholder="Wpisz czego szukas...">
+                        <button type="submit" class="search-btn">Szukaj</button>
+                    </form>
+                </div>
+                <div class="alx-flex-box">
+                    <button class="alx-btn" onclick="login()">Zaloguj się</button>
+                    <button class="alx-btn">Info</button>
+                </div>
+            </div>
+        </div>
     {% endfor %}
-<div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
     <script>
-      function onSignIn(googleUser) {
-        // Useful data for your client-side scripts:
-        var profile = googleUser.getBasicProfile();
-        console.log("ID: " + profile.getId()); // Don't send this directly to your server!
-        console.log('Full Name: ' + profile.getName());
-        console.log('Given Name: ' + profile.getGivenName());
-        console.log('Family Name: ' + profile.getFamilyName());
-        console.log("Image URL: " + profile.getImageUrl());
-        console.log("Email: " + profile.getEmail());
+        var glogin = document.getElementById("alx-gbtn");
 
-        // The ID token you need to pass to your backend:
-        var id_token = googleUser.getAuthResponse().id_token;
-        console.log("ID Token: " + id_token);
-      };
+        function login() {
+            glogin.style.transition = "all 200ms";
+            glogin.style.opacity = "1";
+            glogin.style.zIndex = "10";
+        }
+
+        function closeLogin() {
+            glogin.style.opacity = "0";
+            glogin.style.zIndex = "-10";
+        }
     </script>
+    <script>
+        function onSignIn(googleUser) {
+            // Useful data for your client-side scripts:
+            var profile = googleUser.getBasicProfile();
+            console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+            console.log('Full Name: ' + profile.getName());
+            console.log('Given Name: ' + profile.getGivenName());
+            console.log('Family Name: ' + profile.getFamilyName());
+            console.log("Image URL: " + profile.getImageUrl());
+            console.log("Email: " + profile.getEmail());
 
-    <br>
-	<a href="#" onclick="signOut();">Wyloguj</a>
-	<script>
-  function signOut() {
-    var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
-      console.log('User signed out.');
-    });
-  }
-</script>
-</body>
+            // The ID token you need to pass to your backend:
+            var id_token = googleUser.getAuthResponse().id_token;
+            console.log("ID Token: " + id_token);
+        };
+    </script>
+    </body>
 </html>
