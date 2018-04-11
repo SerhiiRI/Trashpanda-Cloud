@@ -154,6 +154,12 @@ a:hover{
     z-index: -1;
 }
 
+@media (min-width: 480px) {
+    .alx-flex-box:first-child {
+		top: 5vh;
+	}
+}
+
 .alx-flex-box:last-child {
     justify-content: center;
 }
