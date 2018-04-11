@@ -39,18 +39,21 @@
         </div>
         <div class="alx-flex-box" id="func-btn">
             <button class="alx-btn" onclick="openLoginForm()"><span id="isSignIn"></span></button>
-            <button class="alx-btn">Info</button>
+            <button class="alx-btn" onclick="goTo('info')">Info</button>
         </div>
     </div>
 </div>
 <div class="alx-freeSpace"></div>
 <div class="alx-foo">
-    <div class="alx-foo-item"><a href="#">Kontakt</a></div>
-    <div class="alx-foo-item"><a href="#">LLAPADAY</a></div>
-    <div class="alx-foo-item"><a href="#">O nas</a></div>
+    <div class="alx-foo-item"><a href="kontakt">Kontakt</a></div>
+    <div class="alx-foo-item">LLAPADAY</div>
+    <div class="alx-foo-item"><a href="about">O nas</a></div>
 </div>
 
 <script>
+    function goTo(where) {
+        window.location.replace(where);
+    }
     {#-------------------------------------------------
     isSignIn odpowiada za to, czy przycisk logowania
     przekieruje do logowania google (jeśli false),
