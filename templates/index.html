@@ -3,10 +3,11 @@
 <head>
     {#    <meta name="google-signin-scope" content="profile email">#}
     <meta name="google-signin-client_id"
-          content="421574370091-aml7mds2j5ovgg2q0lbjfdbuttm5k4b7.apps.googleusercontent.com">
+          content="557305630089-3sr6loe91a193q6t9e2du5np98rt0khf.apps.googleusercontent.com">
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <meta charset="UTF-8">
-    <link href="https://fonts.googleapis.com/css?family=Aladin|Almendra+Display|Black+Ops+One|Cabin+Sketch:400,700|Caesar+Dressing|Creepster|East+Sea+Dokdo|Faster+One|Finger+Paint|Fredericka+the+Great|Gugi|IM+Fell+English+SC|Indie+Flower|Josefin+Slab:400,700|Kirang+Haerang|Libre+Barcode+39|Libre+Barcode+39+Extended+Text|Londrina+Sketch|Love+Ya+Like+A+Sister|Megrim|Merienda:400,700|Permanent+Marker|Press+Start+2P|Quantico:400,700|Rock+Salt|Shadows+Into+Light|Special+Elite|Trade+Winds|VT323|Yatra+One&amp;subset=latin-ext" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Aladin|Almendra+Display|Black+Ops+One|Cabin+Sketch:400,700|Caesar+Dressing|Creepster|East+Sea+Dokdo|Faster+One|Finger+Paint|Fredericka+the+Great|Gugi|IM+Fell+English+SC|Indie+Flower|Josefin+Slab:400,700|Kirang+Haerang|Libre+Barcode+39|Libre+Barcode+39+Extended+Text|Londrina+Sketch|Love+Ya+Like+A+Sister|Megrim|Merienda:400,700|Permanent+Marker|Press+Start+2P|Quantico:400,700|Rock+Salt|Shadows+Into+Light|Special+Elite|Trade+Winds|VT323|Yatra+One&amp;subset=latin-ext"
+          rel="stylesheet">
     <link rel=stylesheet type=text/css href="/static/style/first-page-style.css">
     <title>{{ info[0] }}</title>
 </head>
@@ -61,7 +62,6 @@
     var userPic;
 
     var autoID = {{ data[0] }};
-    var autoPic = "{{ data[1] }}";
 
     {#-------------------------------------------------
     Pobranie ciasteczek i sprawdzenie czy istnie userID
@@ -89,6 +89,8 @@
     -------------------------------------------------#}
     LoginButton();
 
+    LoginButton();
+
     function LoginButton() {
         if (isSignIn) {
             document.getElementById("isSignIn").innerText = "My Trashbox";
@@ -104,14 +106,11 @@
 
     function logout() {
         document.cookie = "userID=";
-        document.cookie = "userPic=";
+        isSignIn = false;
+        signOut();
         location.reload();
     }
 
-    {#-------------------------------------------------
-    open/closeLoginForm otwierają i zamykają okno
-    z przyciskiem do logowania przez google
-    -------------------------------------------------#}
     var glogin = document.getElementById("alx-gbtn");
 
     function openLoginForm() {
@@ -131,15 +130,13 @@
 
     function loginData() {
         document.cookie = "userID=" + autoID;
-        document.cookie = "userPic=" + autoPic;
         location.reload();
     }
-
 </script>
 <script>
     {#-------------------------------------------------
-    Skrypt odpowiedzialny zaz przycisk google,
-    zwracający dane do konsoli po poprawnym logowaniu
+    Ciało funkcji wykonuje się po zalogowaniu na konto
+    google
     -------------------------------------------------#}
 
     function onSignIn(googleUser) {
@@ -155,7 +152,19 @@
         // The ID token you need to pass to your backend:
         var id_token = googleUser.getAuthResponse().id_token;
         console.log("ID Token: " + id_token);
+
+        // Wywołanie zmian po zalogowaniu
+        isSignIn = true;
+        closeLoginForm();
+        LoginButton();
     };
+
+    function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+            console.log('User signed out.');
+        });
+    }
 </script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </body>
