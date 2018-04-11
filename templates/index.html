@@ -21,14 +21,13 @@
         </div>
     </div>
 </div>
-<div class="alx-avatar-FP">
-    <img src="/static/pic/raccoon.gif" id="avatar-FP">
-</div>
 <div class="alx-cont">
     <div class="alx-flex">
         <div class="alx-flex-box">
-            <img src="/static/pic/logo.png">
             <h1>Trashpanda</h1>
+        </div>
+        <div class="alx-flex-box">
+            <img src="/static/pic/logo.png">
         </div>
         <div class="alx-flex-box">
             <form>
@@ -41,6 +40,12 @@
             <button class="alx-btn">Info</button>
         </div>
     </div>
+</div>
+<div class="alx-freeSpace"></div>
+<div class="alx-foo">
+    <div class="alx-foo-item">Info</div>
+    <div class="alx-foo-item">Kontakt</div>
+    <div class="alx-foo-item">O nas</div>
 </div>
 
 <script>
@@ -86,7 +91,6 @@
     function LoginButton() {
         if (isSignIn) {
             document.getElementById("isSignIn").innerText = "My Trashbox";
-            document.getElementById("avatar-FP").src = userPic;
             let btn = document.createElement("BUTTON");
             btn.className = "alx-btn";
             btn.innerText = "Wyloguj";
@@ -94,7 +98,6 @@
             document.getElementById("func-btn").appendChild(btn);
         } else {
             document.getElementById("isSignIn").innerText = "Zaloguj się";
-            document.getElementById("avatar-FP").src = "/static/pic/raccoon.gif";
         }
     }
 

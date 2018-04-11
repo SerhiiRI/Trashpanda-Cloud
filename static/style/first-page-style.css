@@ -1,179 +1,188 @@
-    html, body{
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-    }
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
 
-    body{
-        background: linear-gradient(20deg, #161F40 25%, #fff 25%);
-        color: #161F40;
-        font-size: 1rem;
-    }
+body {
+    /*background: linear-gradient(20deg, #161F40 25%, #fff 25%);*/
+    color: #161F40;
+    font-size: 1rem;
+}
+/*
+----------------
+---   Logo   ---
+----------------
+*/
 
-    /*
-    ------------------
-    ---   Avatar   ---
-    ------------------
-    */
+h1 {
+    font-size: 3.2rem;
+    color: black;
+}
 
-    .alx-avatar-FP{
-        position: fixed;
-        top: 5vh;
-        z-index: -1;
-        width: 100vw;
-        text-align: center;
-    }
-    #avatar-FP{
-        height: 20vh;
-        border-radius: 100vh;
-        border: solid 0.4vh #161F40;
-        padding: 10px;
-    }
+.alx-img-logo {
+    height: 45vh;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px black;
+    margin: 20px 0px;
+}
 
-    /*
-    ----------------
-    ---   Logo   ---
-    ----------------
-    */
+/*
+-------------------------
+---   Google button   ---
+-------------------------
+*/
 
-    h1{
-        position: relative;
-        font-size: 2.5rem;
-        top: 27px;
-        color:black;
-    }
+#alx-gbtn {
+    width: 100vw;
+    height: 100vh;
+    background-color: #fff;
+    position: fixed;
+    z-index: -10;
+    opacity: 0;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-    .alx-img-logo{
-        height: 45vh;
-        border-radius: 10px;
-        box-shadow: 0px 0px 10px black;
-        margin: 20px 0px;
-    }
+.alx-gbtn {
+    padding: 50px 100px;
+    box-shadow: 4px 4px 15px #888;
+    color: #161F40;
+}
 
-    /*
-    -------------------------
-    ---   Google button   ---
-    -------------------------
-    */
+/*
+---------------------
+---   Flex boxy   ---
+---------------------
+*/
 
-    #alx-gbtn{
-        width: 100vw;
-        height: 100vh;
-        background-color: #fff;
-        position: fixed;
-        z-index: -10;
-        opacity: 0;
-        text-align:center;
-        display: flex;
-        align-items:center;
-        justify-content:center;
-    }
-    .alx-gbtn{
-        padding: 50px 100px;
-        box-shadow: 4px 4px 15px #888;
-        color: #161F40;
-    }
+.alx-foo {
+    width: 100%;
+    height: 5%;
+    align-items:center;
+    justify-content:center;
+    display: flex;
+    flex-direction: row;
+    box-shadow: 0px -1px 5px #ccc;
+}
+
+.alx-foo-item{
+    text-align:center;
+    width: 100px;
+    padding: 0px 10px;
+}
+
+.alx-freeSpace{
+    width: 100%;
+    height: 8%;
+}
+
+.alx-cont, .alx-flex-box {
+    min-width: 400px;
+    width: 100%;
+    height: 87%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.alx-flex-box {
+    flex-direction: row;
+}
+
+.alx-flex-box:nth-child(2){
+    position: relative;
+    justify-content: left;
+    top: 60px;
+    left: -35px;
+    z-index: -1;
+}
+
+.alx-flex-box:first-child {
+    position:relative;
+    top: 15vh;
+    height: 0;
+    z-index: -1;
+}
+
+.alx-flex-box:last-child {
+    justify-content: center;
+}
 
 
-    /*
-    ---------------------
-    ---   Flex boxy   ---
-    ---------------------
-    */
+/*
+----------------------------
+---   Inputs & Buttons   ---
+----------------------------
+*/
 
-    .alx-cont, .alx-flex-box{
-        min-width: 400px;
-        width: 100%;
-        height: 80%;
-        display: flex;
-        align-items: center;
-        justify-content:center;
-        flex-direction: column;
-    }
+.search-in {
+    border: none;
+    margin: 10px 0px;
+    min-width: 250px;
+    width: 50vw;
+    height: 20px;
+    padding: 10px;
+    border-radius: 10px 0px 0px 10px;
+    box-shadow: 3px 3px 10px #555;
+    transition: all 200ms;
+}
 
-    .alx-flex-box{
-        flex-direction: row;
-    }
+.search-btn {
+    border: none;
+    border-radius: 0px 10px 10px 0px;
+    width: 150px;
+    height: 40px;
+    box-shadow: 3px 3px 10px #555;
+    color: #fff;
+    background: #161F40;
+    transition: all 200ms;
+}
 
-    .alx-flex-box:first-child{
-        position: relative;
-        justify-content:left;
-        top: 60px;
-        left: -35px;
-        z-index:-1;
-    }
+input:focus, button:focus {
+    outline: none;
+    background: #161F40;
+    color: white;
+}
 
-    .alx-flex-box:last-child{
-        justify-content: center;
-    }
+button:hover {
+    cursor: pointer;
+    color: #161F40;
+    background: #fff;
+}
 
+/*.alx-btn:nth-child(2){*/
+/*background: none;*/
+/*color: #161F40;*/
+/*border-radius: 0;*/
+/*margin: 5px;*/
+/*}*/
 
-    /*
-    ----------------------------
-    ---   Inputs & Buttons   ---
-    ----------------------------
-    */
+.alx-btn {
+    border: none;
+    margin: 5px;
+    width: 150px;
+    height: 40px;
+    box-shadow: 3px 3px 10px #555;
+    color: #161F40;
+    background: none;
+    transition: all 200ms;
+}
 
-    .search-in{
-        border: none;
-        margin: 10px 0px;
-        min-width: 250px;
-        width: 50vw;
-        height: 20px;
-        padding: 10px;
-        border-radius: 10px 0px 0px 10px;
-        box-shadow: 3px 3px 10px #555;
-        transition: all 200ms;
-    }
+.alx-btn:first-child {
+    border-radius: 10px 0px 0px 10px;
+}
 
-    .search-btn{
-        border: none;
-        border-radius: 0px 10px 10px 0px;
-        width: 150px;
-        height: 40px;
-        box-shadow: 3px 3px 10px #555;
-        color: #fff;
-        background: #161F40;
-        transition: all 200ms;
-    }
+.alx-btn:last-child {
+    border-radius: 0px 10px 10px 0px;
+}
 
-    input:focus, button:focus{
-        outline: none;
-        background: #161F40;
-        color: white;
-    }
-    button:hover{
-        cursor: pointer;
-        color: #161F40;
-        background: #fff;
-    }
-
-    /*.alx-btn:nth-child(2){*/
-        /*background: none;*/
-        /*color: #161F40;*/
-        /*border-radius: 0;*/
-        /*margin: 5px;*/
-    /*}*/
-
-    .alx-btn{
-        border: none;
-        margin: 5px;
-        width: 150px;
-        height: 40px;
-        box-shadow: 3px 3px 10px #555;
-        color: #161F40;
-        background: none;
-        transition: all 200ms;
-    }
-    .alx-btn:first-child{
-        border-radius: 10px 0px 0px 10px;
-    }
-    .alx-btn:last-child{
-        border-radius: 0px 10px 10px 0px;
-    }
-    .alx-btn:hover{
-        cursor: pointer;
-        color: #fff;
-        background: #161F40;
-    }
+.alx-btn:hover {
+    cursor: pointer;
+    color: #fff;
+    background: #161F40;
+}
