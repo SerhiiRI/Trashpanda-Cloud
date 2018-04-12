@@ -147,8 +147,9 @@
         userPic = profile.getImageUrl();
         userName = profile.getGivenName();
         isSignIn = true;
+        afterlogin();
+        loginButton();
         closeLoginForm();
-        LoginButton();
     };
 
     function signOut() {
