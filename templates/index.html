@@ -102,13 +102,12 @@
     function signOut() {
         var auth2 = gapi.auth2.getAuthInstance();
         auth2.signOut().then(function () {
-            auth2.disconnect();
             console.log('User signed out.');
         });
     }
 
     function afterlogin() {
-        document.getElementById("userinfo").style.opacity = "1";
+        document.getElementById("userinfo").style.display = "initial";
         document.getElementById("userimg").src = userPic;
         document.getElementById("username").innerHTML = userName;
     }
