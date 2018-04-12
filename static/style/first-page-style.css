@@ -50,10 +50,11 @@ body {
 */
 
 #userinfo{
+    display: none;
+        /*display: initial;*/
     position: fixed;
     top:10px;
     left: 10px;
-    opacity: 0;
     z-index: -1;
 }
 
