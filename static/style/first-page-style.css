@@ -42,6 +42,33 @@ body {
 /*     font-family: 'Almendra Display', cursive; */
 }
 
+
+/*
+-------------------
+---   userinfo  ---
+-------------------
+*/
+
+#userinfo{
+    position: fixed;
+    top:10px;
+    left: 10px;
+    opacity: 0;
+    z-index: -1;
+}
+
+#userimg{
+    height: 50px;
+    width: 50px;
+    border-radius: 50px;
+}
+
+#username{
+    position: relative;
+    top: calc(-25px + 0.5rem);
+    left: 10px;
+}
+
 /*
 ----------------
 ---   Logo   ---
