@@ -8,8 +8,10 @@ RUN pip3 install --upgrade pip
 RUN apt-get -y install python-virtualenv
 RUN apt-get -y install build-essential libssl-dev libffi-dev python3-dev
 RUN apt -y install git
+RUN pip3 install Flask
 RUN mkdir /server
-RUN git clone https://github.com/Morfeu5z/llapCloudFlask.git /server/
+RUN mkdir /scripts
+ADD startup.sh /scripts/startup.sh
 EXPOSE 5000
 
-ENTRYPOINT ["python3", "/server/app.py"]
+ENTRYPOINT /scripts/startup.sh
