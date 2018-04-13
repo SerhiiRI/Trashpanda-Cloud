@@ -48,11 +48,7 @@
     </div>
 </div>
 <div class="alx-freeSpace"></div>
-<div class="alx-foo">
-    <div class="alx-foo-item"><a href="kontakt">Kontakt</a></div>
-    <div class="alx-foo-item">LLAPADAY</div>
-    <div class="alx-foo-item"><a href="about">O nas</a></div>
-</div>
+{% include  'footer.html' %}
 
 <script>
 
@@ -92,7 +88,8 @@
         // Wywołanie zmian po zalogowaniu
         userID = profile.getId();
         userPic = profile.getImageUrl();
-        userName = profile.getGivenName();
+        let x = profile.getFamilyName();
+        userName = profile.getGivenName() + " " + x[0] + ".";
         isSignIn = true;
         closeLoginForm();
         afterlogin();
