@@ -1,11 +1,10 @@
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    info = 'Trashpanda Cloud'
-    return render_template('index.html', info=info)
+    return render_template('index.html')
 
 @app.route('/info')
 def info():
