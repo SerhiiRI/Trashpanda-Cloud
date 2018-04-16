@@ -12,7 +12,6 @@ zawierającej pełne informacje o pliku. Zwraca instancje klas File oraz FileInf
 pętla *foreach* pozwalająca na wykonanie metody *gatherInfo* dla każdego z Hashy uzyskanych metodą *gatherHashes*.
 Jeśli Hash będzie za krótki, bądź plik nie będzie posiadał rozszerzenia zostanie uznany za katalog i
 zostanie pominięty dla funkcji *gatherInfo*
-
 """
 
 import glob
@@ -22,10 +21,12 @@ import static.classes.File as File
 
 class FileController(object):
     def __init__(self):
-        pass
+        self.defaultRoute = "/srv/Data"
 
-    def gatherHashes(self, client_ID: str) -> list:
-        pass
+    """Ścieżka *Path* powinna być w formacie [ /userID/katalog1/katalog2/ ], czyli slash na początku i końcu"""
+    def gatherHashes(self, Path : str) -> list:
+        Route = self.defaultRoute + Path + "*"
+        return glob.glob(Route)
 
     def gatherItemInfo(self, hashsum: str):
         pass
