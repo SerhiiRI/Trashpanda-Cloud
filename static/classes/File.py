@@ -2,9 +2,14 @@
 
 class File(object):
 
-    idFIle = None
+    def __init__(self):
+        fileID=""
+        Name=""
+        Extension=""
+        filePath=""
+        HashSum=""
 
-    def __init__(self, path=None : str):
-        raise NotImplementedError("[*] file can`t create a statistics")
+    def __constructFromDB(self, fileID : str):
+        self.fileID = fileID;
+        pass
 
-    def __constractFromDB(self):
