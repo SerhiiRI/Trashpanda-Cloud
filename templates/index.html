@@ -37,7 +37,7 @@
         </div>
         <div class="alx-flex-box">
             <form>
-                <input type="text" class="search-in" placeholder="Wpisz czego szukas...">
+                <input type="text" class="search-in" placeholder="Wpisz czego szukasz...">
                 <button type="submit" class="search-btn">Szukaj</button>
             </form>
         </div>
@@ -49,113 +49,6 @@
 </div>
 <div class="alx-freeSpace"></div>
 {% include  'footer.html' %}
-
-<script>
-
-    function goTo(where) {
-        window.location.replace(where);
-    }
-
-    {#-------------------------------------------------
-    isSignIn odpowiada za to, czy przycisk logowania
-    przekieruje do logowania google (jeśli false),
-    czy na chmurę (jeśli true)
-    -------------------------------------------------#}
-    var isSignIn = false;
-    var userID = 1234567890;
-    var userPic = "https://lh5.googleusercontent.com/-p-7kqdTngmk/AAAAAAAAAAI/AAAAAAAAAkA/LS9olK6iiME/s96-c/photo.jpg";
-    var userName = "Aleks";
-
-    {#-------------------------------------------------
-    Ciało funkcji wykonuje się po zalogowaniu na konto
-    google
-    -------------------------------------------------#}
-
-    function onSignIn(googleUser) {
-        // Useful data for your client-side scripts:
-        var profile = googleUser.getBasicProfile();
-        console.log("ID: " + profile.getId()); // Don't send this directly to your server!
-        console.log('Full Name: ' + profile.getName());
-        console.log('Given Name: ' + profile.getGivenName());
-        console.log('Family Name: ' + profile.getFamilyName());
-        console.log("Image URL: " + profile.getImageUrl());
-        console.log("Email: " + profile.getEmail());
-
-        // The ID token you need to pass to your backend:
-        var id_token = googleUser.getAuthResponse().id_token;
-        console.log("ID Token: " + id_token);
-
-        // Wywołanie zmian po zalogowaniu
-        userID = profile.getId();
-        userPic = profile.getImageUrl();
-        let x = profile.getFamilyName();
-        userName = profile.getGivenName() + " " + x[0] + ".";
-        isSignIn = true;
-        closeLoginForm();
-        afterlogin();
-        loginButton();
-    };
-
-    function signOut() {
-        var auth2 = gapi.auth2.getAuthInstance();
-        auth2.signOut().then(function () {
-            console.log('User signed out.');
-        });
-    }
-
-    function afterlogin() {
-        document.getElementById("userinfo").style.display = "initial";
-        document.getElementById("userimg").src = userPic;
-        document.getElementById("username").innerHTML = userName;
-    }
-
-    function loginTest() {
-        afterlogin();
-        isSignIn = true;
-        loginButton();
-        closeLoginForm();
-    }
-
-    {#-------------------------------------------------
-    Edycja przycisku logowania i wylogowania
-    -------------------------------------------------#}
-
-    function loginButton() {
-        if (isSignIn) {
-            document.getElementById("isSignIn").innerText = "My Trashbox";
-            let btn = document.createElement("BUTTON");
-            btn.className = "alx-btn";
-            btn.innerText = "Wyloguj";
-            btn.addEventListener("click", logout);
-            document.getElementById("func-btn").appendChild(btn);
-        } else {
-            document.getElementById("isSignIn").innerText = "Zaloguj się";
-        }
-    }
-
-    function logout() {
-        signOut();
-        isSignIn = false;
-        location.reload();
-    }
-
-    var glogin = document.getElementById("alx-gbtn");
-
-    function openLoginForm() {
-        if (isSignIn) {
-            alert("My Trashbox will be able soon!");
-        } else {
-            glogin.style.transition = "all 200ms";
-            glogin.style.opacity = "1";
-            glogin.style.zIndex = "10";
-        }
-    }
-
-    function closeLoginForm() {
-        glogin.style.opacity = "0";
-        glogin.style.zIndex = "-10";
-    }
-
-</script>
+<script src="/static/scripts/index.js"></script>
 </body>
 </html>
