@@ -1,6 +1,7 @@
 # Class file
+import interfaces.IFile
 
-class File(object):
+class File(IFile):
 
     def __init__(self):
         fileID=""
