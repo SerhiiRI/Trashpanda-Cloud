@@ -1,10 +1,10 @@
 # Class file
+import interfaces.IFile
 
-class File(object):
+class File(IFile):
 
     idFIle = None
 
     def __init__(self, path=None : str):
-        raise NotImplementedError("[*] file can`t create a statistics")
 
     def __constractFromDB(self):
