@@ -1,5 +1,5 @@
 # Class file
-import interfaces.IFile
+import static.classes.interfaces.IFile as IFile
 
 class File(IFile):
 
@@ -10,7 +10,6 @@ class File(IFile):
         filePath=""
         HashSum=""
 
-    def __constructFromDB(self, fileID : str):
-        self.fileID = fileID;
+    def __constructFromDB(self):
         pass
 
