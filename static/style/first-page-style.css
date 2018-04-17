@@ -83,10 +83,14 @@ h1 {
 }
 
 .alx-img-logo {
-    height: 45vh;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px black;
-    margin: 20px 0px;
+    position:relative;
+    width: 250px;
+    left: -140px;
+    top: -73px;
+}
+
+.margin{
+    left: 70px;
 }
 
 /*
@@ -152,25 +156,9 @@ a:hover{
     flex-direction: row;
 }
 
-.alx-flex-box:nth-child(2) {
-    position: relative;
-    justify-content: left;
-    top: 60px;
-    left: -35px;
-    z-index: -1;
-}
-
 .alx-flex-box:first-child {
     position: relative;
-    top: 15vh;
-    height: 0;
     z-index: -1;
-}
-
-@media (min-width: 480px) {
-    .alx-flex-box:first-child {
-		top: 5vh;
-	}
 }
 
 .alx-flex-box:last-child {
