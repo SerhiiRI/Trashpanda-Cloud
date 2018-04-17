@@ -50,6 +50,12 @@ class FileController(object):
             TEMP.append(hash)
             """Dodawanie do listy plików obiektów klasy File"""
             Files.append(File.File(TEMP))
+
+        """
+        Brak informacji o FileName -> Aktualnie ustawione na *Test*, 
+        Pamiętać o przekierowaniu generowania listy Plików file do funkcji *gatherItemInfo*
+        Bo FileName jest w Bazie danych    
+        """
         return Files
 
     def gatherItemInfo(self, hashsum: str):
