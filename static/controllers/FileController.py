@@ -14,9 +14,7 @@ Jeśli Hash będzie za krótki, bądź plik nie będzie posiadał rozszerzenia z
 zostanie pominięty dla funkcji *gatherInfo*
 """
 
-import glob
-import os
-import shutil
+import glob, os, shutil
 import static.classes.File as File
 
 class FileController(object):
