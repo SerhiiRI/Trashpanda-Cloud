@@ -26,7 +26,12 @@ class FileController(object):
     """Ścieżka *Path* powinna być w formacie [ /userID/katalog1/katalog2/ ], czyli slash na początku i końcu"""
     def gatherHashes(self, Path : str) -> list:
         Route = self.defaultRoute + Path + "*"
-        return glob.glob(Route)
+        temp = glob.glob(Route)
+        Files = list()
+        for file in temp:
+            TEMP = file.split("/")
+            Files.append(TEMP[-1])
+        return Files
 
     def gatherItemInfo(self, hashsum: str):
         pass
