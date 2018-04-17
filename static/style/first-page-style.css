@@ -1,0 +1,232 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    /*background: linear-gradient(20deg, #161F40 25%, #fff 25%);*/
+    color: #161F40;
+    font-size: 1rem;
+    /*fonts*/
+    font-family: 'Gugi', cursive;
+/*     font-family: 'Indie Flower', cursive; */
+/*     font-family: 'Shadows Into Light', cursive; */
+/*     font-family: 'East Sea Dokdo', cursive; */
+/*     font-family: 'Permanent Marker', cursive; */
+/*     font-family: 'Josefin Slab', serif; */
+/*     font-family: 'Kirang Haerang', cursive; */
+/*     font-family: 'Press Start 2P', cursive; */
+/*     font-family: 'VT323', monospace; */
+/*     font-family: 'Special Elite', cursive; */
+/*     font-family: 'Rock Salt', cursive; */
+/*     font-family: 'Cabin Sketch', cursive; */
+/*     font-family: 'Merienda', cursive; */
+/*     font-family: 'Libre Barcode 39', cursive; */
+/*     font-family: 'Black Ops One', cursive; */
+/*     font-family: 'Yatra One', cursive; */
+/*     font-family: 'Quantico', sans-serif; */
+/*     font-family: 'Love Ya Like A Sister', cursive; */
+/*     font-family: 'Fredericka the Great', cursive; */
+/*     font-family: 'Aladin', cursive; */
+/*     font-family: 'IM Fell English SC', serif; */
+/*     font-family: 'Faster One', cursive; */
+/*     font-family: 'Megrim', cursive; */
+/*     font-family: 'Libre Barcode 39 Extended Text', cursive; */
+/*     font-family: 'Creepster', cursive; */
+/*     font-family: 'Finger Paint', cursive; */
+/*     font-family: 'Trade Winds', cursive; */
+/*     font-family: 'Caesar Dressing', cursive; */
+/*     font-family: 'Londrina Sketch', cursive; */
+/*     font-family: 'Almendra Display', cursive; */
+}
+
+
+/*
+-------------------
+---   userinfo  ---
+-------------------
+*/
+
+#userinfo{
+    display: none;
+        /*display: initial;*/
+    position: fixed;
+    top:10px;
+    left: 10px;
+    z-index: -1;
+}
+
+#userimg{
+    height: 50px;
+    width: 50px;
+    border-radius: 50px;
+}
+
+#username{
+    position: relative;
+    top: calc(-25px + 0.5rem);
+    left: 10px;
+}
+
+/*
+----------------
+---   Logo   ---
+----------------
+*/
+
+h1 {
+    font-size: 3.5rem;
+    color: black;
+    font-family: 'Cabin Sketch', cursive;
+}
+
+.alx-img-logo {
+    position:relative;
+    width: 250px;
+    left: -140px;
+    top: -73px;
+}
+
+.margin{
+    left: 70px;
+}
+
+/*
+-------------------------
+---   Google button   ---
+-------------------------
+*/
+
+#alx-gbtn {
+    width: 100vw;
+    height: 100vh;
+    background-color: #fff;
+    position: fixed;
+    z-index: -10;
+    opacity: 0;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-family: 'Cabin Sketch', cursive;
+}
+
+.alx-gbtn {
+    padding: 50px 100px;
+    box-shadow: 4px 4px 15px #888;
+    color: #161F40;
+}
+
+/*
+---------------------
+---   Flex boxy   ---
+---------------------
+*/
+
+a{
+    text-decoration:none;
+    color: #161F40;
+    border-bottom: solid 0px #161F40;
+    transition: all 200ms;
+}
+a:hover{
+    position:relative;
+    padding: 5px;
+    border-bottom: solid 2px #161F40;
+}
+
+.alx-freeSpace {
+    width: 100%;
+    height: 8%;
+}
+
+.alx-cont, .alx-flex-box {
+    min-width: 400px;
+    width: 100%;
+    height: 87%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.alx-flex-box {
+    flex-direction: row;
+}
+
+.alx-flex-box:first-child {
+    position: relative;
+    z-index: -1;
+}
+
+.alx-flex-box:last-child {
+    justify-content: center;
+}
+
+/*
+----------------------------
+---   Inputs & Buttons   ---
+----------------------------
+*/
+
+.search-in {
+    border: none;
+    margin: 10px 0px;
+    min-width: 250px;
+    width: 50vw;
+    height: 20px;
+    padding: 10px;
+    border-radius: 10px 0px 0px 10px;
+    box-shadow: 3px 3px 10px #555;
+    transition: all 200ms;
+}
+
+.search-btn {
+    border: none;
+    border-radius: 0px 10px 10px 0px;
+    width: 150px;
+    height: 40px;
+    box-shadow: 3px 3px 10px #555;
+    color: #fff;
+    background: #161F40;
+    transition: all 200ms;
+}
+
+input:focus, button:focus {
+    outline: none;
+    background: #161F40;
+    color: white;
+}
+
+button:hover {
+    cursor: pointer;
+    color: #161F40;
+    background: #fff;
+}
+
+.alx-btn {
+    border: none;
+    margin: 5px;
+    width: 150px;
+    height: 40px;
+    box-shadow: 3px 3px 10px #555;
+    color: #161F40;
+    background: none;
+    transition: all 200ms;
+}
+
+.alx-btn:first-child {
+    border-radius: 10px 0px 0px 10px;
+}
+
+.alx-btn:last-child {
+    border-radius: 0px 10px 10px 0px;
+}
+
+.alx-btn:hover {
+    cursor: pointer;
+    color: #fff;
+    background: #161F40;
+}

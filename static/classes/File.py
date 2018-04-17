@@ -1,10 +1,15 @@
 # Class file
+import static.classes.interfaces.IFile as IFile
 
-class File(object):
+class File(IFile):
 
-    idFIle = None
+    def __init__(self):
+        fileID=""
+        Name=""
+        Extension=""
+        filePath=""
+        HashSum=""
 
-    def __init__(self, path=None : str):
-        raise NotImplementedError("[*] file can`t create a statistics")
+    def __constructFromDB(self):
+        pass
 
-    def __constractFromDB(self):

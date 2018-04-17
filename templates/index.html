@@ -1,45 +1,52 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta name="google-signin-scope" content="profile email">
-    <meta name="google-signin-client_id" content="557305630089-vn9p4fa7mv7m8tula62tkpejst1mgm3b.apps.googleusercontent.com">
+    <meta name="google-signin-client_id"
+          content="557305630089-3sr6loe91a193q6t9e2du5np98rt0khf.apps.googleusercontent.com">
     <script src="https://apis.google.com/js/platform.js" async defer></script>
-    {% for inf in info %}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <meta charset="UTF-8">
-    <title>{{ inf.title }}</title>
-        <!-- sdfaadsf -->
+    <link href="https://fonts.googleapis.com/css?family=Aladin|Almendra+Display|Black+Ops+One|Cabin+Sketch:400,700|Caesar+Dressing|Creepster|East+Sea+Dokdo|Faster+One|Finger+Paint|Fredericka+the+Great|Gugi|IM+Fell+English+SC|Indie+Flower|Josefin+Slab:400,700|Kirang+Haerang|Libre+Barcode+39|Libre+Barcode+39+Extended+Text|Londrina+Sketch|Love+Ya+Like+A+Sister|Megrim|Merienda:400,700|Permanent+Marker|Press+Start+2P|Quantico:400,700|Rock+Salt|Shadows+Into+Light|Special+Elite|Trade+Winds|VT323|Yatra+One&amp;subset=latin-ext"
+          rel="stylesheet">
+    <title>Trashpanda - Home</title>
+    <link rel=stylesheet type=text/css href="/static/style/first-page-style.css">
 </head>
-<body>
-    <h1>Hello world!</h1>
-        <h2>{{ inf.info }}</h2>
-    {% endfor %}
-<div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
-    <script>
-      function onSignIn(googleUser) {
-        // Useful data for your client-side scripts:
-        var profile = googleUser.getBasicProfile();
-        console.log("ID: " + profile.getId()); // Don't send this directly to your server!
-        console.log('Full Name: ' + profile.getName());
-        console.log('Given Name: ' + profile.getGivenName());
-        console.log('Family Name: ' + profile.getFamilyName());
-        console.log("Image URL: " + profile.getImageUrl());
-        console.log("Email: " + profile.getEmail());
-
-        // The ID token you need to pass to your backend:
-        var id_token = googleUser.getAuthResponse().id_token;
-        console.log("ID Token: " + id_token);
-      };
-    </script>
-
-    <br>
-	<a href="#" onclick="signOut();">Wyloguj</a>
-	<script>
-  function signOut() {
-    var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
-      console.log('User signed out.');
-    });
-  }
-</script>
+<body onload="loginButton()">
+<div id="alx-gbtn">
+    <div class="alx-gbtn">
+        <h2>Zaloguj sie przez Google!</h2>
+        <div class="g-signin2" align="center" data-width="300" data-height="50" data-onsuccess="onSignIn"
+             data-theme="dark"></div>
+        <div>
+            <button class="alx-btn" onclick="loginTest()">Login Test</button>
+            <button class="alx-btn" onclick="closeLoginForm()">Zamknij</button>
+        </div>
+    </div>
+</div>
+<div id="userinfo">
+    <img id="userimg" src="">
+    <span id="username"></span>
+</div>
+<div class="alx-cont">
+    <div class="alx-flex">
+        <div class="alx-flex-box margin">
+                <h1>Trashpanda</h1>
+                <img src="/static/pic/logo2.svg" class="alx-img-logo">
+        </div>
+        <div class="alx-flex-box">
+            <form>
+                <input type="text" class="search-in" placeholder="Wpisz czego szukasz...">
+                <button type="submit" class="search-btn">Szukaj</button>
+            </form>
+        </div>
+        <div class="alx-flex-box" id="func-btn">
+            <button class="alx-btn" onclick="openLoginForm()"><span id="isSignIn"></span></button>
+            <button class="alx-btn" onclick="goTo('info')">Info</button>
+        </div>
+    </div>
+</div>
+<div class="alx-freeSpace"></div>
+{% include  'footer.html' %}
+<script src="/static/scripts/index.js"></script>
 </body>
 </html>
