@@ -16,7 +16,7 @@ class ServerDataTransfer(object):
         ''' set user in blockList with status and timeStamp '''
         raise NotImplementedError('[*] not implement download')
 
-    def setLockServer(self, status=0 : int) -> bool:
+    def setLockServer(self, status : int) -> bool:
         ''' lock for server '''
         self.__SERVER_LOCK = status
         return True
