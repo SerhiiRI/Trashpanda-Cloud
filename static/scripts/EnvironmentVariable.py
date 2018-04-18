@@ -10,7 +10,7 @@
 import os
 from os import environ as ENV
 
-ENV['CLOUD_MAX_FILE_SIZE'] = '5GB'
-ENV['CLOUD_DOWNLOAND_DAMP'] = '/home/Download/temp/'
+ENV['CLOUD_MAX_FILE_SIZE'] = '1MB'
+ENV['CLOUD_DOWNLOAND_DAMP'] = '/srv/Dump/'
 ENV['CLOUD_PROJECT_PATH'] = os.getcwd()
-ENV['CLOUD_USERSPACE'] = '/srv/users/'
+ENV['CLOUD_TRASHBOX'] = '/srv/Data/'
