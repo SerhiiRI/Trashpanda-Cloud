@@ -3,7 +3,7 @@ import static.classes.interfaces.IFile as IFile
 
 class File(IFile.File):
 
-    def __init__(self, data: list):
+    def __init__(self, data: tuple):
         self.fileID=""
         self.Name=""
         self.Extension=""
@@ -12,7 +12,7 @@ class File(IFile.File):
         self.HashSum=""
         self.construct(data)
 
-    def construct(self, data: list):
+    def construct(self, data: tuple):
         self.fileID = data[0]
         self.Name = data[1]
         self.Extension = data[2]
