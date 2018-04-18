@@ -84,7 +84,7 @@ class SQLCloud(object):
         return String
 
 
-los = lambda : "".join(("-" for x in range(0, 70)))
+los = lambda : "".join(("_" for x in range(0, 200)))
 
 costam = SQLCloud.getInstance()
 print(costam.DBRepr)
@@ -96,3 +96,4 @@ print(los())
 print(costam.select('banns'))
 print(los())
 print(costam.delete('banns'))
+print(los())
