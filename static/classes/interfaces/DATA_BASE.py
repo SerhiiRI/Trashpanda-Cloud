@@ -15,7 +15,7 @@ class IDataBase(object):
         ''' if transmission of data mast be blocked for user '''
         ''' set user in blockList with status and timeStamp '''
 
-    def setLockServer(self, status=0 : int) -> bool:
+    def setLockServer(self, status: int) -> bool:
         ''' lock for server '''
         self.__SERVER_LOCK = status
         return True
