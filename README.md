@@ -11,10 +11,10 @@
     </div>
     <h2>Few words about</h2>
     <div style="margin-left:45px;">
+      <p>opis opis
       opis opis
       opis opis
-      opis opis
-      opis opis
+        opis opis</p>
     </div>
     <h2>Technology</h2>
     <h2>Team</h2>
