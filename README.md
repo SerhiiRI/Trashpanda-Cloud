@@ -10,7 +10,7 @@
   <a href="http://trashpanda.pwsz.nysa.pl">-> Link to Trashpanda Cloud <-</a>
     </div>
     <h2>Few words about</h2>
-    <div style="margin-left:45px;">
+    <div style="margin-left:200px;">
       <p>opis opis
       opis opis
       opis opis
