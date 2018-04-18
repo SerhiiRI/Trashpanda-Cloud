@@ -1,6 +1,6 @@
 <div align="center">
-<h1>Welcome to the Trashpanda!</h1>
+<h1>Welcome to</h1>
 </div>
 <div  align="center">
-<img src="http://trashpanda.pwsz.nysa.pl/static/pic/autor.png">
+<img src="https://raw.githubusercontent.com/Morfeu5z/Trashpanda-Cloud/version/static/pic/trashpanda.PNG">
 </div>
