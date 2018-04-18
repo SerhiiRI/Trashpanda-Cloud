@@ -6,5 +6,6 @@
 </div>
 <div align="center">
   <a href="https://hub.docker.com/r/risernx/trashpanda/">-> Link to docker repo with server <-</a>
+    <br>
   <a href="http://trashpanda.pwsz.nysa.pl">-> Link to Trashpanda Cloud <-</a>
   </div
