@@ -14,28 +14,54 @@ Jeśli Hash będzie za krótki, bądź plik nie będzie posiadał rozszerzenia z
 zostanie pominięty dla funkcji *gatherInfo*
 """
 
-import glob
-import os
-import shutil
+import glob, os, shutil
 import static.classes.File as File
+
 
 class FileController(object):
     def __init__(self):
         self.defaultRoute = "/srv/Data"
 
     """Ścieżka *Path* powinna być w formacie [ /userID/katalog1/katalog2/ ], czyli slash na początku i końcu"""
-    def gatherHashes(self, Path : str) -> list:
-        Route = self.defaultRoute + Path + "*"
-        temp = glob.glob(Route)
+    def gatherDiskInfo(self, Path = "") -> list:
+        Route = self.defaultRoute + Path
+        temp = glob.glob(Route+"*")
         Files = list()
+
         for file in temp:
-            TEMP = file.split("/")
-            Files.append(TEMP[-1])
+            Size = os.stat(file).st_size
+            FullPath = file
+            Name = "test"
+            hash = file.split("/")[-1]
+            fileID = hash
+
+            ext_temp = file.split(".")
+            if len(ext_temp) == 2:
+                Extension = ext_temp[-1]
+            else:
+                Extension = None
+            """Wypełnianie Listy informacjami dla konstruktora klasy File"""
+            TEMP = list()
+            TEMP.append(fileID)
+            TEMP.append(Name)
+            TEMP.append(Extension)
+            TEMP.append(FullPath)
+            TEMP.append(Size)
+            TEMP.append(hash)
+            """Dodawanie do listy plików obiektów klasy File"""
+            Files.append(File.File(TEMP))
+
+        """
+        Brak informacji o FileName -> Aktualnie ustawione na *Test*, 
+        Pamiętać o przekierowaniu generowania listy Plików file do funkcji *gatherItemInfo*
+        Bo FileName jest w Bazie danych    
+        """
         return Files
 
     def gatherItemInfo(self, hashsum: str):
         pass
 
     def createLists(self, hashes: list) -> list:
+
         pass
 
