@@ -30,10 +30,11 @@ Application also allows to update files, therefore the previous version will be 
 >* MySQL
 
 ### Team
->>* __Front-end:__
+>> __Front-end:__
 >* Aleksander Sinkowski
 >* Aleksandra Pawlaczyk
->* Marcin Ochociński
->>* __Back-end:__
+>> __Back-end:__
 >* Serhii Riznychuk
 >* Mikołaj Rychel
+>> __Full-stack__
+>* Marcin Ochociński
