@@ -93,6 +93,8 @@ class SQLCloud(object):
         return String
 
 
+    def join(self, *args):
+        sql = "SELECT * FROM `"+ args[0]+"`"
 
 
 los = lambda : "".join(("_" for x in range(0, 200)))
