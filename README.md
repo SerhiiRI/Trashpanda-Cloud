@@ -1,10 +1,13 @@
-## Welcome to Trashpanda Cloud!
+<div align="center">
+
+## Welcome to
 ![Logo](https://raw.githubusercontent.com/Morfeu5z/Trashpanda-Cloud/version/static/pic/trashpanda.PNG)
 
-[-> Link to docker repo with server <-](https://hub.docker.com/r/risernx/trashpanda)
-
-[-> Link to Trashpanda Cloud <-](http://trashpanda.pwsz.nysa.pl)
+[-> Link to docker repo with server |](https://hub.docker.com/r/risernx/trashpanda)
+[| Link to Trashpanda Cloud <-](http://trashpanda.pwsz.nysa.pl)
   
+</div>
+
 ### Few words about
 Trashpanda was created as school project in 2018, by students of the 3rd year of Computer Science.
 
