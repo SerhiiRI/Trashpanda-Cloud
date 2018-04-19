@@ -92,15 +92,7 @@ class SQLCloud(object):
         String = String + "\treturn 0\n"
         return String
 
-    def delete_banns(self, **kwargs):
-        sql = "DELETE FROM `banns`"
-        if (len(kwargs) > 0):
-            sql = sql + " WHERE " + " AND ".join(["`" + str(key) + "`=%s" for key, value in kwargs.items()])
-        __cursor = self.__connector.cursor()
-        __cursor.execute(sql, tuple((kwargs[key] for key, value in kwargs.items())))
-        self.__connector.commit()
-        __cursor.close()
-        return 0
+
 
 
 los = lambda : "".join(("_" for x in range(0, 200)))
