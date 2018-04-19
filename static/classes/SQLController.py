@@ -92,33 +92,6 @@ class SQLCloud(object):
         String = String + "\treturn 0\n"
         return String
 
-    def select_banns(self, **wheres):
-        sql = "SELECT * FROM `banns`"
-        if (len(wheres) > 0):
-            sql = sql + " WHERE " + " AND ".join(["`" + str(key) + "`=%s" for key, value in wheres.items()])
-        __cursor = self.__connector.cursor()
-        __cursor.execute(sql, tuple((wheres[key] for key, value in wheres.items())))
-        return __cursor.fetchall()
-
-    def insert_banns(self, idUser, status, timeStamp):
-        sql = "INSERT INTO `banns`(`idUser`, `status`, `timeStamp`) VALUES (%s, %s, %s)"
-        __cursor = self.__connector.cursor()
-        __cursor.execute(sql, (idUser, status, timeStamp))
-        self.__connector.commit()
-        __cursor.close()
-        return 0
-
-
-    def update_banns(self, **sets):
-        def functionInside(**whr):
-            sql = "UPDATE `banns` SET " + ", ".join(["`"+ str(key) +"`=%s" for key, value in sets.items()]) +" WHERE "+" AND ".join(("`"+key+"`=%s" for key, v in whr.items()))
-            __cursor = self.__connector.cursor()
-            print(sql.format(([value for key, value in sets.items()]+[value for key, value in whr.items()])))
-            __cursor.execute(sql, (([value for key, value in sets.items()]+[value for key, value in whr.items()])))
-            self.__connector.commit()
-            __cursor.close()
-        return functionInside
-
     def delete_banns(self, **kwargs):
         sql = "DELETE FROM `banns`"
         if (len(kwargs) > 0):
@@ -128,6 +101,7 @@ class SQLCloud(object):
         self.__connector.commit()
         __cursor.close()
         return 0
+
 
 los = lambda : "".join(("_" for x in range(0, 200)))
 
@@ -147,13 +121,13 @@ def kolorise(func):
     def inFunc(foreground=fg.cyan, background=bg.black):
         String = foreground+ +  + cd.reset
 
-print(costam.select_banns())
+
 los()
+"""
 for x in range(10):
     now = datetime.date((int("20"+str(random.randint(10,99)))), 10, 18)
     str_now = now.isoformat()
     costam.insert_banns(1, x, str_now)
-
-costam.update_banns(rok=1998)(rok=2009, status=0)
-
-print(costam.select_banns())
+"""
+# costam.update_banns(idUser=5)(timeStamp=datetime.date(2009, 10, 18).isoformat(), status=1)
+costam.delete_banns(idUser=2)
