@@ -22,7 +22,9 @@ class fg:
     lightblue='\033[94m'
     pink='\033[95m'
     lightcyan='\033[96m'
+    white='\033[97'
 class bg:
+    white='\033[107'
     black='\033[40m'
     red='\033[41m'
     green='\033[42m'

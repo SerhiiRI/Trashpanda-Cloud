@@ -1,4 +1,6 @@
-import MySQLdb
+from static.tool.console.vt1000 import fg, bg, cd
+import MySQLdb, random
+import datetime
 from copy import deepcopy
 
 class SQLCloud(object):
@@ -46,23 +48,27 @@ class SQLCloud(object):
 
     def insert(self, tableName):
         columns = deepcopy(self.DBRepr[tableName])
-        string = "def insert_" + tableName + "(self, " + ", ".join((columns[1:])) + "):\n"
-        string = string + "\tsql = \"INSERT INTO `banns`(" + ", ".join(
+        String = "def insert_" + tableName + "(self, " + ", ".join((columns[1:])) + "):\n"
+        String = String + "\tsql = \"INSERT INTO `banns`(" + ", ".join(
             ("`" + column + "`" for column in columns[1:])) + ") VALUES (" + ", ".join(
             ("%s" for x in columns[1:])) + ")\"\n"
-        string = string + "\t__cursor = self.__connector.cursor()\n"
-        string = string + "\t__cursor.execute(sql, (" + ", ".join((column for column in columns[1:])) + "))\n"
-        string = string + "\treturn 0\n"
-        return string
+        String = String + "\t__cursor = self.__connector.cursor()\n"
+        String = String + "\t__cursor.execute(sql, (" + ", ".join((column for column in columns[1:])) + "))\n"
+        String = String + "\tself.__connector.commit()\n"
+        String = String + "\t__cursor.close()\n"
+        String = String + "\treturn 0\n"
+        return String
 
     def update(self, table):
-        string = "def update_" + table + "(self, **sets):\n"
-        string = string + "\tdef functionInside(**whr):\n"
-        string = string + "\t\tsql = \"UPDATE `" + table + """` SET "+", ".join(("`"+key+"`=%s" for key, value in sets.items()))+" WHERE "+" AND ".join(("`"+key+"`=%s" for key, v in whr.items()))\"\n"""
-        string = string + "\t\t__cursor = self.__connector.cursor()\n"
-        string = string + "\t\t__cursor.execute(sql, (([value for key, value in sets.items()]+[value for key, value in whr.items()])))\n"
-        string = string + "\treturn functionInside"
-        return string
+        String = "def update_" + table + "(self, **sets):\n"
+        String = String + "\tdef functionInside(**whr):\n"
+        String = String + "\t\tsql = \"UPDATE `" + table + """` SET "+", ".join(("`"+key+"`=%s" for key, value in sets.items()))+" WHERE "+" AND ".join(("`"+key+"`=%s" for key, v in whr.items()))\n"""
+        String = String + "\t\t__cursor = self.__connector.cursor()\n"
+        String = String + "\t\t__cursor.execute(sql, (([value for key, value in sets.items()]+[value for key, value in whr.items()])))\n"
+        String = String + "\t\tself.__connector.commit()\n"
+        String = String + "\t\t__cursor.close()\n"
+        String = String + "\treturn functionInside\n"
+        return String
 
     def select(self, tableName):
         String = "def select_" + tableName + "(self, **wheres):\n"
@@ -70,19 +76,58 @@ class SQLCloud(object):
         String = String + "\tif(len(wheres) > 0):\n"
         String = String + "\t\tsql = sql + \" WHERE \" + \" AND \".join([\"`\"+str(key)+\"`=%s\" for key, value in wheres.items()])\n"
         String = String + "\t__cursor = self.__connector.cursor()\n"
-        String = String + "\t__cursor.execute(sql, tuple(( kwargs[+key+] for key, value in wheres.items() )"
+        String = String + "\t__cursor.execute(sql, tuple(( wheres[key] for key, value in wheres.items() ))"
         String = String + "\treturn __cursor.fetchall()\n"
         return String
 
     def delete(self, tableName):
         String = "def delete_" + tableName + "(self, **kwargs):\n"
-        String = String + '\tsql = "DELETE FROM `' + tableName + '`\n'
+        String = String + '\tsql = "DELETE FROM `' + tableName + '`\"\n'
         String = String + '\tif(len(kwargs) > 0):\n'
-        String = String + '\t\tsql = sql " WHERE "+" AND ".join([\"`\"+str(key)+"`=%s" for key, value in kwargs.items()])\n'
+        String = String + '\t\tsql = sql + " WHERE "+" AND ".join([\"`\"+str(key)+"`=%s" for key, value in kwargs.items()])\n'
         String = String + '\t__cursor = self.__connector.cursor()\n'
-        String = String + '\t__cursor.execute(sql, tuple(( kwargs[+key+] for key, value in kwargs.items())))\n'
+        String = String + '\t__cursor.execute(sql, tuple(( kwargs[key] for key, value in kwargs.items())))\n'
+        String = String + "\tself.__connector.commit()\n"
+        String = String + "\t__cursor.close()\n"
+        String = String + "\treturn 0\n"
         return String
 
+    def select_banns(self, **wheres):
+        sql = "SELECT * FROM `banns`"
+        if (len(wheres) > 0):
+            sql = sql + " WHERE " + " AND ".join(["`" + str(key) + "`=%s" for key, value in wheres.items()])
+        __cursor = self.__connector.cursor()
+        __cursor.execute(sql, tuple((wheres[key] for key, value in wheres.items())))
+        return __cursor.fetchall()
+
+    def insert_banns(self, idUser, status, timeStamp):
+        sql = "INSERT INTO `banns`(`idUser`, `status`, `timeStamp`) VALUES (%s, %s, %s)"
+        __cursor = self.__connector.cursor()
+        __cursor.execute(sql, (idUser, status, timeStamp))
+        self.__connector.commit()
+        __cursor.close()
+        return 0
+
+
+    def update_banns(self, **sets):
+        def functionInside(**whr):
+            sql = "UPDATE `banns` SET " + ", ".join(["`"+ str(key) +"`=%s" for key, value in sets.items()]) +" WHERE "+" AND ".join(("`"+key+"`=%s" for key, v in whr.items()))
+            __cursor = self.__connector.cursor()
+            print(sql.format(([value for key, value in sets.items()]+[value for key, value in whr.items()])))
+            __cursor.execute(sql, (([value for key, value in sets.items()]+[value for key, value in whr.items()])))
+            self.__connector.commit()
+            __cursor.close()
+        return functionInside
+
+    def delete_banns(self, **kwargs):
+        sql = "DELETE FROM `banns`"
+        if (len(kwargs) > 0):
+            sql = sql + " WHERE " + " AND ".join(["`" + str(key) + "`=%s" for key, value in kwargs.items()])
+        __cursor = self.__connector.cursor()
+        __cursor.execute(sql, tuple((kwargs[key] for key, value in kwargs.items())))
+        self.__connector.commit()
+        __cursor.close()
+        return 0
 
 los = lambda : "".join(("_" for x in range(0, 200)))
 
@@ -97,3 +142,18 @@ print(costam.select('banns'))
 print(los())
 print(costam.delete('banns'))
 print(los())
+
+def kolorise(func):
+    def inFunc(foreground=fg.cyan, background=bg.black):
+        String = foreground+ +  + cd.reset
+
+print(costam.select_banns())
+los()
+for x in range(10):
+    now = datetime.date((int("20"+str(random.randint(10,99)))), 10, 18)
+    str_now = now.isoformat()
+    costam.insert_banns(1, x, str_now)
+
+costam.update_banns(rok=1998)(rok=2009, status=0)
+
+print(costam.select_banns())
