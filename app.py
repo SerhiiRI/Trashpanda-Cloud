@@ -13,7 +13,9 @@ def info():
 
 @app.route('/about')
 def about():
-    return render_template('about.html')
+    # return render_template('about.html')
+    return redirect("https://www.asciipr0n.com/pr0n/morepr0n/pr0n03.txt", code=302)
+    # hackerman... jo-jo-jo
 
 @app.route('/kontakt')
 def kontakt():
