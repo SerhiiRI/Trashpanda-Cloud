@@ -21,7 +21,8 @@ def kontakt():
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html')
-
+    # return render_template('404.html')
+    return redirect("https://www.asciipr0n.com/pr0n/morepr0n/pr0n04.txt", code=302)
+    
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port=5000)
