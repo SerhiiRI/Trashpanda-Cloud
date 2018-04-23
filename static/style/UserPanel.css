@@ -15,12 +15,18 @@
 
 #username{
     position: relative;
-    top: calc(-35px + 0.5rem);
+    top: calc(-25px + 0.5rem);
     left: 10px;
 }
 
 #userlogout{
     position: relative;
-    top: calc(-12px + 0.5rem);
-    left: -105px;
+    top: calc(-25px + 0.5rem);
+    left: 10px;
+    transition: all 200ms;
+}
+
+#userlogout:hover{
+    color: coral;
+    cursor: pointer;
 }
