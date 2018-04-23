@@ -8,11 +8,11 @@
 
     /**
      * Zmienne testowe
-     * */
+    //  * */
     var isSignIn = false;
-    var userID = 1234567890;
-    var userPic = "https://lh5.googleusercontent.com/-p-7kqdTngmk/AAAAAAAAAAI/AAAAAAAAAkA/LS9olK6iiME/s96-c/photo.jpg";
-    var userName = "Aleks";
+    // var userID = 1234567890;
+    // var userPic = "https://lh5.googleusercontent.com/-p-7kqdTngmk/AAAAAAAAAAI/AAAAAAAAAkA/LS9olK6iiME/s96-c/photo.jpg";
+    // var userName = "Aleks";
 
     /**
      * Google SignIn / funkcja wywołana po zalogowaniu
@@ -63,13 +63,13 @@
 
     /**
     * Testowe logowanie
-    * */
-    function loginTest() {
-        afterlogin();
-        isSignIn = true;
-        loginButton();
-        closeLoginForm();
-    }
+    // * */
+    // function loginTest() {
+    //     afterlogin();
+    //     isSignIn = true;
+    //     loginButton();
+    //     closeLoginForm();
+    // }
 
     /**
     *Edycja przycisku logowania i wylogowania
