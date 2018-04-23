@@ -15,12 +15,12 @@
 
 #username{
     position: relative;
-    top: calc(-25px + 0.5rem);
+    top: calc(-35px + 0.5rem);
     left: 10px;
 }
 
 #userlogout{
     position: relative;
-    top: calc(-25px + 0.5rem);
-    left: 10px;
+    top: calc(-12px + 0.5rem);
+    left: -105px;
 }
