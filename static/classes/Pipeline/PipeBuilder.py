@@ -1,14 +1,31 @@
 #!/usr/bin/python3
-import threading, MySQLdb
-import pickle
+import threading, MySQLdb, pickle, random
 from static.classes.interfaces.IRunnable import IRunnable
-import random
+from multiprocessing import Queue
+
+
 class PipeBuilder(object):
     """ the pipeline"""
 
+    __table = 0
+    def __init__(self, tableName):
+        self.__table = tableName
+        self.createTable()
+
+
     def createTable(self):
         sql = "CREATE TABLE %s (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, obj TEXT NOT NULL)"
+        __cursor = self.__connector.cursor()
+        __cursor.execute(sql, tuple(self.__table))
+
+
+    def deleteTable(self):
         sql = "DROP TABLE %s"
+        __cursor = self.__connector.cursor()
+        __cursor.execute(sql, tuple(self.__table))
+        return __cursor.fetchall()
+
+    def buildQueue(self):
 
 
 """    
@@ -50,7 +67,7 @@ class theadingObject(threading.Thread):
 
 
 
-class Container:
+class Container(threading.Thread):
 
     def __init__(self, table, dependProcess="/home/serhii/Projects/llapCloudFlask/static/tool/Binary/cpuController"):
         self.table =table
@@ -63,7 +80,8 @@ class Container:
         self.__connector = MySQLdb.connect(host, login, passwd, db_name)
         self.__cursor = self.__connector.cursor()
         self.__table = self.__cursor.execute("SHOW TABLES")
-        
+        threading.Thread.__init__(self)
+
     def __getObject(self):
         sql = "SELECT * FROM `%s` ORDER BY id ASC LIMIT 1"
         __cursor = self.__connector.cursor()
@@ -75,7 +93,8 @@ class Container:
         __cursor = self.__connector.cursor()
         __cursor.execute(sql, tuple(self.table, object_id))
 
-    def start(self):
+
+    def run(self):
             costam = self.GetFirstObject()
             Runner = pickle.load(costam)
 

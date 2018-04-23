@@ -2,12 +2,15 @@ from subprocess import Popen, PIPE
 import pickle
 import threading
 
-class Process(threading.Thread):
+class Process():
+    """ Process is one serialized element to interpreting """
+
     def __init__(self, func, values, controller):
         self.function = func
         self.parameter = values
         self.controller = controller
-        threading.Thread.__init__(self)
+
+
     def run(self):
         try:
             controllerProcess = Popen((self.controller), shell=True, stdout=PIPE)
@@ -29,4 +32,4 @@ class Process(threading.Thread):
 
             "construct and deconstruct object"
         except:
-            print("Dobra jest mocno późna godzina i ja nie j***** po jakiego ****** to nie dziala")
+            print("Dobra jest mocno późna godzina i ja nie rozumiem po jakiego ****** to nie dziala")
