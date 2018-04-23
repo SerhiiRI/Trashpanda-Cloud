@@ -8,7 +8,6 @@
 import os
 import shutil
 
-
 class FileManager(object):
 
     @staticmethod
@@ -120,7 +119,7 @@ class FileManager(object):
         try:
             os.symlink(pathA, pathB + filename)
         except:
-            print("Symlink Error, check weather symlink with such name does not already exist in requested directory")
+            print("Symlink Error, check whether symlink with such name does not already exist in requested directory")
             return False
 
         return True
