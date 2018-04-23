@@ -1,0 +1,20 @@
+#userinfo{
+    display: none;
+        /*display: initial;*/
+    position: absolute;
+    top:10px;
+    left: 10px;
+    z-index: -1;
+}
+
+#userimg{
+    height: 50px;
+    width: 50px;
+    border-radius: 50px;
+}
+
+#username{
+    position: relative;
+    top: calc(-25px + 0.5rem);
+    left: 10px;
+}
