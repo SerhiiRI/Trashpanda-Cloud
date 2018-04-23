@@ -25,13 +25,12 @@
 import MySQLdb
 
 class IOrm(object):
-
     def __init__(self, sql_question):
         ''' reconstruct SQL requests and create a table '''
         try:
-            __construct(sql_question)
+            self.__construct(sql_question)
         except (MySQLdb.Error, MySQLdb.Warning) as errorMessage:
             print(errorMessage)
 
-    def __construct(sql="" : str):
-        raise NotImplementedError(" [*] konstruktor interfejsu IOrm nie jest zaimplementowany w pochodenj klasie "+self.__name)
+    def __construct(sql : str):
+        raise NotImplementedError(" [*] konstruktor interfejsu IOrm nie jest zaimplementowany w pochodenj klasie "+ self.__name__)
