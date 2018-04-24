@@ -1,0 +1,32 @@
+#userinfo{
+    display: none;
+        /*display: initial;*/
+    position: absolute;
+    top:10px;
+    left: 10px;
+    z-index: 2;
+}
+
+#userimg{
+    height: 50px;
+    width: 50px;
+    border-radius: 50px;
+}
+
+#username{
+    position: relative;
+    top: calc(-25px + 0.5rem);
+    left: 10px;
+}
+
+#userlogout{
+    position: relative;
+    top: calc(-25px + 0.5rem);
+    left: 10px;
+    transition: all 200ms;
+}
+
+#userlogout:hover{
+    color: coral;
+    cursor: pointer;
+}
