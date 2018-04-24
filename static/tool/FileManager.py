@@ -127,3 +127,30 @@ class FileManager(object):
     @staticmethod
     def swapOwner(pathA: str, pathB: str):
         pass
+
+    @staticmethod
+    def testExistFile(path):
+        '''
+                testExistFile
+
+        :param path: path to testing file on existing in the file system
+        :return: True/False
+        Testing file on existing
+
+        @Serhii Riznychuk
+        '''
+        return os.path.isfile(path)
+
+    @staticmethod
+    def getMeta(path):
+        """
+                  GetMeta
+
+        Otrzymania metainformacji dla plików
+        i zwócenia jako <class tuple>
+        return: ( Name, Size, LastAccess )
+
+        @Serhii Riznychuk
+        """
+
+        Size = os.stat(Route)

@@ -2,31 +2,60 @@
 import threading, MySQLdb, pickle, random
 from static.classes.interfaces.IRunnable import IRunnable
 from multiprocessing import Queue
+from .Process import Process
 
 
 class PipeBuilder(object):
     """ the pipeline"""
-
+    __queue = Queue()
     __table = 0
-    def __init__(self, tableName):
-        self.__table = tableName
+    def __init__(self, function, controllers:list):
+        self.controllers = controllers
+        self.function = function
+
+
+        host = 'trashpanda.pwsz.nysa.pl'
+        login = 'sergiy1998'
+        passwd = 'hspybxeR98>'
+        db_name = 'pipeline'
+        ''' Private constructor  '''
+        self.__connector = MySQLdb.connect(host, login, passwd, db_name)
+        self.__cursor = self.__connector.cursor()
+        self.__tables = self.__cursor.execute("SHOW TABLES")
         self.createTable()
 
 
     def createTable(self):
-        sql = "CREATE TABLE %s (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, obj TEXT NOT NULL)"
+        sql = "CREATE TABLE IF NOT EXISTS %s (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, obj TEXT NOT NULL)"
         __cursor = self.__connector.cursor()
         __cursor.execute(sql, tuple(self.__table))
+        self.__connector.commit()
 
+    def addUser(self):
 
     def deleteTable(self):
         sql = "DROP TABLE %s"
         __cursor = self.__connector.cursor()
         __cursor.execute(sql, tuple(self.__table))
+        self.__connector.commit()
         return __cursor.fetchall()
 
-    def buildQueue(self):
 
+    def addObject(self):
+        tempProcessObject = Process(self.function, 41, self.controllers)
+        sql = "INSERT INTO `banns`(`id`, `object`) VALUES (NULL, %s)"
+        __cursor = self.__connector.cursor()
+        __cursor.execute(sql, (idUser, status, timeStamp))
+        self.__connector.commit()
+        __cursor.close()
+
+
+
+    def buildTasks(self):
+        self.__queue
+
+    def buildQueue(self):
+        self.__queue.put()
 
 """    
     __data = list()
@@ -71,7 +100,7 @@ class Container(threading.Thread):
 
     def __init__(self, table, dependProcess="/home/serhii/Projects/llapCloudFlask/static/tool/Binary/cpuController"):
         self.table =table
-        self.controller = dependProcess
+        sdaself.controller = dependProcess
         host='trashpanda.pwsz.nysa.pl'
         login='sergiy1998'
         passwd='hspybxeR98>'
