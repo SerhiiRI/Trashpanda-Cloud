@@ -27,6 +27,7 @@ class Container(threading.Thread):
         sql = "DELETE FROM `%s` WHERE `id`=%s"
         __cursor = self.__connector.cursor()
         __cursor.execute(sql, tuple(self.table, object_id))
+        self.__connector.commit()
 
     def run(self):
         costam = self.GetFirstObject()
