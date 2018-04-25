@@ -38,8 +38,6 @@ class PipeBuilder(object):
         self.__connector.commit()
         return __cursor.fetchall()
 
-
-
     def _addObject(self):
         tempProcessObject = Process(self.function, tuple(10, ), self.controllers)
         stringProcessObject = pickle.dump(tempProcessObject)

@@ -21,6 +21,7 @@ class MyView(object):
         self.lim_rows, self.lim_columns = popen("stty size", "r").read().split()
 
     def createWindows(self, functionToDecorate,  ValueItems : list,  symbol="*"):
+        self.__maxElementInList(ValueItems)
         def function():
             header = "".join((symbol for x in range(self.columns)))
             header = fg.cyan + header + cd.reset
@@ -34,16 +35,16 @@ class MyView(object):
         map ()
         return
 
-    def __maxElementInList(self, items: list) -> int:
-        Fmax = self.columns
+    def __maxElementInList(self, items: list):
+        Fmax = self.min_columns
         comparing = lambda x, m: x if x > m else m
         for x in items:
-            self.columns = comparing(x, self.columns)
+            self.min_columns = comparing(x, self.min_columns)
 
 
-    def __control_row(self, string, symbol="*" ):
+    def __control_col(self, string, symbol="*" ):
         str = symbol+string
-        while (len(str)+1 < self.columns):
+        while (len(str)+1 < self.lim_columns):
             str = str+" "
         str += symbol
         return str

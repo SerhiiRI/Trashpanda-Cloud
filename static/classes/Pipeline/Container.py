@@ -4,6 +4,8 @@ from multiprocessing import Queue
 
 class Container(threading.Thread):
 
+
+
     def __init__(self, table, dependProcess="/home/serhii/Projects/llapCloudFlask/static/tool/Binary/cpuController"):
         self.table = table
         self.controller = dependProcess
