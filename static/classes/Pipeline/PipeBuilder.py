@@ -67,7 +67,6 @@ class PipeBuilder(object):
         ----------------------------
         Zniszczenia tabeli o wlasnej
         nazwie self.__table
-
         :return: Boolean
 
         @Serhii Rinzychuk
@@ -100,12 +99,8 @@ class PipeBuilder(object):
         self.__connector.commit()
         __cursor.close()
 
-
-    def buildTasks(self):
-        self.__queue.put()
-
     def buildQueue(self):
-        self.__queue.put()
+        self.__queue.put(Controller())
 
 
 
