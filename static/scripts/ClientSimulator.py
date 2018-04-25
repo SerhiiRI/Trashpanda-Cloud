@@ -30,17 +30,10 @@ class MyView(object):
             footer = fg.cyan + header + cd.reset
         return function()
 
-    def decorateList(self, functionToDecorate):
+    def decorateList(self, functionToDecorate, items):
         nwlist = list()
-        map ()
-        return
-
-    def __maxElementInList(self, items: list):
-        Fmax = self.min_columns
-        comparing = lambda x, m: x if x > m else m
-        for x in items:
-            self.min_columns = comparing(x, self.min_columns)
-
+        nwlist = map(functionToDecorate, items)
+        return nwlist
 
     def __control_col(self, string, symbol="*" ):
         str = symbol+string
@@ -48,3 +41,4 @@ class MyView(object):
             str = str+" "
         str += symbol
         return str
+

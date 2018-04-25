@@ -12,13 +12,13 @@ class Controller(object):
     @PathToSystemCommand.setter
     def PathToSystemCommand(self, path):
         """
-            PathToSystemCommand
-    -----------------------------------------
-    zbierania danych o pliku i podciąga
-    META-informacje dla interpretacji w
-    system dla liczenia przez PipeBuilder-a
+                PathToSystemCommand
+        -----------------------------------------
+        zbierania danych o pliku i podciąga
+        META-informacje dla interpretacji w
+        system dla liczenia przez PipeBuilder-a
 
-    @Serhii Riznychuk
+        @Serhii Riznychuk
         """
 
         if(FileManager.testExistFile(path)):

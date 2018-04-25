@@ -1,7 +1,9 @@
-from static.tool.console.vt1000 import fg, bg, cd
-import MySQLdb, random
+from static.tool.console.vt1000 import ForeGround, BackGround, FormatCode
+import MySQLdb
 import datetime
 from copy import deepcopy
+from os import environ as ENV
+import static.scripts.autorisationMySQL
 
 class SQLCloud(object):
 
@@ -11,10 +13,12 @@ class SQLCloud(object):
     __cursor = None
     __table = None
     DBRepr = dict()
-    def __init__(self, host='trashpanda.pwsz.nysa.pl', login='sergiy1998', passwd='hspybxeR98>', db_name='test_cloud'):
+    def __init__(self, host='trashpanda.pwsz.nysa.pl', db_name='test_cloud'):
         ''' Private constructor  '''
-
-        self.__connector = MySQLdb.connect(host, login, passwd, db_name)
+        string = str(ENV["TRASHPANDA_USER"])
+        costam = string.split(":")
+        print(costam[0], costam[1])
+        self.__connector = MySQLdb.connect(host, costam[0], costam[1], db_name)
         self.__cursor = self.__connector.cursor()
         self.__table = self.__cursor.execute("SHOW TABLES")
 
