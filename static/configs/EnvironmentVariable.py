@@ -9,7 +9,7 @@
 # ******************************
 import os
 from os import environ as ENV
-
+ENV['TRASHPANDA_HOST'] = "trashpanda.pwsz.nysa.pl"
 ENV['CLOUD_MAX_FILE_SIZE'] = '1MB'
 ENV['CLOUD_DOWNLOAND_DAMP'] = '/srv/Dump/'
 ENV['CLOUD_PROJECT_PATH'] = os.getcwd()
