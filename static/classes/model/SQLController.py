@@ -47,6 +47,13 @@ class SQLCloud(object):
         return 1
 
     def insert(self, tableName):
+        """
+                    Insert
+
+        Kopijuje dane do
+        :param tableName:
+        :return:
+        """
         columns = deepcopy(self.DBRepr[tableName])
         String = "def insert_" + tableName + "(self, " + ", ".join((columns[1:])) + "):\n"
         String = String + "\tsql = \"INSERT INTO `banns`(" + ", ".join(

@@ -1,11 +1,13 @@
 from subprocess import Popen, PIPE
+from static.classes.Pipeline.Controller import Controller
+
 import pickle
 import threading
 
 class Process():
     """ Process is one serialized element to interpreting """
 
-    def __init__(self, func, values, controller):
+    def __init__(self, func, values: tuple, controller: Controller):
         self.function = func
         self.parameter = values
         self.controller = controller
