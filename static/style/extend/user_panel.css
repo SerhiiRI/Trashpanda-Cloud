@@ -1,32 +1,26 @@
 #userinfo{
     display: none;
-        /*display: initial;*/
-    position: absolute;
-    top:10px;
-    left: 10px;
-    z-index: 2;
+    align-items: center;
+    justify-content: center;
 }
 
 #userimg{
     height: 50px;
     width: 50px;
     border-radius: 50px;
+    margin: 0 10px;
 }
 
-#username{
-    position: relative;
-    top: calc(-25px + 0.5rem);
-    left: 10px;
+.avatar{
+    float: left;
 }
 
-#userlogout{
-    position: relative;
-    top: calc(-25px + 0.5rem);
-    left: 10px;
-    transition: all 200ms;
+.user_menu{
+    float: left;
+    display: block;
 }
 
-#userlogout:hover{
-    color: coral;
+.user_logout:hover{
     cursor: pointer;
+    color: coral;
 }
