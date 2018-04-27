@@ -1,3 +1,7 @@
+    window.onload = function () {
+        this.document.body.style.opacity = "1";
+    };
+
 /**
  * Funkcja przekierowuje na inną stronę,
  * dodatkowo zmniejszając opacity do 0
