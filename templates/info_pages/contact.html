@@ -1,34 +1,26 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    {% include 'extend/head.html' %}
-    <link rel=stylesheet type=text/css href="/static/style/info_pages/contact.css">
+{% extends "info_pages/info_base.html" %}
+
+{% block title %}
     <title>Trashpanda - Kontakt</title>
-</head>
-<body>
-<div class="alx-cont">
-    <div class="alx-flex-box">
-        <img src="/static/pic/logo.png">
-    </div>
-    <div class="alx-flex-box">
-        <h1>Kontakt</h1>
-        <p>Szukaj nas w PWSZ w Nysie</p>
-        <br>Aleksander Sinkowski
-        <br>Serhii Riznychuk
-        <br>Mikołaj Rychel
-        <br>Aleksander Pawlaczyk
-        <br>Marcin Ochociński
-        <br>
-        <br>
-        <br>Lub napisz do nas!
-        <form method="post">
-            <textarea class="input-in" placeholder="Napisz wiadomość..."></textarea>
+{% endblock %}
+
+{% block content %}
+        <div>
+            <h1>Kontakt</h1>
+            <p>Szukaj nas w PWSZ w Nysie</p>
+            <br>Aleksander Sinkowski
+            <br>Serhii Riznychuk
+            <br>Mikołaj Rychel
+            <br>Aleksander Pawlaczyk
+            <br>Marcin Ochociński
             <br>
-            <button class="send-btn" type="button">Wyślij</button>
-        </form>
-    </div>
-</div>
-{% include 'extend/footer.html' %}
-{% include 'extend/user_panel.html' %}
-</body>
-</html>
+            <br>
+            <br>Lub napisz do nas!
+            <form method="post">
+                <textarea placeholder="Napisz wiadomość..."></textarea>
+                <br>
+                <button type="button">Wyślij</button>
+            </form>
+        </div>
+
+{% endblock %}

@@ -7,15 +7,21 @@
 </head>
 <body id="body" onload="opa()">
 <div id="nav" class="nav" onclick="fooAct('nav', 'top')">
-    {% include 'extend/user_panel_2.html' %}
+    <div id="nav-inside">
+        <div>
+            {% include 'extend/user_panel.html' %}
+        </div>
+    </div>
 </div>
 
 <div id="content" class="content">
-{% block content %}{% endblock %}
+    {% block content %}{% endblock %}
 </div>
 
 <div id="foo" class="foo" onclick="fooAct('foo', 'bottom')">
-    {% include 'extend/footer.html' %}
+    <div id="foo-inside">
+        {% include 'extend/footer.html' %}
+    </div>
 </div>
 <script src="/static/scripts/js/trashbox_base.js"></script>
 </body>
