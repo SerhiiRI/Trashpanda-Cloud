@@ -41,11 +41,32 @@ function signOut() {
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
         console.log('User signed out.');
+        clearListCookies();
     });
     goTo('/')
     //window.location.replace('https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://trashpanda.pwsz.nysa.pl');
 }
 
+function clearListCookies()
+{
+    var cookies = document.cookie.split(";");
+    for (var i = 0; i < cookies.length; i++)
+    {
+        var spcook =  cookies[i].split("=");
+        deleteCookie(spcook[0]);
+    }
+    function deleteCookie(cookiename)
+    {
+        var d = new Date();
+        d.setDate(d.getDate() - 1);
+        var expires = ";expires="+d;
+        var name=cookiename;
+        //alert(name);
+        var value="";
+        document.cookie = name + "=" + value + expires + "; path=/acc/html";
+    }
+    window.location = ""; // TO REFRESH THE PAGE
+}
 
 /**
  * Zmiana w interfejsie po zalogowaniu
