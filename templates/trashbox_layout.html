@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    {% include 'extend/head.html' %}
+    <link rel=stylesheet type=text/css href="/static/style/trashbox-layout-style.css">
+    <title>Trashpanda - TrashBox</title>
+</head>
+<body id="body" onload="opa()">
+<div id="nav" class="nav" onclick="fooAct('nav', 'top')">
+    <div class="inside2"></div>
+    <div id="inside-nav" class="inside"></div>
+</div>
+<div id="content" class="content"></div>
+<div id="foo" class="foo" onclick="fooAct('foo', 'bottom')">
+    {% include 'extend/Footer.html' %}
+</div>
+<script src="/static/scripts/js/trashbox_layout.js"></script>
+</body>
+</html>

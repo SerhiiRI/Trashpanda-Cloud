@@ -1,5 +1,8 @@
+import logging
+import sys
+
 import static.scripts.EnvironmentVariable
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, request, jsonify
 
 app = Flask(__name__)
 
@@ -7,23 +10,38 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+@app.route('/userCheck', methods=['POST'])
+def userCheck():
+    # print('Check userID...')
+    id = request.form['uid']
+    # print(id)
+    if id:
+        inDB = 'true'
+        return jsonify({'res' : inDB})
+
+    return jsonify({'error' : 'Missing data!'})
+
 @app.route('/info')
 def info():
-    return render_template('info.html')
+    return render_template('info_pages/info.html')
 
 @app.route('/about')
 def about():
-    return render_template('about.html')
+    return render_template('info_pages/about.html')
     # return redirect("https://www.asciipr0n.com/pr0n/morepr0n/pr0n03.txt", code=302)
     # hackerman... jo-jo-jo
 
 @app.route('/kontakt')
 def kontakt():
-    return render_template('kontakt.html')
+    return render_template('info_pages/kontakt.html')
+
+@app.route('/mytrashbox')
+def mytrashbox():
+    return render_template('trashbox_layout.html')
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html')
+    return render_template('info_pages/404.html')
     # return redirect("https://www.asciipr0n.com/pr0n/morepr0n/pr0n04.txt", code=302)
     
 if __name__ == '__main__':

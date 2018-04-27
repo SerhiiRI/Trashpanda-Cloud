@@ -1,14 +1,6 @@
-
-    // var userPic = "https://lh5.googleusercontent.com/-p-7kqdTngmk/AAAAAAAAAAI/AAAAAAAAAkA/LS9olK6iiME/s96-c/photo.jpg";
-    // var userName = "Aleks";
-    // afterlogin();
-
 function onSignIn(googleUser) {
-        // Useful data for your client-side scripts:
         var profile = googleUser.getBasicProfile();
-        // The ID token you need to pass to your backend:
         var id_token = googleUser.getAuthResponse().id_token;
-        // Uzupełnienei panelu użytkownika
         userID = profile.getId();
         userPic = profile.getImageUrl();
         let x = profile.getFamilyName();
