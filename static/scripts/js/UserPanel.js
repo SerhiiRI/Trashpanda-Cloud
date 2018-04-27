@@ -25,3 +25,11 @@ function onSignIn(googleUser) {
             location.reload();
         });
     }
+
+    function loginTest() {
+        userID = 123456789;
+        userPic = '/static/pic/testpic.jpg';
+        let x = 'Kowalski';
+        userName = profile.getGivenName() + " " + x[0] + ".";
+        afterlogin();
+    }

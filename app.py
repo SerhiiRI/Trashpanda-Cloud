@@ -31,13 +31,13 @@ def about():
     # return redirect("https://www.asciipr0n.com/pr0n/morepr0n/pr0n03.txt", code=302)
     # hackerman... jo-jo-jo
 
-@app.route('/kontakt')
+@app.route('/contact')
 def kontakt():
-    return render_template('info_pages/kontakt.html')
+    return render_template('info_pages/contact.html')
 
 @app.route('/mytrashbox')
 def mytrashbox():
-    return render_template('trashbox_layout.html')
+    return render_template('trashbox.html')
 
 @app.errorhandler(404)
 def page_not_found(e):

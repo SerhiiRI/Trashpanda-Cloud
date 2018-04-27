@@ -1,4 +1,4 @@
-@import "extend/base.css";
+@import "../extend/base.css";
 
 hr{
     width: 70%;
