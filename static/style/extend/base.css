@@ -8,6 +8,7 @@ html, body {
 
 body {
     opacity: 0;
+    transition: opacity 500ms;
     color: #161F40;
     font-size: 1rem;
     font-family: 'Gugi', cursive;
