@@ -21,7 +21,7 @@ function onSignIn(googleUser) {
 
     // The ID token you need to pass to your backend:
     token = googleUser.getAuthResponse().id_token;
-    console.log("ID Token: " + token);
+    //console.log("ID Token: " + token);
 
     // Wywołanie zmian po zalogowaniu
     userID = profile.getId();
@@ -38,8 +38,7 @@ function onSignIn(googleUser) {
  * Google wylogowania
  * */
 function signOut() {
-        window.location.replace('https://accounts.google.com/o/oauth2/revoke?token=' + token);
-        //window.location.replace('https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://trashpanda.pwsz.nysa.pl');
+        window.location.replace('https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://trashpanda.pwsz.nysa.pl');
 }
 
 /**
