@@ -1,4 +1,4 @@
-@import "extend/base.css";
+@import "../extend/base.css";
 
 /*
 ----------------
@@ -18,18 +18,20 @@ h1 {
     min-height: 95%;
 	display:flex;
 	flex-direction:column;
-	text-align: center;
+	text-align: justify;
+}
+
+.alx-flex-box{
+	margin: 0% 10%;
 }
 
 .alx-flex-box:first-child{
-	position:relative;
-	height: 25px;
-	top: -40px;
-	left: -118px;
+	height: 100px;
 	text-align: center;
+	position: relative;
+	top: 10px;
 }
 
-.alx-flex-box:last-child{
-	margin: 10px;
-	text-align:center;
+.alx-flex-box:nth-child(2){
+	text-align: center;
 }

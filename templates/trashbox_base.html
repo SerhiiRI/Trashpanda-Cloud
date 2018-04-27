@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    {% include 'extend/head.html' %}
+    <link rel=stylesheet type=text/css href="/static/style/trashbox-base.css">
+    <title>Trashpanda - TrashBox</title>
+</head>
+<body id="body" onload="opa()">
+<div id="nav" class="nav" onclick="fooAct('nav', 'top')">
+    {% include 'extend/user_panel_2.html' %}
+</div>
+
+<div id="content" class="content">
+{% block content %}{% endblock %}
+</div>
+
+<div id="foo" class="foo" onclick="fooAct('foo', 'bottom')">
+    {% include 'extend/footer.html' %}
+</div>
+<script src="/static/scripts/js/trashbox_base.js"></script>
+</body>
+</html>

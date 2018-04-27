@@ -108,7 +108,7 @@ function runajax(uid) {
 function logout() {
     signOut();
     isSignIn = false;
-    location.reload();
+    goTo('/');
 }
 
 /**
