@@ -1,13 +1,4 @@
-/**
- * Przekierowanie na inny adres podany w where
- * */
-function goTo(where) {
-    window.location.replace(where);
-}
-
-/**
- * Zmienne testowe
- //  * */
+document.getElementById('isSignIn').innerText = 'Zaloguj';
 var isSignIn = false;
 // Dane testowe do trybu offline
 var testID = 1234567890;
@@ -20,12 +11,12 @@ var testName = "Aleks S.";
 function onSignIn(googleUser) {
     // Useful data for your client-side scripts:
     var profile = googleUser.getBasicProfile();
-    console.log("ID: " + profile.getId()); // Don't send this directly to your server!
-    console.log('Full Name: ' + profile.getName());
-    console.log('Given Name: ' + profile.getGivenName());
-    console.log('Family Name: ' + profile.getFamilyName());
-    console.log("Image URL: " + profile.getImageUrl());
-    console.log("Email: " + profile.getEmail());
+    // console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+    // console.log('Full Name: ' + profile.getName());
+    // console.log('Given Name: ' + profile.getGivenName());
+    // console.log('Family Name: ' + profile.getFamilyName());
+    // console.log("Image URL: " + profile.getImageUrl());
+    // console.log("Email: " + profile.getEmail());
 
     // The ID token you need to pass to your backend:
     var id_token = googleUser.getAuthResponse().id_token;
@@ -69,14 +60,26 @@ function loginTest() {
     userID = testID;
     userPic = testPic;
     userName = testName;
-    isSignIn = true;
     closeLoginForm();
     afterlogin();
     loginButton();
 }
 
 /**
- * Sprawdzenie czy użytkownik jest w bazie
+ *Edycja przycisku logowania i wylogowania
+ * */
+function loginButton() {
+        document.getElementById("isSignIn").innerText = "My Trashbox";
+        let btn = document.createElement("BUTTON");
+        btn.className = "alx-btn";
+        btn.innerText = "Wyloguj";
+        btn.addEventListener("click", logout);
+        document.getElementById("func-btn").appendChild(btn);
+        isSignIn = true;
+}
+
+/**
+ * AJAX
  */
 function runajax(uid) {
     console.log(uid);
@@ -97,21 +100,7 @@ function runajax(uid) {
         })
 }
 
-/**
- *Edycja przycisku logowania i wylogowania
- * */
-function loginButton() {
-    if (isSignIn) {
-        document.getElementById("isSignIn").innerText = "My Trashbox";
-        let btn = document.createElement("BUTTON");
-        btn.className = "alx-btn";
-        btn.innerText = "Wyloguj";
-        btn.addEventListener("click", logout);
-        document.getElementById("func-btn").appendChild(btn);
-    } else {
-        document.getElementById("isSignIn").innerText = "Zaloguj się";
-    }
-}
+
 
 /**
  * Funkcja wylogowania
