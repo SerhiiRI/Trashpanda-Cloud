@@ -41,9 +41,10 @@ function signOut() {
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
         console.log('User signed out.');
+        document.cookie = 'LSID=; path=/; domain=accounts.google.com; expires=' + new Date(0).toUTCString();
         $.cookie('LSID',null, {domain:'accounts.google.com'});
     });
-    goTo('/')
+    //goTo('/')
     //window.location.replace('https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://trashpanda.pwsz.nysa.pl');
 }
 
