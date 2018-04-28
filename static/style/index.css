@@ -6,6 +6,12 @@
 -------------------
 */
 
+.classicfont{
+    margin-top: 20px;
+    font-size: 1rem;
+    font-family: 'Consolas', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+}
+
 #userinfo{
     display: none;
         /*display: initial;*/

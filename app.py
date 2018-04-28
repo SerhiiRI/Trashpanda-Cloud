@@ -2,13 +2,14 @@ import logging
 import sys
 
 import static.scripts.EnvironmentVariable
-from flask import Flask, render_template, redirect, request, jsonify
+from flask import Flask, render_template, redirect, request, jsonify, render_template_string, make_response
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    zmienna = "zmienna"
+    return render_template('index.html', zmienna=zmienna)
 
 @app.route('/userCheck', methods=['POST'])
 def userCheck():
@@ -43,6 +44,14 @@ def mytrashbox():
 def page_not_found(e):
     return render_template('info_pages/404.html')
     # return redirect("https://www.asciipr0n.com/pr0n/morepr0n/pr0n04.txt", code=302)
-    
+
+@app.route('/loadingTrashbox', methods=['POST'])
+def loadingTrashbox():
+    googleID = request.form['gid']
+    print('GoogleID from ajax: '+googleID)
+    return jsonify({
+        'load' : render_template('include/trashbox.html', gid=googleID)
+    })
+
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port=5000)
