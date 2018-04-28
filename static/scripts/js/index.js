@@ -42,7 +42,7 @@ function signOut() {
     auth2.signOut().then(function () {
         console.log('User signed out.');
     });
-    window.location.replace('https://accounts.google.com/signin/v2/identifier?hl=pl&continue=https%3A%2F%2Fwww.google.com%2F%3Fpli%3D1&flowName=GlifWebSignIn&flowEntry=AddSession');
+    goTo('/');
 }
 
 /**
