@@ -9,7 +9,7 @@ class SQLCloud(object):
 
     __instance = None
     __connector = None
-    # MySQLdb.connect('trashpanda.pwsz.nysa.pl', 'sergiy1998', 'hspybxeR98>', 'test_cloud')
+    # MySQLdb.connect()
     __cursor = None
     __table = None
     DBRepr = dict()
