@@ -27,7 +27,7 @@ class FileManager(object):
         return True
 
     @staticmethod
-    def moveFile(pathA: str, pathB: str, md5: str):
+    def moveFile(pathA: str, pathB: str, sha1: str):
         '''Rozbicie pathA na scieżkę pliku oraz rozszerzenie'''
 
         if not os.path.isfile(pathA):
@@ -38,10 +38,10 @@ class FileManager(object):
         '''Sprawdzenie czy plik posiada rozszerzenie, polityka chmury: brak rozszerzenia - JEB SIE'''
 
         if fileExtension == "":
-            print("Requested file lacks file extension, you ain't fuckin' with trashpanda's policy NIGGAAAAAA")
+            print("Requested file lacks file extension, you ain't fuckin' with trashpanda's policy NIGGAAAAAA \n")
             return False
         else:
-            pathB = pathB + md5 + fileExtension
+            pathB = pathB + sha1 + FileManager.extensionSpliter(pathA)
             os.rename(pathA, pathB)
 
         return True
@@ -123,6 +123,26 @@ class FileManager(object):
             return False
 
         return True
+
+    """ Funkcja do wyciągania rozszerzeń, może być problem dla więcej niż jedna kropka, ponieważ warunek oznacza:
+        Jeśli jest więcej niż jedna kropka w nazwie to rozszerzeniem są dwie ostatnie kropki. Rozwiązanie na szybko
+        będzie problem jak ktoś będzie miał kropki w nazwie.
+    """
+
+    @staticmethod
+    def extensionSpliter(filename : str):
+        ext = ""
+        tab = filename.split(".")
+
+        if len(tab) > 2:
+            if len(tab[-2]) > 2:
+                ext = "." + tab[-2] + "." + tab[-1]
+            else:
+                ext = "." + tab[-1]
+        else:
+            ext = "." + tab[-1]
+
+        return ext
 
     @staticmethod
     def swapOwner(pathA: str, pathB: str):
