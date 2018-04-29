@@ -1,0 +1,60 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow-x: hidden;
+}
+
+body {
+    opacity: 0;
+    transition: opacity 500ms;
+    color: #161F40;
+    font-size: 1rem;
+    font-family: 'Gugi', cursive;
+    /*Fonts*/
+    /*     font-family: 'Indie Flower', cursive; */
+    /*     font-family: 'Shadows Into Light', cursive; */
+    /*     font-family: 'East Sea Dokdo', cursive; */
+    /*     font-family: 'Permanent Marker', cursive; */
+    /*     font-family: 'Josefin Slab', serif; */
+    /*     font-family: 'Kirang Haerang', cursive; */
+    /*     font-family: 'Press Start 2P', cursive; */
+    /*     font-family: 'VT323', monospace; */
+    /*     font-family: 'Special Elite', cursive; */
+    /*     font-family: 'Rock Salt', cursive; */
+    /*     font-family: 'Cabin Sketch', cursive; */
+    /*     font-family: 'Merienda', cursive; */
+    /*     font-family: 'Libre Barcode 39', cursive; */
+    /*     font-family: 'Black Ops One', cursive; */
+    /*     font-family: 'Yatra One', cursive; */
+    /*     font-family: 'Quantico', sans-serif; */
+    /*     font-family: 'Love Ya Like A Sister', cursive; */
+    /*     font-family: 'Fredericka the Great', cursive; */
+    /*     font-family: 'Aladin', cursive; */
+    /*     font-family: 'IM Fell English SC', serif; */
+    /*     font-family: 'Faster One', cursive; */
+    /*     font-family: 'Megrim', cursive; */
+    /*     font-family: 'Libre Barcode 39 Extended Text', cursive; */
+    /*     font-family: 'Creepster', cursive; */
+    /*     font-family: 'Finger Paint', cursive; */
+    /*     font-family: 'Trade Winds', cursive; */
+    /*     font-family: 'Caesar Dressing', cursive; */
+    /*     font-family: 'Londrina Sketch', cursive; */
+    /*     font-family: 'Almendra Display', cursive; */
+
+}
+
+a {
+    text-decoration: none;
+    color: #161F40;
+    border-bottom: solid 0px #161F40;
+    transition: all 200ms;
+}
+
+a:hover {
+    cursor: pointer;
+    position: relative;
+    padding: 5px;
+    border-bottom: solid 2px #161F40;
+}

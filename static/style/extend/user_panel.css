@@ -1,0 +1,26 @@
+#userinfo{
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+#userimg{
+    height: 50px;
+    width: 50px;
+    border-radius: 50px;
+    margin: 0 10px;
+}
+
+.avatar{
+    float: left;
+}
+
+.user_menu{
+    float: left;
+    display: block;
+}
+
+.user_logout:hover{
+    cursor: pointer;
+    color: coral;
+}

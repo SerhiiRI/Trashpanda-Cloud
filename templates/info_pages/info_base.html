@@ -4,17 +4,14 @@
     <meta charset="UTF-8">
     <link href="https://fonts.googleapis.com/css?family=Aladin|Almendra+Display|Black+Ops+One|Cabin+Sketch:400,700|Caesar+Dressing|Creepster|East+Sea+Dokdo|Faster+One|Finger+Paint|Fredericka+the+Great|Gugi|IM+Fell+English+SC|Indie+Flower|Josefin+Slab:400,700|Kirang+Haerang|Libre+Barcode+39|Libre+Barcode+39+Extended+Text|Londrina+Sketch|Love+Ya+Like+A+Sister|Megrim|Merienda:400,700|Permanent+Marker|Press+Start+2P|Quantico:400,700|Rock+Salt|Shadows+Into+Light|Special+Elite|Trade+Winds|VT323|Yatra+One&amp;subset=latin-ext"
           rel="stylesheet">
-    <link rel=stylesheet type=text/css href="static/style/error-page-style.css">
-    <title>Trashpanda - Error 404</title>
+    <link rel=stylesheet type=text/css href="/static/style/extend/info_base.css">
+    {% block title %}{% endblock %}
 </head>
 <body>
-<div class="alx-cont">
-    <div class="alx-flex-box">
-            <h1>Error 404</h1>
-            <hr/>
-            <h3>Nie znaleziono strony!</h3>
-    </div>
+<div class="content">
+    {% block content %}{% endblock %}
+    <br>
 </div>
-{% include 'Footer.html' %}
+{% include 'extend/footer.html' %}
 </body>
 </html>
