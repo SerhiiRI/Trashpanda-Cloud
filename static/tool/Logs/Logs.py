@@ -1,28 +1,38 @@
 #!/usr/bin/python3
 """
                Logs
+Describe:
 Module stwożony z calem realizacji systemu
 uwiadomien dla servera z różnych żródl da-
 nych, które będą rozeslane po różnych pli-
 kach w systemie zmontowanej przez dockeria
 Glówne żrdla konfiguracji są takie ścieżki
 ------------------------------------------
+Dependent Path:
  static/config/configurations.py - gdzie
 jest zawarte pliki logów do w slowniku o
 nazwie "Files"
-------------------------------------------
  static/config/statuscode.py - w pliku je-
 st jeden Slownik z przeliczeniam dla każd-
 ej sytuacji odpowiedniego systemowego uwi-
 adomienia
-
+------------------------------------------
+How to:
+Używania klasy decoratora Log:
+TODO: dopisz wszystko co jest na używania logów, taki maly poradnik, kopie go dodaj do środka LOG
+1. Log
 author: Serhii Riznychuk
 """
 
-
+# DateTime - klasa importowania dla fiksowania czasu w pewny okres czasu, korzystając z metody .now()
+from datetime import datetime
+# Importowania ścieżek plikowych do potrzeb klasy "log"
 from static.configs.configurations import FILES
+# Importowania status kodów
+# TODO:  wyjebać tabele z BazyDach "system_logs"
 from static.configs.statuscode import STATUSCODE
-
+# decorator for renaming function
+from functools import wraps
 
 class LogType(object):
     '''
@@ -63,29 +73,66 @@ class LogType(object):
         :param codeCategory: wybiera ze slównika potrzebny typ log-a
         :return: zwracane są upakowane dane w postaci Tuple-objecta
         """
-        list_ = (pathFilePath, printToConsole, STATUSCODE[codeCategory])
+        list_ = (pathFilePath, printToConsole, codeCategory, STATUSCODE[codeCategory])
         return list_
 
 
 class Log(object):
-
+    # setap list function for map collision in
+    _func_pipeline = list()
     _DATA_SET = dict()
-    # TODO: toEmail |
+    # TODO: toEmail | creation a tuple list in constructor for function | add function to create  a file with spesioal extention 
     def __init__(self, logtype: tuple, statusCode : int, message : str,  toEmail="",  ServerFile=FILES["logs"]["server_file"]):
-        self.ServerFile = ServerFile
-        self.SystemFilePath, self.printToConsole, self.CODES = logtype
+        # a, b, c, d = tuple()
+        self.SystemFilePath, self.printToConsole, self.codeCategory, self.CODES = logtype
+        # a, b, c, d = 1, 2, 3, 4
+        self.message, self.statusCode, self.ServerFile = message, statusCode, ServerFile
+
 
     def __call__(self, func):
-        createStringLog = func.__name__ +
+        """
+             Log Decorator
+        :param func: function to change
+        """
+        @wraps(func)
+        def decorator(*argv,**kwargs):
+            self._makeDataSET(func.__name__, argv, kwargs)
+            with open(self.SystemFilePath, "a") as file:
+                file.write(self._createLine())
+            func(argv, kwargs)
 
-    def _createDataSET(self, fname: str):
+    def _makeDataSET(self, fname: str, *args, **kwargs):
+        def metadata(func):
+            # Używam karringu tylko dla przezroczystości wykorzystywania
+            self._DATA_SET["functionname"] = func.__name__
+            self._DATA_SET["arguments"] = func.__code__.co_varnames
         self._DATA_SET["filename"] = fname
-        self._DATA_SET["datatime"]
-        self._DATA_SET["logtype"]
-        self._DATA_SET["message"]
-        self._DATA_SET["code"]
-        self._DATA_SET["arguments"]
-        
+        self._DATA_SET["datetime"] = str(datetime.now())
+        self._DATA_SET["logtype"] = self.CODES["type"]
+        self._DATA_SET["message"] = self.message
+        self._DATA_SET["globalcodenumber"] = self.codeCategory+"x"+str(self.statusCode)
+        self._DATA_SET["codenumber"] = str(self.statusCode)
+        self._DATA_SET["code"] = self.CODES
+        self._DATA_SET["arguments_list"] = self._getArgument(args, kwargs)
+        return metadata
+
+    def _getArgument(self, *args, **kwargs) -> list:
+        list_temp =  zip(self._DATA_SET["arguments"], args)
+        arguments = list(list_temp)
+        kwargumets = list()
+        for kwrg, _ in kwargs.items():
+            temp = (str(kwrg)+"*", str(kwargs[kwrg]))
+            kwargumets.append(temp)
+        return arguments + kwargumets
+
+    def _createLine(self) -> str:
+        Log = "FUN:"+self._DATA_SET["functionname"]\
+              +" TIME:"+self._DATA_SET["datetime"]\
+              +" CODE:"+self._DATA_SET["globalcodenumber"]\
+              + "SMES: "+self._DATA_SET["code"][ int(self._DATA_SET["codenumber"]) ]\
+              +" MES:"+self._DATA_SET["message"]
+        return Log
+
     # TODO: quick converter <dict()> type to XML
     def _createDataXML(self):
         raise NotImplementedError
@@ -100,3 +147,7 @@ class Log(object):
 
     # TODO: Only for console represents view readable <dict()> type
     def _createReadable(self):
+        raise NotImplementedError
+
+    def backParser(self, oneOfFormat):
+        raise NotImplementedError
