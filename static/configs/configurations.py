@@ -5,7 +5,7 @@ import os
 Configuration file use "Snake case" syntax: cos_tam_jest
 For dictionary standart of name is UPPERCASE.
   
-@Serhii Riznychuk
+Autor: Serhii Riznychuk
 """
 
 
