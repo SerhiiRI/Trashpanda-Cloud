@@ -16,11 +16,34 @@ nazwie "Files"
 st jeden Slownik z przeliczeniam dla każd-
 ej sytuacji odpowiedniego systemowego uwi-
 adomienia
-------------------------------------------
+
+
+
+
+
+
+
+
 How to:
 Używania klasy decoratora Log:
-TODO: dopisz wszystko co jest na używania logów, taki maly poradnik, kopie go dodaj do środka LOG
-1. Log
+
+       [] - parameter nie obowiązkowy
+
+       statuscode - pliki z status kodów
+
+@Log(LogType.Error, 3, "message about action", ["mail@mail.com",] ["/home/user/cloud/.../"])
+def function()....
+
+      1. LogType.<ERROR | INFO | WARNING | CRITICAL | SYSTEM_ONLY> - typy blędów
+      2. 3 - kod reakci Log-a
+      3. "message to file..." - Nasztywno napisana wiadomość do użytkownika
+      Kluczy:
+      4. ["mail@mail.com",] - mail do odeslania logów.
+      5.["/home/user/cloud/.../"] - ścieżka do drugiego pliku, przechowywanego na server
+
+Examples:
+      @Log(LogType.Error, 3, "message about action")
+
 author: Serhii Riznychuk
 """
 
@@ -112,6 +135,7 @@ class Log(object):
     def _makeDataSET(self, func):
         self._DATA_SET["functionname"] = func.__name__
         self._DATA_SET["arguments"] = func.__code__.co_varnames
+
         def metadata(fname: str, *args, **kwargs):
             """ Używam karringu tylko dla przezroczystości wykorzystywania """
             # destination log-file path
@@ -124,11 +148,15 @@ class Log(object):
             self._DATA_SET["fcolor"] = self.CODES["fcolor"]
             # -//-
             self._DATA_SET["bcolor"] = self.CODES["bcolor"]
-            # InScope Log() - klass
+            # InScope Log() message to destination
             self._DATA_SET["message"] = self.message
+            # GLOBAL CODE - not used
             self._DATA_SET["globalcodenumber"] = self.codeCategory + "x" + str(self.statusCode)
+            # status code of category
             self._DATA_SET["codenumber"] = str(self.statusCode)
+            # lista kodów przeslanych lącznie z ślownikeim
             self._DATA_SET["code"] = self.CODES
+            # list of functoin arguments
             self._DATA_SET["arguments_list"] = self._getArgument(*args, **kwargs)
         return metadata
 
