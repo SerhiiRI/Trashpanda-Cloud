@@ -24,7 +24,7 @@ class ForeGround:
     lightblue = '\033[94m'
     pink = '\033[95m'
     lightcyan = '\033[96m'
-    white = '\033[97'
+    white = '\033[97m'
 
 
 class BackGround:

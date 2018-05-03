@@ -28,13 +28,15 @@ author: Serhii Riznychuk
 from datetime import datetime
 # Importowania ścieżek plikowych do potrzeb klasy "log"
 from static.configs.configurations import FILES
+# imoprt vt1000 console code s
+from static.tool.console.vt1000 import ForeGround as fg, FormatCode as cd, BackGround as bg
 # Importowania status kodów
 # TODO:  wyjebać tabele z BazyDach "system_logs"
 from static.configs.statuscode import STATUSCODE
 # decorator for renaming function
 from functools import wraps
 
-class LogType(object):
+class _LogType(object):
     '''
            LogType
      Klasa stworzona po to żebym
@@ -50,20 +52,14 @@ class LogType(object):
 
     author: Serhii Riznychuk
     '''
-    ERROR = None
-    INFO = None
-    WARNING = None
-    CRITICAL = None
-    PRINTONLY = None
-
     def __init__(self):
         self.ERROR = self._ret_tuple(FILES["logs"]["system_error_file"], codeCategory="01")
         self.INFO = self._ret_tuple(FILES["logs"]["system_messg_file"], codeCategory="03")
         self.WARNING = self._ret_tuple(FILES["logs"]["system_alert_file"], codeCategory="04")
         self.CRITICAL = self._ret_tuple(FILES["logs"]["system_error_file"], codeCategory="02")
-        self.PRINTONLY = self._ret_tuple()
+        self.SYSTEM_ONLY = self._ret_tuple()
 
-    def _ret_tuple(self, pathFilePath=FILES["logs"]["server_file"], printToConsole=1, codeCategory="00"):
+    def _ret_tuple(self, pathFilePath=FILES["logs"]["server_file"], printToConsole=1, codeCategory="01"):
         """
         Metoda zbiera przekazane konfiguracyjne
         parametry do jednego Tupla i przekazuje
@@ -77,17 +73,27 @@ class LogType(object):
         return list_
 
 
+class LogType(object):
+    ERROR = _LogType().ERROR
+    INFO = _LogType().INFO
+    WARNING = _LogType().WARNING
+    CRITICAL = _LogType().CRITICAL
+    SYSTEM_ONLY = _LogType().SYSTEM_ONLY
+
 class Log(object):
     # setap list function for map collision in
     _func_pipeline = list()
     _DATA_SET = dict()
-    # TODO: toEmail | creation a tuple list in constructor for function | add function to create  a file with spesioal extention 
+
+    # TODO: toEmail
+    # TODO: creation a tuple list in constructor for function
+    # TODO: add function to create  a file with spesioal extention
+
     def __init__(self, logtype: tuple, statusCode : int, message : str,  toEmail="",  ServerFile=FILES["logs"]["server_file"]):
         # a, b, c, d = tuple()
         self.SystemFilePath, self.printToConsole, self.codeCategory, self.CODES = logtype
         # a, b, c, d = 1, 2, 3, 4
         self.message, self.statusCode, self.ServerFile = message, statusCode, ServerFile
-
 
     def __call__(self, func):
         """
@@ -96,28 +102,38 @@ class Log(object):
         """
         @wraps(func)
         def decorator(*argv,**kwargs):
-            self._makeDataSET(func.__name__, argv, kwargs)
-            with open(self.SystemFilePath, "a") as file:
+            self._makeDataSET(func)(func.__name__, *argv, **kwargs)
+            with open(self.SystemFilePath, "a+") as file:
                 file.write(self._createLine())
-            func(argv, kwargs)
+            print(self._createLine(True))
+            func(*argv, **kwargs)
+        return decorator
 
-    def _makeDataSET(self, fname: str, *args, **kwargs):
-        def metadata(func):
-            # Używam karringu tylko dla przezroczystości wykorzystywania
-            self._DATA_SET["functionname"] = func.__name__
-            self._DATA_SET["arguments"] = func.__code__.co_varnames
-        self._DATA_SET["filename"] = fname
-        self._DATA_SET["datetime"] = str(datetime.now())
-        self._DATA_SET["logtype"] = self.CODES["type"]
-        self._DATA_SET["message"] = self.message
-        self._DATA_SET["globalcodenumber"] = self.codeCategory+"x"+str(self.statusCode)
-        self._DATA_SET["codenumber"] = str(self.statusCode)
-        self._DATA_SET["code"] = self.CODES
-        self._DATA_SET["arguments_list"] = self._getArgument(args, kwargs)
+    def _makeDataSET(self, func):
+        self._DATA_SET["functionname"] = func.__name__
+        self._DATA_SET["arguments"] = func.__code__.co_varnames
+        def metadata(fname: str, *args, **kwargs):
+            """ Używam karringu tylko dla przezroczystości wykorzystywania """
+            # destination log-file path
+            self._DATA_SET["filename"] = fname
+            # current data and time
+            self._DATA_SET["datetime"] = str(datetime.now())
+            # types of log( error, critical, info, warning)
+            self._DATA_SET["logtype"] = self.CODES["type"]
+            # VT1000 colorize for console output
+            self._DATA_SET["fcolor"] = self.CODES["fcolor"]
+            # -//-
+            self._DATA_SET["bcolor"] = self.CODES["bcolor"]
+            # InScope Log() - klass
+            self._DATA_SET["message"] = self.message
+            self._DATA_SET["globalcodenumber"] = self.codeCategory + "x" + str(self.statusCode)
+            self._DATA_SET["codenumber"] = str(self.statusCode)
+            self._DATA_SET["code"] = self.CODES
+            self._DATA_SET["arguments_list"] = self._getArgument(*args, **kwargs)
         return metadata
 
     def _getArgument(self, *args, **kwargs) -> list:
-        list_temp =  zip(self._DATA_SET["arguments"], args)
+        list_temp =  zip(list(self._DATA_SET["arguments"]), list(args))
         arguments = list(list_temp)
         kwargumets = list()
         for kwrg, _ in kwargs.items():
@@ -125,12 +141,15 @@ class Log(object):
             kwargumets.append(temp)
         return arguments + kwargumets
 
-    def _createLine(self) -> str:
-        Log = "FUN:"+self._DATA_SET["functionname"]\
-              +" TIME:"+self._DATA_SET["datetime"]\
-              +" CODE:"+self._DATA_SET["globalcodenumber"]\
-              + "SMES: "+self._DATA_SET["code"][ int(self._DATA_SET["codenumber"]) ]\
-              +" MES:"+self._DATA_SET["message"]
+    def _createLine(self, colorise = False) -> str:
+        color = lambda x : (self._DATA_SET["fcolor"]+self._DATA_SET["bcolor"]+x+cd.reset) if colorise==True else x
+        Log = color("FUNCTION NAME ")+self._DATA_SET["functionname"]\
+              +color(" TYPE ")+self._DATA_SET["logtype"]\
+              +color(" TIME ")+self._DATA_SET["datetime"]\
+              +color(" CODE ")+self._DATA_SET["globalcodenumber"]\
+              +color(" SYSTEM MESSAGE ")+self._DATA_SET["code"][ int(self._DATA_SET["codenumber"]) ]\
+              +color(" MESSAGE ")+self._DATA_SET["message"]\
+              +color(" ARGUMENTS ")+" ".join(str(vname)+"='"+str(vvalue)+"'" for vname, vvalue in self._DATA_SET["arguments_list"])
         return Log
 
     # TODO: quick converter <dict()> type to XML

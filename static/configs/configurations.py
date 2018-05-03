@@ -38,10 +38,10 @@ DATABASE = {
 
 FILES = {
     'logs': {
-        'server_file' : os.path.abspath(__file__),
+        'server_file' : os.getcwd(),
         'system_path' : '/var/log/trashpanda/',
         'system_error_file': '/var/log/trashpanda/error.log',
-        'system_alert_file': '/var/log/trashpanda/error.log',
-        'system_messg_file': '/var/log/trashpanda/error.log'
+        'system_alert_file': '/var/log/trashpanda/allert.log',
+        'system_messg_file': '/var/log/trashpanda/message.log'
     }
 }

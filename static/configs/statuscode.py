@@ -7,6 +7,7 @@ Autor: Serhii Riznychuk
 """
 
 
+from static.tool.console.vt1000 import ForeGround, BackGround
 # TODO: prosze o dodatkowych kluczach na każdy typ blędu... i zachuj mi nie ciekawi że to jest nudne...
 
 STATUSCODE = {
@@ -14,6 +15,8 @@ STATUSCODE = {
         'type': 'error',
         'max': 4,
         'not_used': (2,4),
+        'fcolor': ForeGround.blue,
+        'bcolor': BackGround.red,
         # --------------------{only codes}------------------
         1: "Coś sie zjebalo",
         2: "Coś sie zakrzaczylo",
@@ -24,6 +27,8 @@ STATUSCODE = {
         'type': 'critical',
         'max': 5,
         'not_used': (2,5),
+        'fcolor': ForeGround.white,
+        'bcolor': BackGround.red,
         # --------------------{only codes}------------------
         1: "Bo kurde już nie moge to pisać",
         2: "Ot i tworzysz tą architekuture",
@@ -35,6 +40,8 @@ STATUSCODE = {
         'type': 'info',
         'max': 6,
         'not_used': (1, 2, 3, 4),
+        'fcolor': ForeGround.white,
+        'bcolor': BackGround.blue,
         # --------------------{only codes}------------------
         1: "Nie, nu normalnie potrzebuje jakiegóś niewolnika",
         2: "Czy mużyna... ja pierdole, może istnieje taka praca",
@@ -47,6 +54,8 @@ STATUSCODE = {
         'type': 'warning',
         'max': 6,
         'not_used': (),
+        'fcolor': ForeGround.black,
+        'bcolor': BackGround.lightgrey,
         # --------------------{only codes}------------------
         1: "W loduwce nic nie ma... T_T zdechnie dzisiaj tu",
         2: "I niech na kamieniu pośmiertym napiszą: ",
