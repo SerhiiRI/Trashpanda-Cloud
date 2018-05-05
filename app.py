@@ -2,6 +2,8 @@ import logging
 import sys
 
 import static.scripts.EnvironmentVariable
+from static.controllers.authorization import Permission
+from static.tool.Logs import Log, LogType
 from flask import Flask, render_template, redirect, request, jsonify
 
 app = Flask(__name__)
@@ -43,6 +45,13 @@ def mytrashbox():
 def page_not_found(e):
     return render_template('info_pages/404.html')
     # return redirect("https://www.asciipr0n.com/pr0n/morepr0n/pr0n04.txt", code=302)
-    
-if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0", port=5000)
+
+
+@Permission.dataBaseAuthentificate
+@Log(LogType.INFO, 2, "-", printToConsole=True)
+def startServer():
+    if __name__ == '__main__':
+        app.run(debug=True, host="0.0.0.0", port=5000)
+
+
+startServer()

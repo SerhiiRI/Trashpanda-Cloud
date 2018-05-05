@@ -112,11 +112,12 @@ class Log(object):
     # TODO: creation a tuple list in constructor for function
     # TODO: add function to create  a file with spesioal extention
 
-    def __init__(self, logtype: tuple, statusCode : int, message : str,  toEmail="",  ServerFile=FILES["logs"]["server_file"]):
+    def __init__(self, logtype: tuple, statusCode : int, message : str, printToConsole=False,  toEmail="",  ServerFile=FILES["logs"]["server_file"]):
         # a, b, c, d = tuple()
         self.SystemFilePath, self.printToConsole, self.codeCategory, self.CODES = logtype
         # a, b, c, d = 1, 2, 3, 4
         self.message, self.statusCode, self.ServerFile = message, statusCode, ServerFile
+        self.printToConsole = printToConsole
 
     def __call__(self, func):
         """
@@ -128,7 +129,9 @@ class Log(object):
             self._makeDataSET(func)(func.__name__, *argv, **kwargs)
             with open(self.SystemFilePath, "a+") as file:
                 file.write(self._createLine())
-            print(self._createLine(True))
+            # opcja zapisywania do konsoli
+            if(self.printToConsole):
+                print(self._createLine(colorise=self.printToConsole))
             func(*argv, **kwargs)
         return decorator
 
@@ -177,7 +180,7 @@ class Log(object):
               +color(" CODE ")+self._DATA_SET["globalcodenumber"]\
               +color(" SYSTEM MESSAGE ")+self._DATA_SET["code"][ int(self._DATA_SET["codenumber"]) ]\
               +color(" MESSAGE ")+self._DATA_SET["message"]\
-              +color(" ARGUMENTS ")+" ".join(str(vname)+"='"+str(vvalue)+"'" for vname, vvalue in self._DATA_SET["arguments_list"])
+              +color(" ARGUMENTS ")+" ".join(str(vname)+"='"+str(vvalue)+"'" for vname, vvalue in self._DATA_SET["arguments_list"])+"\n"
         return Log
 
     # TODO: quick converter <dict()> type to XML
@@ -196,5 +199,5 @@ class Log(object):
     def _createReadable(self):
         raise NotImplementedError
 
-    def backParser(self, oneOfFormat):
+    def _backParser(self, oneOfFormat):
         raise NotImplementedError

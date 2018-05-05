@@ -39,6 +39,7 @@ class BackGround:
     lightgrey = '\033[47m'
 
 
+
 """
 import sys, time
 animation_strings = ('[=      ]', '[ =     ]', '[  =    ]', '[   =   ]',

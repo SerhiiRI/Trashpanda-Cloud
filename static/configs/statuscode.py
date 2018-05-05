@@ -43,8 +43,8 @@ STATUSCODE = {
         'fcolor': ForeGround.white,
         'bcolor': BackGround.blue,
         # --------------------{only codes}------------------
-        1: "Nie, nu normalnie potrzebuje jakiegóś niewolnika",
-        2: "Czy mużyna... ja pierdole, może istnieje taka praca",
+        1: "Configuration of ENVIRONMENT variables",
+        2: "Staring Server",
         3: "Że nawet placą tym liudziem który piszą tą ******",
         4: "dobra... dość póżno już jest, a ja tu musze coś napisąć",
         5: "no i pewnie nie chce tego zostawiać",
