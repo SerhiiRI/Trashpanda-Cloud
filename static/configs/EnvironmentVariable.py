@@ -13,7 +13,7 @@ from static.tool.Logs import Log, LogType
 from os import environ as ENV
 # TODO: hackerman-style init script: dużo hakowania....
 # rows, columns = os.popen('stty size', 'r').read().split()
-
+os.system("clear")
 
 @Log(LogType.INFO, 1, " Main TRASHPANDA config", printToConsole=False)
 def variableconfig():

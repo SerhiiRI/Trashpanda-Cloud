@@ -1,7 +1,6 @@
 import logging
 import sys
-
-import static.scripts.EnvironmentVariable
+import static.configs.EnvironmentVariable
 from static.controllers.authorization import Permission
 from static.tool.Logs import Log, LogType
 from flask import Flask, render_template, redirect, request, jsonify
@@ -47,8 +46,8 @@ def page_not_found(e):
     # return redirect("https://www.asciipr0n.com/pr0n/morepr0n/pr0n04.txt", code=302)
 
 
-@Permission.dataBaseAuthentificate
-@Log(LogType.INFO, 2, "-", printToConsole=True)
+@Permission.login
+@Log(LogType.INFO, 2, "-", printToConsole=False)
 def startServer():
     if __name__ == '__main__':
         app.run(debug=True, host="0.0.0.0", port=5000)
