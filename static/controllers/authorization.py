@@ -64,7 +64,7 @@ class Permission:
         '''
         try:
             print("Please login to (DB)system")
-            login = input("Login:")
+            login = input("Login: ")
             passwd = getpass.getpass()
         except KeyboardInterrupt:
             return False

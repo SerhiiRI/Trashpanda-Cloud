@@ -23,14 +23,44 @@
 
 
 import MySQLdb
+from static.configs.configurations import DATABASE
+from static.controllers.authorization import Permission
+import os
 
-class IOrm(object):
-    def __init__(self, sql_question):
+class IDataConnector(object):
+    @Permission.login
+    def __init__(self, DataBase="test_cloud"):
         ''' reconstruct SQL requests and create a table '''
+        host = DATABASE[DataBase]["host"]
+        user = DATABASE[DataBase]["user"]
+        password = DATABASE[DataBase]["password"]
+        database = DATABASE[DataBase]["database"]
+        self._connector = ""
         try:
-            self.__construct(sql_question)
+            self._connector = MySQLdb.connect(host, user, password, database)
+            print(self._connector)
         except (MySQLdb.Error, MySQLdb.Warning) as errorMessage:
-            print(errorMessage)
+            self._connector = None
+            # TODO: pozabieraj stad to
+            print("\nnie udalo ci sie\n")
 
-    def __construct(sql : str):
-        raise NotImplementedError(" [*] konstruktor interfejsu IOrm nie jest zaimplementowany w pochodenj klasie "+ self.__name__)
+
+    @Permission.login
+    def _reconfigurate_connection(self, DataBase="test_cloud"):
+        ''' reconstruct SQL requests and create a table '''
+        host = DATABASE[DataBase]["host"]
+        user = DATABASE[DataBase]["user"]
+        password = DATABASE[DataBase]["password"]
+        database = DATABASE[DataBase]["database"]
+        try:
+            self._connector = MySQLdb.connect(host, user, password, database)
+        except (MySQLdb.Error, MySQLdb.Warning) as errorMessage:
+            self._connector = None
+            # TODO: pozabieraj stad to
+            print("\nnie udalo ci sie\n")
+
+
+
+
+
+
