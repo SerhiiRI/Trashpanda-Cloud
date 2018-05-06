@@ -7,6 +7,9 @@
 
 import os
 import shutil
+import stat
+from static.classes.File import File
+from static.controllers.FileController import FileController
 
 class FileManager(object):
 
@@ -35,8 +38,6 @@ class FileManager(object):
             return False
 
         fileName , fileExtension = os.path.splitext(pathA)
-        '''Sprawdzenie czy plik posiada rozszerzenie, polityka chmury: brak rozszerzenia - JEB SIE'''
-
         if fileExtension == "":
             print("Requested file lacks file extension, you ain't fuckin' with trashpanda's policy NIGGAAAAAA \n")
             return False
@@ -139,9 +140,10 @@ class FileManager(object):
                 ext = "." + tab[-2] + "." + tab[-1]
             else:
                 ext = "." + tab[-1]
-        else:
+        elif len(tab) == 2:
             ext = "." + tab[-1]
-
+        else:
+            ext = None
         return ext
 
     @staticmethod
@@ -173,4 +175,16 @@ class FileManager(object):
         @Serhii Riznychuk
         """
 
-        Size = os.stat(Route)
+        Size = os.stat(path)
+
+    @staticmethod
+    def checkPermissions(path: str):
+        perm = oct(os.stat(path).st_mode)[-3:]
+        print(perm)
+
+    @staticmethod
+    def listDir(path: str):
+        finder = FileController()
+        return finder.gatherDiskInfo(path)
+
+
