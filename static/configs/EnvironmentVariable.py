@@ -9,13 +9,12 @@
 # ******************************
 import os
 from static.tool.console.ConsoleTemplate import ConsoleTemplate as tmp
-from static.tool.Logs import Log, LogType
+#from static.tool.Logs import Log, LogType
 from os import environ as ENV
 # TODO: hackerman-style init script: dużo hakowania....
 # rows, columns = os.popen('stty size', 'r').read().split()
-os.system("clear")
+# os.system("clear")
 
-@Log(LogType.INFO, 1, " Main TRASHPANDA config", printToConsole=False)
 def variableconfig():
     ENV['TRASHPANDA_HOST'] = "trashpanda.pwsz.nysa.pl"
     ENV['CLOUD_MAX_FILE_SIZE'] = '1MB'
