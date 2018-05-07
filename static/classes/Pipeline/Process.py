@@ -5,12 +5,12 @@ import pickle
 import threading
 
 class Process():
-    """ Process is one serialized element to interpreting """
 
-    def __init__(self, func, values: tuple, controller: Controller):
+
+    def __init__(self, func, values: tuple, controllers: str):
         self.function = func
         self.parameter = values
-        self.controller = controller
+        self.controller = controllers
 
 
     def run(self):
@@ -31,7 +31,6 @@ class Process():
                 print("[*] Your process load processor")
             except Exception:
                 print("[*] Bad` converting value - LoadProcent")
-
             "construct and deconstruct object"
         except:
             print("Dobra jest mocno późna godzina i ja nie rozumiem po jakiego ****** to nie dziala")

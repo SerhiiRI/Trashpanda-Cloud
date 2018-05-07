@@ -1,15 +1,15 @@
 import logging
 import sys
-
-import static.scripts.EnvironmentVariable
+import static.configs.EnvironmentVariable
+from static.controllers.authorization import Permission
+from static.tool.Logs import Log, LogType
 from flask import Flask, render_template, redirect, request, jsonify, render_template_string, make_response
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    zmienna = "zmienna"
-    return render_template('index.html', zmienna=zmienna)
+    return render_template('index.html')
 
 @app.route('/userCheck', methods=['POST'])
 def userCheck():
@@ -53,5 +53,11 @@ def loadingTrashbox():
         'load' : render_template('include/trashbox.html', gid=googleID)
     })
 
-if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0", port=5000)
+@Permission.login
+@Log(LogType.INFO, 2, "-", printToConsole=False)
+def startServer():
+    if __name__ == '__main__':
+        app.run(debug=True, host="0.0.0.0", port=5000)
+
+
+startServer()

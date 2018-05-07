@@ -1,8 +1,9 @@
 
-function loadingPage(googleID) {
+function loadingPage(googleID, path) {
     $.ajax({
         data: {
-            gid: googleID
+            gid: googleID,
+            path: path
         },
         type: 'POST',
         url: "/loadingTrashbox",
