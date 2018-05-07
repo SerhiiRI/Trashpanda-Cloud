@@ -3,13 +3,16 @@ import sys
 import static.configs.EnvironmentVariable
 from static.controllers.authorization import Permission
 from static.tool.Logs import Log, LogType
+from static.tool.FileManager import FileManager
 from flask import Flask, render_template, redirect, request, jsonify
 
 app = Flask(__name__)
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 @app.route('/userCheck', methods=['POST'])
 def userCheck():
@@ -22,9 +25,11 @@ def userCheck():
 
     return jsonify({'error' : 'Missing data!'})
 
+
 @app.route('/info')
 def info():
     return render_template('info_pages/info.html')
+
 
 @app.route('/about')
 def about():
@@ -32,17 +37,25 @@ def about():
     # return redirect("https://www.asciipr0n.com/pr0n/morepr0n/pr0n03.txt", code=302)
     # hackerman... jo-jo-jo
 
+
 @app.route('/contact')
 def kontakt():
     return render_template('info_pages/contact.html')
 
-@app.route('/mytrashbox')
+
+@app.route('/mytrashbox', methods=['GET','POST'])
 def mytrashbox():
-    return render_template('trashbox.html')
+    try:
+        path = "/" + request.form.get('google_id') + "/"
+    except:
+        path = "/"
+    files = FileManager.listDir(path)
+    return render_template('trashbox_test.html', items=files, path=path)
+
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('info_pages/404.html')
+    return render_template('info_pages/404.html'), 404
     # return redirect("https://www.asciipr0n.com/pr0n/morepr0n/pr0n04.txt", code=302)
 
 
