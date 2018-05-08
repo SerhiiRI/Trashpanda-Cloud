@@ -7,12 +7,15 @@ RUN apt -y install python3-pip
 RUN pip3 install --upgrade pip
 RUN apt-get -y install python-virtualenv
 RUN apt-get -y install build-essential libssl-dev libffi-dev python3-dev
+RUN apt-get -y install libmariadbclient-dev
+RUN pip install mysqlclient
 RUN apt -y install git
 RUN pip3 install Flask
 RUN mkdir /server
+RUN mkdir -p /var/log/trashpanda
 RUN mkdir /scripts
 ADD startup.sh /scripts/startup.sh
 EXPOSE 5000
 
-# cloning git repo and starting flask server 
-ENTRYPOINT /scripts/startup.sh
+# cloning git repo and starting flask server
+ENTRYPOINT /bin/bash /scripts/startup.sh

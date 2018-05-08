@@ -36,12 +36,6 @@ class SQLCloud(IDataConnector):
             data.update({ tabel[0] : tuple([x[0] for x in __cursor.fetchall()]) })
         self.DBRepr = data
 
-    def insert_user(self, one, more, time):
-        sql = "INSERT INTO `banns`(`one`, `more`, `time`) VALUES (%s, %s, %s)"
-        __cursor = self._connector.cursor()
-        __cursor.execute(sql, (one, more, time))
-        return 1
-
     def insert(self, tableName):
         """
                     Insert

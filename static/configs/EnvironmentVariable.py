@@ -21,8 +21,8 @@ def variableconfig():
     ENV['CLOUD_DOWNLOAND_DAMP'] = '/srv/Dump/'
     ENV['CLOUD_PROJECT_PATH'] = os.getcwd()
     ENV['CLOUD_TRASHBOX'] = '/srv/Data/'
-    ENV['TRASHPANDA_LOGIN'] = ENV['TRASHPANDA_LOGIN'] if 'TRASHPANDA_LOGIN' in ENV  else ""
-    ENV['TRASHPANDA_PASSWD'] = ENV['TRASHPANDA_PASSWD'] if 'TRASHPANDA_PASSWD' in ENV else ""
+    ENV['TRASHPANDA_LOGIN'] = ENV['TRASHPANDA_LOGIN'] if 'TRASHPANDA_LOGIN' in ENV  else "sergiy1998"
+    ENV['TRASHPANDA_PASSWD'] = ENV['TRASHPANDA_PASSWD'] if 'TRASHPANDA_PASSWD' in ENV else "hspybxeR98>"
     print("[*]Configurate Variables...")
 
 variableconfig()
