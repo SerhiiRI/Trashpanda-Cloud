@@ -1,6 +1,5 @@
-import MySQLdb
 from copy import deepcopy
-from static.classes.interfaces.IDataManager import IDataConnector
+from static.classes.datacontroller.IDataManager import IDataConnector
 
 
 class SQLCloud(IDataConnector):
@@ -8,7 +7,7 @@ class SQLCloud(IDataConnector):
         SQLCloud
 
     Klasa stwożona dla pobierania, generowania oraz sterowania
-    Bazą Danych w jak najmniej 
+    Bazą Danych w jak najmniej
     """
     __instance = None
     # MySQLdb.connect()    __table = None
