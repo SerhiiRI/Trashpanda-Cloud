@@ -23,7 +23,7 @@
 
 
 import MySQLdb
-from static.configs.configurations import DATABASE
+from static.configs.MainConf import DATABASE
 from static.controllers.Permission import Permission
 import os
 
