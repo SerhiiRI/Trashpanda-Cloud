@@ -1,10 +1,12 @@
 import logging
 import sys
+import os
 import static.configs.EnvironmentVariable
 from static.controllers.authorization import Permission
+import tempfile
 from static.tool.Logs import Log, LogType
 from static.tool.FileManager import FileManager
-from flask import Flask, render_template, redirect, request, jsonify
+from flask import Flask, render_template, redirect, request, jsonify, send_file
 
 app = Flask(__name__)
 
@@ -43,6 +45,14 @@ def kontakt():
     return render_template('info_pages/contact.html')
 
 
+@app.route('/download')
+def download():
+    #path = request.form.get('filePath')
+    path = "/srv/Data/mikus/plik.txt"
+    name = os.path.basename(path)
+    return send_file(path, attachment_filename=name , as_attachment=True)
+
+
 @app.route('/mytrashbox', methods=['GET','POST'])
 def mytrashbox():
     try:
@@ -59,7 +69,7 @@ def page_not_found(e):
     # return redirect("https://www.asciipr0n.com/pr0n/morepr0n/pr0n04.txt", code=302)
 
 
-@Permission.login
+#@Permission.login
 @Log(LogType.INFO, 2, "-", printToConsole=False)
 def startServer():
     if __name__ == '__main__':
