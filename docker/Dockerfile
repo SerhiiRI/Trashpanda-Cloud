@@ -7,6 +7,7 @@ RUN apt -y install python3-pip
 RUN pip3 install --upgrade pip
 RUN apt-get -y install python-virtualenv
 RUN apt-get -y install build-essential libssl-dev libffi-dev python3-dev
+# dabase mysql driver. Dep. for "mysqlclient" python library
 RUN apt-get -y install libmariadbclient-dev
 RUN pip install mysqlclient
 RUN apt -y install git

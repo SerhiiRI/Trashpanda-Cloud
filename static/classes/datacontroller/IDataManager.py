@@ -23,8 +23,8 @@
 
 
 import MySQLdb
-from static.configs.configurations import DATABASE
-from static.controllers.authorization import Permission
+from static.configs.MainConf import DATABASE
+from static.controllers.Permission import Permission
 import os
 
 class IDataConnector(object):

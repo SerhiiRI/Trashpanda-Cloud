@@ -9,10 +9,10 @@ kach w systemie zmontowanej przez dockeria
 Glówne żrdla konfiguracji są takie ścieżki
 ------------------------------------------
 Dependent Path:
- static/config/configurations.py - gdzie
+ static/config/MainConf.py - gdzie
 jest zawarte pliki logów do w slowniku o
 nazwie "Files"
- static/config/statuscode.py - w pliku je-
+ static/config/StatusCode.py - w pliku je-
 st jeden Slownik z przeliczeniam dla każd-
 ej sytuacji odpowiedniego systemowego uwi-
 adomienia
@@ -50,12 +50,12 @@ author: Serhii Riznychuk
 # DateTime - klasa importowania dla fiksowania czasu w pewny okres czasu, korzystając z metody .now()
 from datetime import datetime
 # Importowania ścieżek plikowych do potrzeb klasy "log"
-from static.configs.configurations import FILES
+from static.configs.MainConf import FILES
 # imoprt vt1000 console code s
 from static.tool.console.vt1000 import ForeGround as fg, FormatCode as cd, BackGround as bg
 # Importowania status kodów
 # TODO:  wyjebać tabele z BazyDach "system_logs"
-from static.configs.statuscode import STATUSCODE
+from static.configs.StatusCode import STATUSCODE
 # decorator for renaming function
 from functools import wraps
 

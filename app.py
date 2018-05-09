@@ -1,7 +1,7 @@
 import logging
 import sys
-import static.configs.EnvironmentVariable
-from static.controllers.authorization import Permission
+import static.configs.EnvConf
+from static.controllers.Permission import Permission
 from static.tool.Logs import Log, LogType
 from flask import Flask, render_template, redirect, request, jsonify, render_template_string, make_response
 
