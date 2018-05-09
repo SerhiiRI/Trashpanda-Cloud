@@ -40,6 +40,13 @@ class SQLCloud(IDataConnector):
             data.update({ tabel[0] : tuple([x[0] for x in __cursor.fetchall()]) })
         self.DBRepr = data
 
+    def _table__with__type(self, table_name):
+        __cursor = self._connector.cursor()
+        data = dict()
+        __cursor.execute("SHOW COLUMNS FROM " + table_name)
+        data.update({table_name: tuple((x[0],x[1]) for x in __cursor.fetchall())})
+        self._DBTypeDICT = data
+
     def insert(self, tableName: str) -> bool:
         """
              Insert
