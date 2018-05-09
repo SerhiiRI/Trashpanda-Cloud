@@ -1,0 +1,43 @@
+<br>
+<h1>- My Trashbox -</h1>
+<table>
+    <thead>
+    <tr>
+        <th></th>
+        <th>Nazwa</th>
+        <th>Rozmiar</th>
+        <th>Właściciel</th>
+        <th>Wersja</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ondblclick="dubleclick()">
+        <td><i class="icon-file-image"></i></td>
+        <td>Skany.jpg <i class="icon-lock"></i></td>
+        <td>2.4 MB</td>
+        <td>Ja</td>
+        <td>2018-04-12::v.4</td>
+        <td><a onclick="sittings()"><i class="icon-ellipsis-vert hover"></i></a></td>
+    </tr>
+    <tr ondblclick="dubleclick()">
+        <td><i class="icon-folder-open-empty"></i></td>
+        <td>Katalog 1</td>
+        <td>204 KB</td>
+        <td>Ja</td>
+        <td>2018-01-04::v.2</td>
+        <td><i onclick="sittings()" class="icon-ellipsis-vert hover"></i></td>
+    </tr>
+    </tbody>
+</table>
+<script>
+    function sittings() {
+        alert('clicked');
+    }
+
+    function dubleclick() {
+        alert('double click');
+    }
+</script>
+<script src="/static/scripts/js/loadingPage.js"></script>
+{#<script>loadingPage('36253978469', 'home');</script>#}
