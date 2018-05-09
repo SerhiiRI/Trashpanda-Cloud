@@ -1,6 +1,82 @@
-.mybox{
-    width: calc(100% - 40px);
-    height: calc(100% - 40px);
-    padding: 20px;
+#loadContent{
     text-align: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+tbody{
+    box-shadow: 1px 1px 5px #bbb;
+}
+table{
+    border-collapse: collapse;
+    width: 80%;
+    min-width: 650px;
+    margin-bottom: 25px;
+}
+th{
+    padding: 8px;
+}
+td{
+    border-bottom: 1px solid #ddd;
+    padding: 8px;
+}
+td:first-child{
+    text-align: center;
+    width: 40px;
+}
+td:last-child{
+    text-align: center;
+    width: 40px;
+}
+th:nth-child(2), td:nth-child(2){
+    text-align: left;
+}
+tr{
+    transition: all 200ms;
+    max-height: 30px;
+}
+tbody > tr:hover{
+    background: #161F40;
+    color: #fff;
+    cursor: default;
+}
+.hover{
+ transition: all 200ms;
+    border-radius: 10px;
+}
+.hover:hover{
+    color: #000;
+    background: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.popmenu{
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    z-index: 1;
+    box-shadow: 1px 1px 5px #bbb;
+    right: -450px;
+    top: 0;
+    height: 40px;
+    background: #fff;
+    transition: all 200ms;
+}
+
+input[type=submit],
+input[type=button]{
+    border: none;
+    padding: 10px 30px;
+    width: 100px;
+    background: #fff;
+    transition: all 200ms;
+}
+input[type=submit]:hover,
+input[type=button]:hover{
+    background: #161F40;
+    color: #fff;
+    cursor: pointer;
 }

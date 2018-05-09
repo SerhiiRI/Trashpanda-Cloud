@@ -9,6 +9,7 @@ import tempfile
 from static.tool.Logs import Log, LogType
 from static.tool.FileManager import FileManager
 from flask import Flask, render_template, redirect, request, jsonify, send_file
+from flask import Flask, render_template, redirect, request, jsonify, render_template_string, make_response
 
 app = Flask(__name__)
 
@@ -25,9 +26,9 @@ def userCheck():
     # print(id)
     if id:
         inDB = 'true'
-        return jsonify({'res' : inDB})
+        return jsonify({'res': inDB})
 
-    return jsonify({'error' : 'Missing data!'})
+    return jsonify({'error': 'Missing data!'})
 
 
 @app.route('/info')
@@ -46,32 +47,48 @@ def about():
 def kontakt():
     return render_template('info_pages/contact.html')
 
-
-@app.route('/download')
-def download():
-    #path = request.form.get('filePath')
-    path = "/srv/Data/mikus/plik.txt"
-    name = os.path.basename(path)
-    return send_file(path, attachment_filename=name , as_attachment=True)
-
-
-@app.route('/mytrashbox', methods=['GET','POST'])
-def mytrashbox():
-    try:
-        path = "/" + request.form.get('google_id') + "/"
-    except:
-        path = "/"
-    files = FileManager.listDir(path)
-    return render_template('trashbox_test.html', items=files, path=path)
-
-
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('info_pages/404.html'), 404
     # return redirect("https://www.asciipr0n.com/pr0n/morepr0n/pr0n04.txt", code=302)
 
 
-#@Permission.login
+
+@app.route('/mytrashbox', methods=['GET'])
+def mytrashbox():
+    getPath = request.args.get('path')
+    print(getPath)
+    '''
+    ! Od Aleksa dla mikusia
+    ! Tu ci podsyłam zmienną path w której będzie np home
+    ! Zwróć mi ls (katalogi i piliki w home)    
+    '''
+    paths = [{
+        'icon': 'file-image',
+        'name': 'twoja_stara.png',
+        'lock': 'lock',
+        'size': '2.4 MB',
+        'tag':['#hehe', '#lol', '#yolololololo', '#hehe', '#lol', '#yololo'],
+    },
+        {
+            'icon': 'folder-open-empty',
+            'name': 'twoja_stara.png',
+            'lock': '',
+            'size': '',
+            'tag': [],
+        }
+    ]
+    # backpath pozwoli wrócić do poprzedniego katalogu
+    backpath = 'home'
+    currentdir = 'home'
+    # lista symuluje pętlę for w jinja2
+    lista = []
+    for x in range(0, 20):
+        lista.append(x)
+    return render_template('trashbox.html', file=paths, lista=lista, backpath=backpath, currentdir=currentdir)
+
+
+@Permission.login
 @Log(LogType.INFO, 2, "-", printToConsole=False)
 def startServer():
     if __name__ == '__main__':
