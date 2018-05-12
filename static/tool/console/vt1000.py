@@ -28,7 +28,7 @@ class ForeGround:
 
 
 class BackGround:
-    white = '\033[107'
+    white = '\033[107m'
     black = '\033[40m'
     red = '\033[41m'
     green = '\033[42m'
