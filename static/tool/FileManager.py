@@ -187,4 +187,7 @@ class FileManager(object):
         finder = FileController()
         return finder.gatherDiskInfo(path)
 
-
+    @staticmethod
+    def createEmptyFile(path: str, filename:str):
+        f = open(path + filename, "w+")
+        f.close()
