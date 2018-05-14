@@ -1,19 +1,27 @@
 from static.classes.datacontroller.SQLController import SQLCloud
-import re
+from static.classes.datacontroller.TableParsers import TableTypeParser
 
 
-class TableFillController(SQLCloud):
+class TableFillController(SQLCloud, TableTypeParser):
 
-    def __init__(self, database : str = "test_cloud", tablename:str="user"):
-        super(TableFillController, self).__init__(database)
-        self._table__with__type(table_name=tablename)
+    def __init__(self, database : str = "test_cloud", tablename: str="users"):
+        SQLCloud.__init__(self, database)
+        self.table = tablename
+        self._getTableMeta(table_name=tablename)
+        TableTypeParser.__init__(self, self._getTableMeta(table_name=tablename))
+        print(self.Meta_FieldList)
+        print(self.Lambda_FieldList)
+        # self._DBTypeDICT = list(self._DBTypeDICT[1:])
 
-    def printting(self):
-        print(self._DBTypeDICT)
+    def fill(self, record_count : str = 3) -> None:
+        InsertFunction = self.insert(self.table)
+        GeneratorFuncion = [ temp[0] for temp in self.Lambda_FieldList ]
+        for x in range(int(record_count)):
+            keylist = list(map(lambda f: f(), GeneratorFuncion))
+            #print(keylist)
+            #a1, *a2 = keylist
 
-    def type_parsing(self):
-        self.slownik = dict()
-        for key, *_ in self._DBTypeDICT:
-            self.slownik[key] = re.split(r'[()]', data[1])[0:-1] if re.search(r'\([0-9]{1,4}\)',data[1]) else [data[1],]
-
+            #print(a1, "-----", x)
+            #InsertFunction(x+1, *a2)
+            InsertFunction(keylist)
 
