@@ -9,10 +9,10 @@ agent = {
     # W programie te wartośći wypelnia mega-inteligentna funkcja
     # random((range(0,101, 1)))
     "machine-resource": {
-        "cpu-load": "40",
-        "disk-load": "00",
+        "cpu": "00",
+        "disk": "00",
         "time": "00:00",
-        "ram-load": "20"
+        "ram": "00"
     },
     "function-value":{
         "cp": 0,
