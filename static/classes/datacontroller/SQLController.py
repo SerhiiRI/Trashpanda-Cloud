@@ -44,9 +44,9 @@ class SQLCloud(IDataConnector):
 
     def _getTableMeta(self, table_name):
         __cursor = self._connector.cursor()
-        data = dict()
+        data = list()
         __cursor.execute("SHOW COLUMNS FROM " + table_name)
-        data.update((x[0],x[1]) for x in __cursor.fetchall())
+        data= [(x[0],x[1]) for x in __cursor.fetchall()]
         return data
 
     def print(self, table : str = None):
