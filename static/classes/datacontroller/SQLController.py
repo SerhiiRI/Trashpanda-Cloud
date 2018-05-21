@@ -71,8 +71,9 @@ class SQLCloud(IDataConnector):
         String = String + "\tsql = \"INSERT INTO `"+tableName+"`(" + ", ".join(
             ("`" + column + "`" for column in columns[1:])) + ") VALUES (" + ", ".join(
             ("%s" for x in columns[1:])) + ")\"\n"
+        # String = String + "\tprint(\"SQL : \""+","+",\"|\",".join((columns[1:]))+")\n"
         String = String + "\tcursor = self._connector.cursor()\n"
-        String = String + "\tcursor.execute(sql, (" + ", ".join((column for column in columns[1:])) + "))\n"
+        String = String + "\tcursor.execute(sql, (" + ", ".join((column for column in columns[1:])) + ",))\n"
         String = String + "\tself._connector.commit()\n"
         String = String + "\tcursor.close()\n"
         String = String + "\treturn 0\n"

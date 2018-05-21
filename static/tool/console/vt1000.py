@@ -38,6 +38,11 @@ class BackGround:
     cyan = '\033[46m'
     lightgrey = '\033[47m'
 
+def getTerminalSize():
+    import os
+    rows, column = os.popen("stty size", mode="r").read().split()
+    return int(rows), (column)
+
 
 
 """
