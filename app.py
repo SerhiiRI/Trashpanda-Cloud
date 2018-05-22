@@ -120,6 +120,8 @@ def page_not_found(e):
 @app.route('/mytrashbox/<pathToDir>')
 def mytrashbox(pathToDir):
     paths = getTestPathData()
+    if session['googleID']:
+        print(session['googleID'])
     backpath = ''
     currentdir = 'home'
     if(pathToDir == "home"):

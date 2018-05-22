@@ -29,6 +29,7 @@ function onSignIn(googleUser) {
     let x = profile.getFamilyName();
     localStorage.setItem('userName', profile.getGivenName() + " " + x[0] + ".");
     isSignIn = true;
+    setSession('googleID', profile.getId());
     closeLoginForm();
     afterlogin();
     loginButton();
@@ -61,23 +62,26 @@ function loginTest() {
     localStorage.setItem('userID', testID);
     localStorage.setItem('userPic', testPic);
     localStorage.setItem('userName', testName);
+    localStorage.setItem('loginTest', 'true');
+    setSession('googleID', testID);
     closeLoginForm();
     afterlogin();
     loginButton();
-    localStorage.setItem('loginTest', 'true');
 }
 
 /**
  *Edycja przycisku logowania i wylogowania
  * */
 function loginButton() {
-    document.getElementById("isSignIn").innerText = "My Trashbox";
-    let btn = document.createElement("BUTTON");
-    btn.className = "alx-btn";
-    btn.innerText = "Wyloguj";
-    btn.addEventListener("click", logout);
-    document.getElementById("func-btn").appendChild(btn);
-    isSignIn = true;
+    if (isSignIn == false) {
+        document.getElementById("isSignIn").innerText = "My Trashbox";
+        let btn = document.createElement("BUTTON");
+        btn.className = "alx-btn";
+        btn.innerText = "Wyloguj";
+        btn.addEventListener("click", logout);
+        document.getElementById("func-btn").appendChild(btn);
+        isSignIn = true;
+    }
 }
 
 /**
