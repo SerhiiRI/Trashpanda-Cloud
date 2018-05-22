@@ -1,25 +1,7 @@
 {#  Szablon strony  #}
 {% include 'extend/head.html' %}
 <script src="/static/scripts/js/sessionFlask.js"></script>
-<script>
-    var fake = localStorage.getItem('loginTest');
-    if (fake == 'aktywny') {
-        console.log(localStorage.getItem('loginTest'));
-        console.log("Fake Login Active");
-    } else if (fake == null) {
-        console.log('Fake Login UnActive');
-        window.location.href = ("/");
-    } else {
-        function onSignIn(googleUser) {
-            var profile = googleUser.getBasicProfile();
-            if (profile.getId() == "" || profile.getId().empty() || profile.getId() == null) {
-                window.localStorage.clear();
-                window.location.href = ("/");
-            }
-            console.log("Logowanie przez Google");
-        }
-    }
-</script>
+<script src="/static/scripts/js/ifSigned.js"></script>
 
 <!DOCTYPE html>
 <html lang="pl">
