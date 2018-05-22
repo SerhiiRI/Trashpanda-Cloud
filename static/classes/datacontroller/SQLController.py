@@ -1,6 +1,7 @@
 from copy import deepcopy
 from static.tool.console.vt1000 import BackGround as bg, ForeGround as fg, FormatCode as cd
 from static.classes.datacontroller.IDataManager import IDataConnector
+from static.tool.console.vt1000 import getTerminalSize
 from types import MethodType
 
 
@@ -82,7 +83,8 @@ class SQLCloud(IDataConnector):
             exec(String)
             return getattr(self, "insert_"+tableName)
         except Exception as n:
-            print("{:-^211}".format("Data Base ERROR"))
+            _, column = getTerminalSize()
+            print("{:-^{column}}".format("Data Base ERROR", column=column))
             return None
 
 
@@ -110,7 +112,8 @@ class SQLCloud(IDataConnector):
             exec(String)
             return getattr(self, "update_" + tableName)
         except Exception as n:
-            print("{:-^211}".format("Data Base ERROR"))
+            _, column = getTerminalSize()
+            print("{:-^{column}}".format("Data Base ERROR", column=column))
             return None
 
     def select(self, tableName: str):
@@ -137,8 +140,8 @@ class SQLCloud(IDataConnector):
             exec(String)
             return getattr(self, "select_" + tableName)
         except Exception as n:
-            print("{:-^211}".format("Data Base ERROR"))
-            print(n)
+            _, column = getTerminalSize()
+            print("{:-^{column}}".format("Data Base ERROR", column=column))
             return None
 
     def like(self, tableName: str):
@@ -166,9 +169,9 @@ class SQLCloud(IDataConnector):
             exec(String)
             return getattr(self, "like_"+tableName)
         except Exception as n:
-            print("{:-^211}".format("Data Base ERROR"))
-            print(n)
-            return False
+            _, column = getTerminalSize()
+            print("{:-^{column}}".format("Data Base ERROR", column=column))
+            return None
 
     def delete(self, tableName: str):
         """
