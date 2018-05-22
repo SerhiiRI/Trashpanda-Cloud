@@ -212,10 +212,11 @@ class SQLCloud(IDataConnector):
             sql = "SELECT * FROM"+",".join([" `{}`".format(tablename) for tablename in args[0::2]])+" WHERE "
             sql = sql + " AND ".join([ "{}={}".format(concatinate(before(id), id), concatinate(after(id), id)) for id in args[1::2]])
             if(len(where) > 0):
-                sql = sql + " AND " + " AND ".join(["{}={}".format(key,str(where[key])) for key, _ in where.items()])
+                sql = sql + " AND " + " AND ".join(["{}='{}'".format(key,str(where[key])) for key, _ in where.items()])
+            print(sql)
             cursor = self._connector.cursor()
             cursor.execute(sql)
-            cursor.close()
+            #cursor.close()
             return cursor.fetchall()
         return dict()
 

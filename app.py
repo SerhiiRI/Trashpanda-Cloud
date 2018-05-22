@@ -3,6 +3,7 @@ import os
 import sys
 import static.configs.EnvConf
 import tempfile
+import static.classes.Registration
 
 from time import sleep
 
@@ -10,6 +11,8 @@ from static.controllers.Permission import Permission
 from static.tool.Logs import Log, LogType
 from static.tool.FileManager import FileManager
 from static.controllers.FileController import FileController
+
+from static.classes.FileUpload import FileUpload
 
 from flask import Flask, render_template, send_file
 from flask import request, session, jsonify
@@ -41,7 +44,7 @@ def getTestPathData():
 def index():
     return render_template('index.html')
 
-  
+
 '''
     Dodanie/Update/Odczyt sesji
     
@@ -74,7 +77,7 @@ def sessionControler():
         else:
             print("Nie znaleziono sesji: " + name)
             return jsonify({'param': ''})
-          
+
 
 @app.route('/info')
 def info():
@@ -125,6 +128,18 @@ def mytrashbox(pathToDir):
     if(pathToDir == "home"):
         return render_template('trashbox.html', file=paths, backpath=backpath, currentdir=currentdir)
 
+
+
+@app.route('/upload/',  methods=['POST'])
+def upload():
+    REQUESTED_FILES = request.files.getlist('fileToUpload')
+    current_path = request.files.getlist('pathToDir')
+    tab = FileUpload.upload(REQUESTED_FILES, current_path)
+
+    for item in tab:
+        print(item)
+
+    return render_template('/upload_download/upload.html')
 
 # @Permission.login
 # @Log(LogType.INFO, 2, "-", printToConsole=False)
