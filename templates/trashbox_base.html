@@ -1,31 +1,30 @@
 {#  Szablon strony  #}
-{% include 'extend/head.html' %}
-<script src="/static/scripts/js/sessionFlask.js"></script>
-<script>
-    var fake = localStorage.getItem('loginTest');
-    if (fake == 'aktywny') {
-        console.log(localStorage.getItem('loginTest'));
-        console.log("Fake Login Active");
-    } else if (fake == null) {
-        console.log('Fake Login UnActive');
-        window.location.href = ("/");
-    } else {
-        function onSignIn(googleUser) {
-            var profile = googleUser.getBasicProfile();
-            if (profile.getId() == "" || profile.getId().empty() || profile.getId() == null) {
-                window.localStorage.clear();
-                window.location.href = ("/");
-            }
-            console.log("Logowanie przez Google");
-        }
-    }
-</script>
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
     {#  Podpięcie danych header z zewnętrznego pliku  #}
     {% include 'extend/head.html' %}
+    <div class="g-signin2" data-width="0" data-height="0" data-onsuccess="onSignIn"
+         data-theme="dark"></div>
+    <script>
+        var back = true;
+        if (localStorage.getItem('loginTest') != null) {
+            console.log(localStorage.getItem('loginTest'));
+            console.log("Fake Login Active");
+            back = false;
+        } else {
+            function onSignIn(googleUser) {
+                var profile = googleUser.getBasicProfile();
+                console.log("Logowanie przez Google");
+                back = false;
+            }
+        }
+        if (back == true) {
+            window.localStorage.clear();
+            window.location.href = ("/");
+        }
+    </script>
+
 
     {#  Podpięcie bazowego stylu  #}
     <link rel=stylesheet type=text/css href="/static/style/trashbox-base.css">
