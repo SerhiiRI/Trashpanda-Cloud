@@ -1,32 +1,80 @@
 import logging
+import os
 import sys
 import static.configs.EnvConf
-import os
-from static.controllers.Permission import Permission
 import tempfile
+
+from time import sleep
+
+from static.controllers.Permission import Permission
 from static.tool.Logs import Log, LogType
 from static.tool.FileManager import FileManager
-from flask import Flask, render_template, redirect, request, jsonify, render_template_string, make_response, send_file
+from static.controllers.FileController import FileController
+
+from flask import Flask, render_template, send_file
+from flask import request, session, jsonify
+
 
 app = Flask(__name__)
+app.secret_key = os.urandom(24)
 
+
+def getTestPathData():
+    paths = [{
+        'icon': 'file-image',
+        'name': 'twoja_stara.png',
+        'lock': 'lock',
+        'size': '2.4 MB',
+        'tag': ['#hehe', '#lol', '#yolololololo', '#hehe', '#lol', '#yololo'],
+    },
+        {
+            'icon': 'folder-open-empty',
+            'name': 'twoja_stara.png',
+            'lock': '',
+            'size': '',
+            'tag': [],
+        }
+    ]
+    return paths
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
+  
+'''
+    Dodanie/Update/Odczyt sesji
+    
+    :param name
+    :param value
+    :return value
 
-@app.route('/userCheck', methods=['POST'])
-def userCheck():
-    # print('Check userID...')
-    id = request.form['uid']
-    # print(id)
-    if id:
-        inDB = 'true'
-        return jsonify({'res' : inDB})
+'''
+@app.route('/sessionControler', methods=['POST'])
+def sessionControler():
+    print("Wywołano session flask.")
+    if request.form.get('action') == 'set':
+        name = request.form.get('name')
+        param = request.form.get('param')
+        session[name] = param
+        print("Dodano sesję o nazwie: " + name + " = " + param)
+        return jsonify({'param': param})
 
-    return jsonify({'error' : 'Missing data!'})
-
+    if request.form.get('action') == 'get':
+        name = request.form.get('name')
+        if session[name]:
+            param = session[name]
+            print("Pobrano sesję o nazwie: " + name)
+            return jsonify({'param': param})
+        elif session[name]:
+            sleep(0.5)
+            param = session[name]
+            print("Pobrano sesję o nazwie: " + name)
+            return jsonify({'param': param})
+        else:
+            print("Nie znaleziono sesji: " + name)
+            return jsonify({'param': ''})
+          
 
 @app.route('/info')
 def info():
@@ -68,44 +116,18 @@ def page_not_found(e):
     return render_template('info_pages/404.html'), 404
     # return redirect("https://www.asciipr0n.com/pr0n/morepr0n/pr0n04.txt", code=302)
 
-
-
-@app.route('/mytrashbox', methods=['GET'])
-def mytrashbox():
-    getPath = request.args.get('path')
-    print(getPath)
-    '''
-    ! Od Aleksa dla mikusia
-    ! Tu ci podsyłam zmienną path w której będzie np home
-    ! Zwróć mi ls (katalogi i piliki w home)    
-    '''
-    paths = [{
-        'icon': 'file-image',
-        'name': 'twoja_stara.png',
-        'lock': 'lock',
-        'size': '2.4 MB',
-        'tag':['#hehe', '#lol', '#yolololololo', '#hehe', '#lol', '#yololo'],
-    },
-        {
-            'icon': 'folder-open-empty',
-            'name': 'twoja_stara.png',
-            'lock': '',
-            'size': '',
-            'tag': [],
-        }
-    ]
-    # backpath pozwoli wrócić do poprzedniego katalogu
-    backpath = 'home'
+@app.route('/mytrashbox', defaults={'pathToDir':'home'})
+@app.route('/mytrashbox/<pathToDir>')
+def mytrashbox(pathToDir):
+    paths = getTestPathData()
+    backpath = ''
     currentdir = 'home'
-    # lista symuluje pętlę for w jinja2
-    lista = []
-    for x in range(0, 20):
-        lista.append(x)
-    return render_template('trashbox.html', file=paths, lista=lista, backpath=backpath, currentdir=currentdir)
+    if(pathToDir == "home"):
+        return render_template('trashbox.html', file=paths, backpath=backpath, currentdir=currentdir)
 
 
-# @Permission.login
-# @Log(LogType.INFO, 2, "-", printToConsole=False)
+@Permission.login
+@Log(LogType.INFO, 2, "-", printToConsole=False)
 def startServer():
     if __name__ == '__main__':
         app.run(debug=True, host="0.0.0.0", port=5000)

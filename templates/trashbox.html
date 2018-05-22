@@ -1,17 +1,27 @@
+{#  Rozszerzenie tego pliku o trashbox_base.html  #}
 {% extends 'trashbox_base.html' %}
 {% block content %}
+
+    {#  Pobranie stylu dla zakładki trashbox  #}
     <link rel=stylesheet type=text/css href="/static/style/trashbox.css">
     <script async src="/static/scripts/js/trashoboxOptionPopUp.js"></script>
 
     <div id="loadContent">
         <br>
+
+        {#  Tytuł dla aktywnej zakładki  #}
         <h1>- My Trashbox -</h1>
+
+        {#  Wypisanie aktualnej ścieżki, czyli tej w któirej znajduje się użytkownik  #}
         <span style="font-size: 1.2rem;">Katalog: {{ currentdir }}</span>
         <br>
+
+        {#  Tabela wyświetlająca zawartość kadalogu  #}
         <table>
             <thead>
             <tr>
-                <th><a href="/mytrashbox?path={{ backpath }}"><i class="icon-left-big"></i></a></th>
+                {#  backpath przetrzymuje ścieżkę prowadzącą do strony poprzedniej  #}
+                <th><a href="/{{ backpath }}"><i class="icon-left-big"></i></a></th>
                 <th>Nazwa</th>
                 <th>Rozmiar</th>
                 <th>Tags</th>
@@ -19,10 +29,12 @@
             </tr>
             </thead>
             <tbody>
-{#            {% for lista in lista %}#}
+            {#  Wypisanie przekazanych elementów katalogu  #}
             {% for file in file %}
-                <tr>
+                <tr ondblclick="">
+                    {#  Ikona odpowiadająca typowi pliku  #}
                     <td><i class="icon-{{ file.icon }}"></i></td>
+
                     <td>{{ file.name }} <i class="icon-{{ file.lock }}"></i></td>
                     <td>{{ file.size }}</td>
                     <td>
@@ -34,19 +46,19 @@
                             </select>
                         {% endif %}
                     </td>
-                    <td><i onclick="openmenu()" class="icon-ellipsis-vert hover"></i></td>
+                    {#  Przycisk z ikonką trzech kropek otwierający popup z opcjami dla elemntu  #}
+                    <td><i onmouseenter="openmenu()" class="icon-ellipsis-vert hover"></i></td>
                 </tr>
             {% endfor %}
-{#            {% endfor %}#}
             </tbody>
         </table>
-        
+
+        {#  PopUp z opcjami dotyczącymi wyświerlonego rekordu z plikiem/katalogiem po najechaniu myszą #}
         <form class="popmenu" id="popmenu" onmouseleave="closemenu()">
             <input type="hidden" name="filepath" value="filepath">
             <input type="submit" name="open" value="Otwórz">
             <input type="button" name="close" value="Zamknij" onclick="closemenu()">
         </form>
-        {#        <script src="/static/scripts/js/loadingPage.js"></script>#}
-        {#        <script>loadingPage('36253978469', 'home');</script>#}
     </div>
+
 {% endblock %}

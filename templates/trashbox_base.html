@@ -1,13 +1,43 @@
+{#  Szablon strony  #}
+{% include 'extend/head.html' %}
+<script src="/static/scripts/js/sessionFlask.js"></script>
+<script>
+    var fake = localStorage.getItem('loginTest');
+    if (fake == 'aktywny') {
+        console.log(localStorage.getItem('loginTest'));
+        console.log("Fake Login Active");
+    } else if (fake == null) {
+        console.log('Fake Login UnActive');
+        window.location.href = ("/");
+    } else {
+        function onSignIn(googleUser) {
+            var profile = googleUser.getBasicProfile();
+            if (profile.getId() == "" || profile.getId().empty() || profile.getId() == null) {
+                window.localStorage.clear();
+                window.location.href = ("/");
+            }
+            console.log("Logowanie przez Google");
+        }
+    }
+</script>
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
+    {#  Podpięcie danych header z zewnętrznego pliku  #}
     {% include 'extend/head.html' %}
+
+    {#  Podpięcie bazowego stylu  #}
     <link rel=stylesheet type=text/css href="/static/style/trashbox-base.css">
+
+    {#  Podpiecie modułu z ikonami fontello  #}
     <link rel="stylesheet" href="/static/style/fontello-c536326c/css/fontello.css" type="text/css"/>
-    <title>Trashpanda - TrashBox</title>
+    <title>Trashpanda Cloud</title>
 </head>
-<body id="body" onload="opa()">
-<div id="nav" class="nav" onclick="fooAct('nav', 'top')">
+<body>
+
+{#  Podpięcie panelu użytkownika z wyszukiwarką  #}
+<div id="nav" class="nav">
     <div id="nav-inside">
         <div>
             {% include 'extend/user_panel.html' %}
@@ -15,15 +45,16 @@
     </div>
 </div>
 
+{#  Wstrzyknięcie zewnętrznego html'a  #}
 <div id="content" class="content">
     {% block content %}{% endblock %}
 </div>
 
+{#  Podpięcie stopki  #}
 <div id="foo" class="foo" onclick="fooAct('foo', 'bottom')">
     <div id="foo-inside">
         {% include 'extend/footer.html' %}
     </div>
 </div>
-<script src="/static/scripts/js/trashbox_base.js"></script>
 </body>
 </html>
