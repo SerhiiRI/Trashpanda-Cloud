@@ -11,7 +11,7 @@ class SQLCloud(IDataConnector):
     Klasa stwożona dla pobierania, generowania oraz sterowania
     Bazą Danych w jak najmniej
     """
-    __instance = None
+    #__instance = None
     # MySQLdb.connect()    __table = None
     DBRepr = dict()
 
@@ -22,16 +22,16 @@ class SQLCloud(IDataConnector):
         self.__table = cursor.execute("SHOW TABLES")
         cursor.close()
         self.__table__Constract()
-        if (SQLCloud.__instance == None):
-            SQLCloud.__instance = self
-
+        #if (SQLCloud.__instance == None):
+        #   SQLCloud.__instance = self
+    """
     @staticmethod
     def getInstance():
         ''' Static access method '''
         if (SQLCloud.__instance == None):
             SQLCloud()
         return SQLCloud.__instance
-
+    """
     def __table__Constract(self):
         __cursor = self._connector.cursor()
         __cursor.execute("SHOW TABLES")
@@ -62,7 +62,7 @@ class SQLCloud(IDataConnector):
         Twoży metody dodawania wierszy
         do tabeli o podanej nezwie
         :param tableName:
-        :return: T/F
+        :return: function
 
         @Serhii Riznychuk
         """
@@ -82,7 +82,7 @@ class SQLCloud(IDataConnector):
             exec(String)
             return getattr(self, "insert_"+tableName)
         except Exception as n:
-            print("{:-^211}".format("ERROR"))
+            print("{:-^211}".format("Data Base ERROR"))
             return None
 
 
@@ -93,7 +93,7 @@ class SQLCloud(IDataConnector):
         Twoży metodę updatowania danych
         z tabelil o podaje nazwie
         :param tableName: nazwa tabeli której sie twożona dynamiczna metoda.
-        :return: T/F
+        :return: function
 
         @Serhii Riznychuk
         """
@@ -110,7 +110,7 @@ class SQLCloud(IDataConnector):
             exec(String)
             return getattr(self, "update_" + tableName)
         except Exception as n:
-            print("{:-^211}".format("ERROR"))
+            print("{:-^211}".format("Data Base ERROR"))
             return None
 
     def select(self, tableName: str):
@@ -120,7 +120,7 @@ class SQLCloud(IDataConnector):
         Twoży metode pobierania danych
         z tabeli o nazwie tableName
         :param tableName: nazwa tabeli której sie twożona dynamiczna metoda.
-        :return: T/F
+        :return: function
 
         @Serhii Riznychuk
         """
@@ -137,37 +137,37 @@ class SQLCloud(IDataConnector):
             exec(String)
             return getattr(self, "select_" + tableName)
         except Exception as n:
-            print("{:-^211}".format("ERROR"))
+            print("{:-^211}".format("Data Base ERROR"))
             print(n)
             return None
 
-    # TODO: create like operation to search engine, may be curring integration
-    # TODO: with select, and 'like' comand
     def like(self, tableName: str):
         """
-            Select
+            like
 
         Twoży metode pobierania danych
         z tabeli o nazwie tableName
         :param tableName: nazwa tabeli której sie twożona dynamiczna metoda.
-        :return: T/F
+        :return: function
 
         @Serhii Riznychuk
         """
         String = "def like_" + tableName + "(self, **likes):\n"
         String = String + "\tsql=\"SELECT * FROM `" + tableName + "`\"\n"
         String = String + "\tif(len(likes) > 0):\n"
-        String = String + "\t\tsql = sql + \" WHERE \" + \" AND \".join([\"`\"+str(key)+\"` LIKE '%s'\" for key, value in likes.items()])\n"
+        String = String + '\t\tsql = sql + \" WHERE \" + \" AND \".join([ str(key)+" LIKE %s" for key, value in likes.items()])\n'
+        #String = String + "\t\tprint(sql, likes)\n"
         String = String + "\t__cursor = self._connector.cursor()\n"
-        String = String + "\t__cursor.execute(sql, (( likes[key] for key, value in likes.items())))\n"
+        String = String + "\t__cursor.execute(sql, tuple(( likes[key] for key, value in likes.items())))\n"
         String = String + "\treturn __cursor.fetchall()\n"
         String = String + "self.like_" + tableName + " = MethodType(like_" + tableName + ", self)\n"
-        print(String)
+        # print(String)
         try:
             exec(String)
             return getattr(self, "like_"+tableName)
         except Exception as n:
-            print("{:-^211}".format("ERROR"))
+            print("{:-^211}".format("Data Base ERROR"))
+            print(n)
             return False
 
     def delete(self, tableName: str):
@@ -177,7 +177,7 @@ class SQLCloud(IDataConnector):
         Twoży metode zniszczenia danych
         z tabeli o nazwie tableName
         :param tableName: nazwa tabeli której sie twożona dynamiczna metoda.
-        :return: T/F
+        :return: function
 
         @Serhii Riznychuk
         """
@@ -190,14 +190,14 @@ class SQLCloud(IDataConnector):
         String = String + "\tself._connector.commit()\n"
         String = String + "\t__cursor.close()\n"
         String = String + "\treturn 0\n"
-        String = String + "self.update_" + tableName + " = MethodType(update_" + tableName + ", self)\n"
+        String = String + "self.delete_" + tableName + " = MethodType(delete_" + tableName + ", self)\n"
         print(String)
         try:
 
             exec(String)
             return getattr(self, "update_" + tableName)
         except Exception as n:
-            print("{:-^211}".format("ERROR"))
+            print("{:-^211}".format("Data Base ERROR"))
             return None
 
     def merge(self, *args: list, where: dict={}) -> dict:
@@ -216,9 +216,3 @@ class SQLCloud(IDataConnector):
             return cursor.fetchall()
         return dict()
 
-
-
-
-
-# costam.update_banns(idUser=5)(timeStamp=datetime.date(2009, 10, 18).isoformat(), status=1)
-# costam.delete_banns(idUser=2)
