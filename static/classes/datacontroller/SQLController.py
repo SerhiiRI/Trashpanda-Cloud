@@ -1,6 +1,7 @@
 from copy import deepcopy
 from static.tool.console.vt1000 import BackGround as bg, ForeGround as fg, FormatCode as cd
 from static.classes.datacontroller.IDataManager import IDataConnector
+from static.tool.console.vt1000 import getTerminalSize
 from types import MethodType
 
 
@@ -11,7 +12,7 @@ class SQLCloud(IDataConnector):
     Klasa stwożona dla pobierania, generowania oraz sterowania
     Bazą Danych w jak najmniej
     """
-    __instance = None
+    #__instance = None
     # MySQLdb.connect()    __table = None
     DBRepr = dict()
 
@@ -22,16 +23,16 @@ class SQLCloud(IDataConnector):
         self.__table = cursor.execute("SHOW TABLES")
         cursor.close()
         self.__table__Constract()
-        if (SQLCloud.__instance == None):
-            SQLCloud.__instance = self
-
+        #if (SQLCloud.__instance == None):
+        #   SQLCloud.__instance = self
+    """
     @staticmethod
     def getInstance():
         ''' Static access method '''
         if (SQLCloud.__instance == None):
             SQLCloud()
         return SQLCloud.__instance
-
+    """
     def __table__Constract(self):
         __cursor = self._connector.cursor()
         __cursor.execute("SHOW TABLES")
@@ -44,9 +45,9 @@ class SQLCloud(IDataConnector):
 
     def _getTableMeta(self, table_name):
         __cursor = self._connector.cursor()
-        data = dict()
+        data = list()
         __cursor.execute("SHOW COLUMNS FROM " + table_name)
-        data.update((x[0],x[1]) for x in __cursor.fetchall())
+        data= [(x[0],x[1]) for x in __cursor.fetchall()]
         return data
 
     def print(self, table : str = None):
@@ -62,7 +63,7 @@ class SQLCloud(IDataConnector):
         Twoży metody dodawania wierszy
         do tabeli o podanej nezwie
         :param tableName:
-        :return: T/F
+        :return: function
 
         @Serhii Riznychuk
         """
@@ -71,8 +72,9 @@ class SQLCloud(IDataConnector):
         String = String + "\tsql = \"INSERT INTO `"+tableName+"`(" + ", ".join(
             ("`" + column + "`" for column in columns[1:])) + ") VALUES (" + ", ".join(
             ("%s" for x in columns[1:])) + ")\"\n"
+        # String = String + "\tprint(\"SQL : \""+","+",\"|\",".join((columns[1:]))+")\n"
         String = String + "\tcursor = self._connector.cursor()\n"
-        String = String + "\tcursor.execute(sql, (" + ", ".join((column for column in columns[1:])) + "))\n"
+        String = String + "\tcursor.execute(sql, (" + ", ".join((column for column in columns[1:])) + ",))\n"
         String = String + "\tself._connector.commit()\n"
         String = String + "\tcursor.close()\n"
         String = String + "\treturn 0\n"
@@ -81,7 +83,8 @@ class SQLCloud(IDataConnector):
             exec(String)
             return getattr(self, "insert_"+tableName)
         except Exception as n:
-            print("{:-^211}".format("ERROR"))
+            _, column = getTerminalSize()
+            print("{:-^{column}}".format("Data Base ERROR", column=column))
             return None
 
 
@@ -92,7 +95,7 @@ class SQLCloud(IDataConnector):
         Twoży metodę updatowania danych
         z tabelil o podaje nazwie
         :param tableName: nazwa tabeli której sie twożona dynamiczna metoda.
-        :return: T/F
+        :return: function
 
         @Serhii Riznychuk
         """
@@ -109,7 +112,8 @@ class SQLCloud(IDataConnector):
             exec(String)
             return getattr(self, "update_" + tableName)
         except Exception as n:
-            print("{:-^211}".format("ERROR"))
+            _, column = getTerminalSize()
+            print("{:-^{column}}".format("Data Base ERROR", column=column))
             return None
 
     def select(self, tableName: str):
@@ -119,65 +123,68 @@ class SQLCloud(IDataConnector):
         Twoży metode pobierania danych
         z tabeli o nazwie tableName
         :param tableName: nazwa tabeli której sie twożona dynamiczna metoda.
-        :return: T/F
+        :return: function
 
         @Serhii Riznychuk
         """
-        String = "def select_" + tableName + "(**wheres):\n"
+        String = "def select_" + tableName + "(self, **wheres):\n"
         String = String + "\tsql=\"SELECT * FROM `" + tableName + "`\"\n"
         String = String + "\tif(len(wheres) > 0):\n"
         String = String + "\t\tsql = sql + \" WHERE \" + \" AND \".join([\"`\"+str(key)+\"`=%s\" for key, value in wheres.items()])\n"
+        #String = String + "\t\tprint(sql)\n"
         String = String + "\t__cursor = self._connector.cursor()\n"
-        String = String + "\t__cursor.execute(sql, tuple(( wheres[key] for key, value in wheres.items() ))"
+        String = String + "\t__cursor.execute(sql, (( wheres[key] for key, value in wheres.items())))\n"
         String = String + "\treturn __cursor.fetchall()\n"
         String = String + "self.select_" + tableName + " = MethodType(select_" + tableName + ", self)\n"
         try:
             exec(String)
             return getattr(self, "select_" + tableName)
         except Exception as n:
-            print("{:-^211}".format("ERROR"))
+            _, column = getTerminalSize()
+            print("{:-^{column}}".format("Data Base ERROR", column=column))
             return None
 
-    # TODO: create like operation to search engine, may be curring integration
-    # TODO: with select, and 'like' comand
-    def LIKEselect(self, tableName: str) -> bool:
+    def like(self, tableName: str):
         """
-            Select
+            like
 
         Twoży metode pobierania danych
         z tabeli o nazwie tableName
         :param tableName: nazwa tabeli której sie twożona dynamiczna metoda.
-        :return: T/F
+        :return: function
 
         @Serhii Riznychuk
         """
-        String = "def select_" + tableName + "(**wheres):\n"
+        String = "def like_" + tableName + "(self, **likes):\n"
         String = String + "\tsql=\"SELECT * FROM `" + tableName + "`\"\n"
-        String = String + "\tif(len(wheres) > 0):\n"
-        String = String + "\t\tsql = sql + \" WHERE \" + \" AND \".join([\"`\"+str(key)+\"`=%s\" for key, value in wheres.items()])\n"
+        String = String + "\tif(len(likes) > 0):\n"
+        String = String + '\t\tsql = sql + \" WHERE \" + \" AND \".join([ str(key)+" LIKE %s" for key, value in likes.items()])\n'
+        #String = String + "\t\tprint(sql, likes)\n"
         String = String + "\t__cursor = self._connector.cursor()\n"
-        String = String + "\t__cursor.execute(sql, tuple(( wheres[key] for key, value in wheres.items() ))"
+        String = String + "\t__cursor.execute(sql, tuple(( likes[key] for key, value in likes.items())))\n"
         String = String + "\treturn __cursor.fetchall()\n"
-        String = String + "self.update_" + tableName + " = MethodType(update_" + tableName + ", self)\n"
+        String = String + "self.like_" + tableName + " = MethodType(like_" + tableName + ", self)\n"
+        # print(String)
         try:
             exec(String)
-            return getattr(self, "update_" + tableName)
+            return getattr(self, "like_"+tableName)
         except Exception as n:
-            print("{:-^211}".format("ERROR"))
+            _, column = getTerminalSize()
+            print("{:-^{column}}".format("Data Base ERROR", column=column))
             return None
 
-    def delete(self, tableName: str) -> bool:
+    def delete(self, tableName: str):
         """
            Delete
 
         Twoży metode zniszczenia danych
         z tabeli o nazwie tableName
         :param tableName: nazwa tabeli której sie twożona dynamiczna metoda.
-        :return: T/F
+        :return: function
 
         @Serhii Riznychuk
         """
-        String = "def delete_" + tableName + "(**kwargs):\n"
+        String = "def delete_" + tableName + "(self, **kwargs):\n"
         String = String + '\tsql = "DELETE FROM `' + tableName + '`\"\n'
         String = String + '\tif(len(kwargs) > 0):\n'
         String = String + '\t\tsql = sql + " WHERE "+" AND ".join([\"`\"+str(key)+"`=%s" for key, value in kwargs.items()])\n'
@@ -186,12 +193,14 @@ class SQLCloud(IDataConnector):
         String = String + "\tself._connector.commit()\n"
         String = String + "\t__cursor.close()\n"
         String = String + "\treturn 0\n"
-        String = String + "self.update_" + tableName + " = MethodType(update_" + tableName + ", self)\n"
+        String = String + "self.delete_" + tableName + " = MethodType(delete_" + tableName + ", self)\n"
+        print(String)
         try:
+
             exec(String)
             return getattr(self, "update_" + tableName)
         except Exception as n:
-            print("{:-^211}".format("ERROR"))
+            print("{:-^211}".format("Data Base ERROR"))
             return None
 
     def merge(self, *args: list, where: dict={}) -> dict:
@@ -210,9 +219,3 @@ class SQLCloud(IDataConnector):
             return cursor.fetchall()
         return dict()
 
-
-
-
-
-# costam.update_banns(idUser=5)(timeStamp=datetime.date(2009, 10, 18).isoformat(), status=1)
-# costam.delete_banns(idUser=2)

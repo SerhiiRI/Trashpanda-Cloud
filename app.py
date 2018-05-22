@@ -1,14 +1,19 @@
 import logging
 import os
 import sys
+import static.configs.EnvConf
+import tempfile
+
 from time import sleep
 
-import static.configs.EnvConf
 from static.controllers.Permission import Permission
 from static.tool.Logs import Log, LogType
-from flask import Flask, render_template, redirect
+from static.tool.FileManager import FileManager
 from static.controllers.FileController import FileController
+
+from flask import Flask, render_template, send_file
 from flask import request, session, jsonify
+
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -36,6 +41,7 @@ def getTestPathData():
 def index():
     return render_template('index.html')
 
+  
 '''
     Dodanie/Update/Odczyt sesji
     
@@ -68,7 +74,7 @@ def sessionControler():
         else:
             print("Nie znaleziono sesji: " + name)
             return jsonify({'param': ''})
-
+          
 
 @app.route('/info')
 def info():
@@ -87,9 +93,22 @@ def kontakt():
     return render_template('info_pages/contact.html')
 
 
-# @app.route('/mytrashbox')
+@app.route('/download')
+def download():
+    #path = request.form.get('filePath')
+    path = "/srv/Data/mikus/plik.txt"
+    name = os.path.basename(path)
+    return send_file(path, attachment_filename=name , as_attachment=True)
+
+
+# @app.route('/mytrashbox', methods=['GET','POST'])
 # def mytrashbox():
-#     return render_template('trashbox.html')
+#     try:
+#         path = "/" + request.form.get('google_id') + "/"
+#     except:
+#         path = "/"
+#     files = FileManager.listDir(path)
+#     return render_template('trashbox_test.html', items=files, path=path)
 
 
 @app.errorhandler(404)
@@ -107,8 +126,8 @@ def mytrashbox(pathToDir):
         return render_template('trashbox.html', file=paths, backpath=backpath, currentdir=currentdir)
 
 
-# @Permission.login
-# @Log(LogType.INFO, 2, "-", printToConsole=False)
+@Permission.login
+@Log(LogType.INFO, 2, "-", printToConsole=False)
 def startServer():
     if __name__ == '__main__':
         app.run(debug=True, host="0.0.0.0", port=5000)

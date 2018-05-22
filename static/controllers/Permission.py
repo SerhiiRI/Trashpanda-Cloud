@@ -73,6 +73,7 @@ class Permission:
             ENV["TRASHPANDA_LOGIN"] = login
             ENV["TRASHPANDA_PASSWD"] = passwd
             db.close()
+            del(db)
             return True
         except MySQLdb.MySQLError:
             return False
@@ -93,6 +94,7 @@ class Permission:
         try:
             db = MySQLdb.connect(ENV["TRASHPANDA_HOST"], ENV["TRASHPANDA_LOGIN"], ENV["TRASHPANDA_PASSWD"], "mysql")
             db.close()
+            del(db)
             return True
         except MySQLdb.MySQLError:
             return False

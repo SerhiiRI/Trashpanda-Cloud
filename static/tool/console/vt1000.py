@@ -39,6 +39,12 @@ class BackGround:
     lightgrey = '\033[47m'
 
 
+def getTerminalSize():
+    import os
+    rows, column = os.popen("stty size", mode="r").read().split()
+    return int(rows), int(column)
+
+
 
 """
 import sys, time
