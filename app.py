@@ -3,8 +3,7 @@ import os
 import sys
 import static.configs.EnvConf
 import tempfile
-import static.classes.Registration
-
+from static.classes.Registration import Register
 from time import sleep
 
 from static.controllers.Permission import Permission
@@ -44,7 +43,7 @@ def getTestPathData():
 def index():
     return render_template('index.html')
 
-
+  
 '''
     Dodanie/Update/Odczyt sesji
     
@@ -77,7 +76,7 @@ def sessionControler():
         else:
             print("Nie znaleziono sesji: " + name)
             return jsonify({'param': ''})
-
+          
 
 @app.route('/info')
 def info():
@@ -143,6 +142,7 @@ def upload():
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port=5000)
+
 @Permission.login
 @Log(LogType.INFO, 2, "-", printToConsole=False)
 def startServer():
