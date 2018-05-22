@@ -21,7 +21,7 @@
             <thead>
             <tr>
                 {#  backpath przetrzymuje ścieżkę prowadzącą do strony poprzedniej  #}
-                <th><a href="/mytrashbox?path={{ backpath }}"><i class="icon-left-big"></i></a></th>
+                <th><a href="/{{ backpath }}"><i class="icon-left-big"></i></a></th>
                 <th>Nazwa</th>
                 <th>Rozmiar</th>
                 <th>Tags</th>
@@ -29,10 +29,9 @@
             </tr>
             </thead>
             <tbody>
-            {#  {% for lista in lista %}  #}
             {#  Wypisanie przekazanych elementów katalogu  #}
             {% for file in file %}
-                <tr>
+                <tr ondblclick="">
                     {#  Ikona odpowiadająca typowi pliku  #}
                     <td><i class="icon-{{ file.icon }}"></i></td>
 
@@ -48,20 +47,18 @@
                         {% endif %}
                     </td>
                     {#  Przycisk z ikonką trzech kropek otwierający popup z opcjami dla elemntu  #}
-                    <td><i onclick="openmenu()" class="icon-ellipsis-vert hover"></i></td>
+                    <td><i onmouseenter="openmenu()" class="icon-ellipsis-vert hover"></i></td>
                 </tr>
             {% endfor %}
-            {#  {% endfor %}  #}
             </tbody>
         </table>
 
-        {#  PopUp z opcjami dotyczącymi wyświerlonego rekordu z plikiem/katalogiem  #}
+        {#  PopUp z opcjami dotyczącymi wyświerlonego rekordu z plikiem/katalogiem po najechaniu myszą #}
         <form class="popmenu" id="popmenu" onmouseleave="closemenu()">
             <input type="hidden" name="filepath" value="filepath">
             <input type="submit" name="open" value="Otwórz">
             <input type="button" name="close" value="Zamknij" onclick="closemenu()">
         </form>
-        {#        <script src="/static/scripts/js/loadingPage.js"></script>#}
-        {#        <script>loadingPage('36253978469', 'home');</script>#}
     </div>
+
 {% endblock %}

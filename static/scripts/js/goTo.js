@@ -1,6 +1,7 @@
-    window.onload = function () {
-        this.document.body.style.opacity = "1";
-    };
+/* Usunięcie przezroczystości stony (animacja pojawiania się strony) */
+window.onload = function () {
+    this.document.body.style.opacity = "1";
+};
 
 /**
  * Funkcja przekierowuje na inną stronę,

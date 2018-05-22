@@ -1,33 +1,33 @@
-document.getElementById('isSignIn').innerText = 'Zaloguj';
+/**
+ * Sprawdza czy użytkownik zalogowany
+ * @type {boolean}
+ */
 var isSignIn = false;
-// Dane testowe do trybu offline
-var testID = 1234567890;
+if (localStorage.getItem('userID') != null) {
+    afterlogin();
+    loginButton();
+}
+
+/**
+ * Dane testowe do trybu offline
+ */
+var testID = "1234567890";
 var testPic = "https://lh5.googleusercontent.com/-p-7kqdTngmk/AAAAAAAAAAI/AAAAAAAAAkA/LS9olK6iiME/s96-c/photo.jpg";
 var testName = "Aleks S.";
-var token;
+
 
 /**
  * Google SignIn / funkcja wywołana po zalogowaniu
- * */
+ * @param googleUser
+ */
 function onSignIn(googleUser) {
-    // Useful data for your client-side scripts:
     var profile = googleUser.getBasicProfile();
-    // console.log("ID: " + profile.getId()); // Don't send this directly to your server!
-    // console.log('Full Name: ' + profile.getName());
-    // console.log('Given Name: ' + profile.getGivenName());
-    // console.log('Family Name: ' + profile.getFamilyName());
-    // console.log("Image URL: " + profile.getImageUrl());
-    // console.log("Email: " + profile.getEmail());
-
-    // The ID token you need to pass to your backend:
     token = googleUser.getAuthResponse().id_token;
-    //console.log("ID Token: " + token);
-
     // Wywołanie zmian po zalogowaniu
-    userID = profile.getId();
-    userPic = profile.getImageUrl();
+    localStorage.setItem('userID', profile.getId());
+    localStorage.setItem('userPic', profile.getImageUrl());
     let x = profile.getFamilyName();
-    userName = profile.getGivenName() + " " + x[0] + ".";
+    localStorage.setItem('userName', profile.getGivenName() + " " + x[0] + ".");
     isSignIn = true;
     closeLoginForm();
     afterlogin();
@@ -50,66 +50,43 @@ function signOut() {
  * */
 function afterlogin() {
     document.getElementById("userinfo").style.display = "initial";
-    document.getElementById("userimg").src = userPic;
-    document.getElementById("username").innerHTML = userName;
+    document.getElementById("userimg").src = localStorage.getItem('userPic');
+    document.getElementById("username").innerHTML = localStorage.getItem('userName');
 }
 
 /**
  * Testowe logowanie
- // * */
+ * */
 function loginTest() {
-    inDB = runajax(testID);
-    userID = testID;
-    userPic = testPic;
-    userName = testName;
+    localStorage.setItem('userID', testID);
+    localStorage.setItem('userPic', testPic);
+    localStorage.setItem('userName', testName);
     closeLoginForm();
     afterlogin();
     loginButton();
+    localStorage.setItem('loginTest', 'true');
 }
 
 /**
  *Edycja przycisku logowania i wylogowania
  * */
 function loginButton() {
-        document.getElementById("isSignIn").innerText = "My Trashbox";
-        let btn = document.createElement("BUTTON");
-        btn.className = "alx-btn";
-        btn.innerText = "Wyloguj";
-        btn.addEventListener("click", logout);
-        document.getElementById("func-btn").appendChild(btn);
-        isSignIn = true;
+    document.getElementById("isSignIn").innerText = "My Trashbox";
+    let btn = document.createElement("BUTTON");
+    btn.className = "alx-btn";
+    btn.innerText = "Wyloguj";
+    btn.addEventListener("click", logout);
+    document.getElementById("func-btn").appendChild(btn);
+    isSignIn = true;
 }
-
-/**
- * AJAX
- */
-function runajax(uid) {
-    console.log(uid);
-    // event.preventDefault();
-    $.ajax({
-        data: {
-            uid: uid
-        },
-        type: 'POST',
-        url: '/userCheck'
-    })
-        .done(function (data) {
-            if (data.error) {
-                console.log(data);
-            } else {
-                console.log(data.res);
-            }
-        })
-}
-
-
 
 /**
  * Funkcja wylogowania
  * */
 function logout() {
-    signOut();
+    window.localStorage.clear();
     isSignIn = false;
+    signOut();
     goTo('/');
 }
 
