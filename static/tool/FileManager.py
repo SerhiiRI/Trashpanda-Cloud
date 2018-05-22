@@ -7,6 +7,9 @@
 
 import os
 import shutil
+import stat
+from static.classes.File import File
+from static.controllers.FileController import FileController
 
 class FileManager(object):
 
@@ -27,7 +30,7 @@ class FileManager(object):
         return True
 
     @staticmethod
-    def moveFile(pathA: str, pathB: str, md5: str):
+    def moveFile(pathA: str, pathB: str, sha1: str):
         '''Rozbicie pathA na scieżkę pliku oraz rozszerzenie'''
 
         if not os.path.isfile(pathA):
@@ -35,13 +38,11 @@ class FileManager(object):
             return False
 
         fileName , fileExtension = os.path.splitext(pathA)
-        '''Sprawdzenie czy plik posiada rozszerzenie, polityka chmury: brak rozszerzenia - JEB SIE'''
-
         if fileExtension == "":
-            print("Requested file lacks file extension, you ain't fuckin' with trashpanda's policy NIGGAAAAAA")
+            print("Requested file lacks file extension, you ain't fuckin' with trashpanda's policy NIGGAAAAAA \n")
             return False
         else:
-            pathB = pathB + md5 + fileExtension
+            pathB = pathB + sha1 + FileManager.extensionSpliter(pathA)
             os.rename(pathA, pathB)
 
         return True
@@ -102,6 +103,18 @@ class FileManager(object):
     @staticmethod
     def createLink(pathA: str, pathB: str):
 
+        '''
+                createLink
+
+        :param pathA: path to file | pathB: Destination path
+        :return: True / False
+
+        Method used while original owner decides to delete file. System looks for next person interested in being owner.
+
+        @Mikolaj Rychel
+        '''
+
+
         '''Sprawdzenie czy plik o podanej ścieżce istnieje'''
         if not os.path.isfile(pathA):
             print("Brak pliku o takiej ścieżce")
@@ -124,8 +137,48 @@ class FileManager(object):
 
         return True
 
+
+
+    @staticmethod
+    def extensionSpliter(filename : str):
+
+        '''
+                extensionSpliter
+
+        :param path: path to file
+        :return: extension
+
+        Funkcja do wyciągania rozszerzeń
+
+        @Mikolaj Rychel
+        '''
+
+        ext = ""
+        tab = filename.split(".")
+
+        if len(tab) > 2:
+            if len(tab[-2]) > 2:
+                ext = "." + tab[-2] + "." + tab[-1]
+            else:
+                ext = "." + tab[-1]
+        elif len(tab) == 2:
+            ext = "." + tab[-1]
+        else:
+            ext = None
+        return ext
+
     @staticmethod
     def swapOwner(pathA: str, pathB: str):
+        '''
+                swapOwner
+
+        :param pathA: path to file | pathB: Destination path
+        :return: True / False
+
+        Method used while original owner decides to delete file. System looks for next person interested in being owner.
+
+        @Mikolaj Rychel
+        '''
         pass
 
     @staticmethod
@@ -153,4 +206,51 @@ class FileManager(object):
         @Serhii Riznychuk
         """
 
-        Size = os.stat(Route)
+        Size = os.stat(path)
+
+    @staticmethod
+    def checkPermissions(path: str):
+        '''
+                checkPermissions
+
+        :param path: path to file
+        :return: Unix style permission label (example: 755)
+
+        @Mikolaj Rychel
+        '''
+        perm = oct(os.stat(path).st_mode)[-3:]
+        print(perm)
+
+    @staticmethod
+    def listDir(path: str):
+        '''
+                listDir
+
+        :param path: on disk directory
+        :return: list of files / catalogs in mentioned directory
+
+        Listing files in given directory
+
+        @Mikolaj Rychel
+        '''
+        finder = FileController()
+        return finder.gatherDiskInfo(path)
+
+    @staticmethod
+    def createEmptyFile(path: str, filename:str):
+        '''
+                createEmptyFile
+
+        :param path: path to create a file | filename: filename with extension
+        :return: True/False
+        Creating empty file to test - Debugging method
+
+        @Mikolaj Rychel
+        '''
+
+        try:
+            f = open(path + filename, "w+")
+            f.close()
+            return True
+        except:
+            return False

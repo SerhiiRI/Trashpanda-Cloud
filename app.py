@@ -1,9 +1,12 @@
 import logging
 import sys
 import static.configs.EnvConf
+import os
 from static.controllers.Permission import Permission
+import tempfile
 from static.tool.Logs import Log, LogType
-from flask import Flask, render_template, redirect, request, jsonify, render_template_string, make_response
+from static.tool.FileManager import FileManager
+from flask import Flask, render_template, redirect, request, jsonify, render_template_string, make_response, send_file
 
 app = Flask(__name__)
 
@@ -20,9 +23,9 @@ def userCheck():
     # print(id)
     if id:
         inDB = 'true'
-        return jsonify({'res': inDB})
+        return jsonify({'res' : inDB})
 
-    return jsonify({'error': 'Missing data!'})
+    return jsonify({'error' : 'Missing data!'})
 
 
 @app.route('/info')
@@ -42,14 +45,27 @@ def kontakt():
     return render_template('info_pages/contact.html')
 
 
-# @app.route('/mytrashbox')
+@app.route('/download')
+def download():
+    #path = request.form.get('filePath')
+    path = "/srv/Data/mikus/plik.txt"
+    name = os.path.basename(path)
+    return send_file(path, attachment_filename=name , as_attachment=True)
+
+
+# @app.route('/mytrashbox', methods=['GET','POST'])
 # def mytrashbox():
-#     return render_template('trashbox.html')
+#     try:
+#         path = "/" + request.form.get('google_id') + "/"
+#     except:
+#         path = "/"
+#     files = FileManager.listDir(path)
+#     return render_template('trashbox_test.html', items=files, path=path)
 
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('info_pages/404.html')
+    return render_template('info_pages/404.html'), 404
     # return redirect("https://www.asciipr0n.com/pr0n/morepr0n/pr0n04.txt", code=302)
 
 
