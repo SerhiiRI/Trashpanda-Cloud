@@ -18,6 +18,7 @@ import glob, os, shutil
 import static.classes.File as File
 
 
+
 class FileController(object):
     def __init__(self):
         self.defaultRoute = "/srv/Data"
@@ -35,11 +36,7 @@ class FileController(object):
             hash = file.split("/")[-1]
             fileID = hash
 
-            ext_temp = file.split(".")
-            if len(ext_temp) == 2:
-                Extension = ext_temp[-1]
-            else:
-                Extension = None
+            Extension = self.extensionSpliter(file)
             """Wypełnianie Listy informacjami dla konstruktora klasy File"""
             TEMP = list()
             TEMP.append(fileID)
@@ -62,6 +59,20 @@ class FileController(object):
         pass
 
     def createLists(self, hashes: list) -> list:
-
         pass
 
+
+    def extensionSpliter(self, filename : str):
+        ext = ""
+        tab = filename.split(".")
+
+        if len(tab) > 2:
+            if len(tab[-2]) > 2:
+                ext = "." + tab[-2] + "." + tab[-1]
+            else:
+                ext = "." + tab[-1]
+        elif len(tab) == 2:
+            ext = "." + tab[-1]
+        else:
+            ext = None
+        return ext
