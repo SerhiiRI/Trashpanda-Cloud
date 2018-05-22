@@ -15,22 +15,45 @@ class Controller(SQLCloud):
         to_root = argumnets.to_root
         self._test_user(email)
         if(to_delete):
-            print()
+            function = self.delete("user")
+            try:
+                function(google_email="sergiy19981@gmail.com")
+                print("[*] Success! User by Email -{}- being removed".format(email))
+            except:
+                print("[!] Error!")
         elif(to_root):
-            print()
+            function = self.update("userTypes")
+            try:
+                function(id="sergiy19981@gmail.com")
+                print("[*] Success! User by Email -{}- being removed".format(email))
+            except:
+                print("[!] Error!")
         elif(ban):
-            print()
+            try:
+                function(google_email="sergiy19981@gmail.com")
+                print("[*] Success! User by Email -{}- being removed".format(email))
+            except:
+                print("[!] Error!")
         elif(links):
-            print()
+            try:
+                function(google_email="sergiy19981@gmail.com")
+                print("[*] Success! User by Email -{}- being removed".format(email))
+            except:
+                print("[!] Error!")
         elif(stat):
-            print()
+            try:
+                function(google_email="sergiy19981@gmail.com")
+                print("[*] Success! User by Email -{}- being removed".format(email))
+            except:
+                print("[!] Error!")
         else:
-            print("[*] Nie dziala komenda ")
+            try:
+                function(google_email="sergiy19981@gmail.com")
+                print("[*] Success! User by Email -{}- being removed".format(email))
+            except:
+                print("[!] Error!")
 
     def _test_user(self, email : str) -> bool:
-        inf = self.select(nickname="costam")
-
         select = self.select("users")
-
         print("[{:^18}] Testing mail".format(self._test_user.__name__))
         return True if len(select(google_email="sergiy19981@gmail.com")) else False
