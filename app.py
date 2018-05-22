@@ -62,11 +62,11 @@ def sessionControler():
 
     if request.form.get('action') == 'get':
         name = request.form.get('name')
-        if session[name]:
+        if name in session:
             param = session[name]
             print("Pobrano sesję o nazwie: " + name)
             return jsonify({'param': param})
-        elif session[name]:
+        elif name in session:
             sleep(0.5)
             param = session[name]
             print("Pobrano sesję o nazwie: " + name)
@@ -120,7 +120,7 @@ def page_not_found(e):
 @app.route('/mytrashbox/<pathToDir>')
 def mytrashbox(pathToDir):
     paths = getTestPathData()
-    if session['googleID']:
+    if 'googleID' in session:
         print(session['googleID'])
     backpath = ''
     currentdir = 'home'
