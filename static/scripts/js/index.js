@@ -5,7 +5,6 @@
 var isSignIn = false;
 if (localStorage.getItem('userID') != null) {
     afterlogin();
-    loginButton();
     isSignIn = true;
 }
 
