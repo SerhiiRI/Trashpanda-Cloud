@@ -24,7 +24,7 @@ def variableconfig():
     ENV['CLOUD_DUMP'] = "/srv/Data/DUMP/" if FileManager.createFolder('/srv/Data/DUMP/') else "jebudu"
     ENV['TRASHPANDA_LOGIN'] = ENV['TRASHPANDA_LOGIN'] if 'TRASHPANDA_LOGIN' in ENV  else "sergiy1998"
     ENV['TRASHPANDA_PASSWD'] = ENV['TRASHPANDA_PASSWD'] if 'TRASHPANDA_PASSWD' in ENV else "hspybxeR98>"
-    print("[*]Configurate Variables...")
+    print("[*] Configurate Variables...")
 
 variableconfig()
 print(tmp.TrashPandpa())

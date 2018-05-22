@@ -22,9 +22,8 @@ class FileManager(object):
                 print("Directory Successfully Created")
             else:
                 print("Directory Already Exists")
-
         except:
-            print("Błąd createFolder")
+            print("[*] Błąd createFolder {}".format(path))
             return False
 
         return True
