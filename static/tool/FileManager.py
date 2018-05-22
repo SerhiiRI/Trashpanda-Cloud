@@ -103,6 +103,18 @@ class FileManager(object):
     @staticmethod
     def createLink(pathA: str, pathB: str):
 
+        '''
+                createLink
+
+        :param pathA: path to file | pathB: Destination path
+        :return: True / False
+
+        Method used while original owner decides to delete file. System looks for next person interested in being owner.
+
+        @Mikolaj Rychel
+        '''
+
+
         '''Sprawdzenie czy plik o podanej ścieżce istnieje'''
         if not os.path.isfile(pathA):
             print("Brak pliku o takiej ścieżce")
@@ -125,13 +137,22 @@ class FileManager(object):
 
         return True
 
-    """ Funkcja do wyciągania rozszerzeń, może być problem dla więcej niż jedna kropka, ponieważ warunek oznacza:
-        Jeśli jest więcej niż jedna kropka w nazwie to rozszerzeniem są dwie ostatnie kropki. Rozwiązanie na szybko
-        będzie problem jak ktoś będzie miał kropki w nazwie.
-    """
+
 
     @staticmethod
     def extensionSpliter(filename : str):
+
+        '''
+                extensionSpliter
+
+        :param path: path to file
+        :return: extension
+
+        Funkcja do wyciągania rozszerzeń
+
+        @Mikolaj Rychel
+        '''
+
         ext = ""
         tab = filename.split(".")
 
@@ -148,6 +169,16 @@ class FileManager(object):
 
     @staticmethod
     def swapOwner(pathA: str, pathB: str):
+        '''
+                swapOwner
+
+        :param pathA: path to file | pathB: Destination path
+        :return: True / False
+
+        Method used while original owner decides to delete file. System looks for next person interested in being owner.
+
+        @Mikolaj Rychel
+        '''
         pass
 
     @staticmethod
@@ -179,15 +210,47 @@ class FileManager(object):
 
     @staticmethod
     def checkPermissions(path: str):
+        '''
+                checkPermissions
+
+        :param path: path to file
+        :return: Unix style permission label (example: 755)
+
+        @Mikolaj Rychel
+        '''
         perm = oct(os.stat(path).st_mode)[-3:]
         print(perm)
 
     @staticmethod
     def listDir(path: str):
+        '''
+                listDir
+
+        :param path: on disk directory
+        :return: list of files / catalogs in mentioned directory
+
+        Listing files in given directory
+
+        @Mikolaj Rychel
+        '''
         finder = FileController()
         return finder.gatherDiskInfo(path)
 
     @staticmethod
     def createEmptyFile(path: str, filename:str):
-        f = open(path + filename, "w+")
-        f.close()
+        '''
+                createEmptyFile
+
+        :param path: path to create a file | filename: filename with extension
+        :return: True/False
+        Creating empty file to test - Debugging method
+
+        @Mikolaj Rychel
+        '''
+
+        try:
+            f = open(path + filename, "w+")
+            f.close()
+            return True
+        except:
+            return False
