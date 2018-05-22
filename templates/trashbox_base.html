@@ -4,27 +4,8 @@
 <head>
     {#  Podpięcie danych header z zewnętrznego pliku  #}
     {% include 'extend/head.html' %}
-    <div class="g-signin2" data-width="0" data-height="0" data-onsuccess="onSignIn"
-         data-theme="dark"></div>
-    <script>
-        var back = true;
-        if (localStorage.getItem('loginTest') != null) {
-            console.log(localStorage.getItem('loginTest'));
-            console.log("Fake Login Active");
-            back = false;
-        } else {
-            function onSignIn(googleUser) {
-                var profile = googleUser.getBasicProfile();
-                console.log("Logowanie przez Google");
-                back = false;
-            }
-        }
-        if (back == true) {
-            window.localStorage.clear();
-            window.location.href = ("/");
-        }
-    </script>
 
+    <script src="/static/scripts/js/auth.js" async defer></script>
 
     {#  Podpięcie bazowego stylu  #}
     <link rel=stylesheet type=text/css href="/static/style/trashbox-base.css">

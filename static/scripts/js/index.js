@@ -6,6 +6,7 @@ var isSignIn = false;
 if (localStorage.getItem('userID') != null) {
     afterlogin();
     loginButton();
+    isSignIn = true;
 }
 
 /**
@@ -42,6 +43,7 @@ function signOut() {
     auth2.signOut().then(function () {
         console.log('User signed out.');
     });
+    window.localStorage.clear();
     goTo('/');
 }
 
@@ -52,6 +54,7 @@ function afterlogin() {
     document.getElementById("userinfo").style.display = "initial";
     document.getElementById("userimg").src = localStorage.getItem('userPic');
     document.getElementById("username").innerHTML = localStorage.getItem('userName');
+    localStorage.setItem('signed', 'true');
 }
 
 /**
@@ -64,7 +67,6 @@ function loginTest() {
     closeLoginForm();
     afterlogin();
     loginButton();
-    localStorage.setItem('loginTest', 'true');
 }
 
 /**
@@ -84,10 +86,8 @@ function loginButton() {
  * Funkcja wylogowania
  * */
 function logout() {
-    window.localStorage.clear();
     isSignIn = false;
     signOut();
-    goTo('/');
 }
 
 /**
