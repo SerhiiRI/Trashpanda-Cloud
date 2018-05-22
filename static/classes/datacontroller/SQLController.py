@@ -124,12 +124,13 @@ class SQLCloud(IDataConnector):
 
         @Serhii Riznychuk
         """
-        String = "def select_" + tableName + "(**wheres):\n"
+        String = "def select_" + tableName + "(self, **wheres):\n"
         String = String + "\tsql=\"SELECT * FROM `" + tableName + "`\"\n"
         String = String + "\tif(len(wheres) > 0):\n"
         String = String + "\t\tsql = sql + \" WHERE \" + \" AND \".join([\"`\"+str(key)+\"`=%s\" for key, value in wheres.items()])\n"
+        #String = String + "\t\tprint(sql)\n"
         String = String + "\t__cursor = self._connector.cursor()\n"
-        String = String + "\t__cursor.execute(sql, tuple(( wheres[key] for key, value in wheres.items() ))"
+        String = String + "\t__cursor.execute(sql, (( wheres[key] for key, value in wheres.items())))\n"
         String = String + "\treturn __cursor.fetchall()\n"
         String = String + "self.select_" + tableName + " = MethodType(select_" + tableName + ", self)\n"
         try:
@@ -137,11 +138,12 @@ class SQLCloud(IDataConnector):
             return getattr(self, "select_" + tableName)
         except Exception as n:
             print("{:-^211}".format("ERROR"))
+            print(n)
             return None
 
     # TODO: create like operation to search engine, may be curring integration
     # TODO: with select, and 'like' comand
-    def LIKEselect(self, tableName: str) -> bool:
+    def like(self, tableName: str):
         """
             Select
 
@@ -152,22 +154,23 @@ class SQLCloud(IDataConnector):
 
         @Serhii Riznychuk
         """
-        String = "def select_" + tableName + "(**wheres):\n"
+        String = "def like_" + tableName + "(self, **likes):\n"
         String = String + "\tsql=\"SELECT * FROM `" + tableName + "`\"\n"
-        String = String + "\tif(len(wheres) > 0):\n"
-        String = String + "\t\tsql = sql + \" WHERE \" + \" AND \".join([\"`\"+str(key)+\"`=%s\" for key, value in wheres.items()])\n"
+        String = String + "\tif(len(likes) > 0):\n"
+        String = String + "\t\tsql = sql + \" WHERE \" + \" AND \".join([\"`\"+str(key)+\"` LIKE '%s'\" for key, value in likes.items()])\n"
         String = String + "\t__cursor = self._connector.cursor()\n"
-        String = String + "\t__cursor.execute(sql, tuple(( wheres[key] for key, value in wheres.items() ))"
+        String = String + "\t__cursor.execute(sql, (( likes[key] for key, value in likes.items())))\n"
         String = String + "\treturn __cursor.fetchall()\n"
-        String = String + "self.update_" + tableName + " = MethodType(update_" + tableName + ", self)\n"
+        String = String + "self.like_" + tableName + " = MethodType(like_" + tableName + ", self)\n"
+        print(String)
         try:
             exec(String)
-            return getattr(self, "update_" + tableName)
+            return getattr(self, "like_"+tableName)
         except Exception as n:
             print("{:-^211}".format("ERROR"))
-            return None
+            return False
 
-    def delete(self, tableName: str) -> bool:
+    def delete(self, tableName: str):
         """
            Delete
 
@@ -178,7 +181,7 @@ class SQLCloud(IDataConnector):
 
         @Serhii Riznychuk
         """
-        String = "def delete_" + tableName + "(**kwargs):\n"
+        String = "def delete_" + tableName + "(self, **kwargs):\n"
         String = String + '\tsql = "DELETE FROM `' + tableName + '`\"\n'
         String = String + '\tif(len(kwargs) > 0):\n'
         String = String + '\t\tsql = sql + " WHERE "+" AND ".join([\"`\"+str(key)+"`=%s" for key, value in kwargs.items()])\n'
@@ -188,7 +191,9 @@ class SQLCloud(IDataConnector):
         String = String + "\t__cursor.close()\n"
         String = String + "\treturn 0\n"
         String = String + "self.update_" + tableName + " = MethodType(update_" + tableName + ", self)\n"
+        print(String)
         try:
+
             exec(String)
             return getattr(self, "update_" + tableName)
         except Exception as n:

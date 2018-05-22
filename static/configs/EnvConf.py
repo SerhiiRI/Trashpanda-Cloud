@@ -28,3 +28,4 @@ def variableconfig():
 variableconfig()
 print(tmp.TrashPandpa())
 
+

@@ -21,10 +21,3 @@ class TableFillController(SQLCloud, TableTypeParser):
                 InsertFunction(*keylist)
             except MySQLError:
                 print("\nTHIS COLUMN NOT HAVE INDEX")
-
-
-
-
-
-
-
