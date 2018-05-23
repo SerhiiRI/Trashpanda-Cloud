@@ -3,7 +3,6 @@ import os
 import sys
 import static.configs.EnvConf
 import tempfile
-import static.classes.Registration
 
 from time import sleep
 
@@ -11,6 +10,7 @@ from static.controllers.Permission import Permission
 from static.tool.Logs import Log, LogType
 from static.tool.FileManager import FileManager
 from static.controllers.FileController import FileController
+from static.classes.Registration import Register, isRegistered
 
 from static.classes.FileUpload import FileUpload
 
@@ -128,6 +128,34 @@ def mytrashbox(pathToDir):
     if(pathToDir == "home"):
         return render_template('trashbox.html', file=paths, backpath=backpath, currentdir=currentdir)
 
+'''
+    - Sprawdzenie czy użytkownik jest w bazie
+    - Rejestracja użytkownika
+'''
+@app.route('/registry', methods=['POST'])
+def registry():
+    print("Autoryzacja rozpoczęta.")
+    if request.form.get('action') == 'auth':
+        gid = request.form.get('googleID')
+        res = isRegistered(gid)
+        if res == 1:
+            print("Sukces!");
+            return jsonify({'auth': res})
+        else:
+            print("Failed! isRegistred: {}".format(res));
+            return jsonify({'auth': res})
+
+    if request.form.get('action') == 'registry':
+        print("Proces rejestracji: przechwycenie danych.")
+        gid = request.form.get('gid')
+        name = request.form.get('name')
+        email = request.form.get('email')
+        token = request.form.get('token')
+        print("Zapis do bazy.")
+        ans = Register(gid, name, email, token)
+        print("Rejestracja: {0}".format(ans))
+        print("Odebrano dane: " + gid + " " + name + " " + email + " " + token);
+        return jsonify({'res': "Teraz jesteś jednym z nas i masz dostęp do swojego TrashBox'a! Najpierw jednak się zaloguj!"})
 
 
 @app.route('/upload/',  methods=['POST'])
