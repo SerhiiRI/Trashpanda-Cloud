@@ -32,7 +32,7 @@ class IDataConnector(object):
     @Permission.login
     def __init__(self, DataBase="test_cloud"):
         ''' reconstruct SQL requests and create a table '''
-        # print(DATABASE[DataBase])
+        #print(DATABASE[DataBase])
         host = DATABASE[DataBase]["host"]
         user = DATABASE[DataBase]["user"]
         password = DATABASE[DataBase]["password"]
