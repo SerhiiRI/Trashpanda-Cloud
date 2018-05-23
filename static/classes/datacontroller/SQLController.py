@@ -18,7 +18,7 @@ class SQLCloud(IDataConnector):
 
     def __init__(self, db_name : str ='test_cloud'):
         ''' Private constructor  '''
-        IDataConnector.__init__(self, db_name)
+        super(SQLCloud, self).__init__()
         cursor = self._connector.cursor()
         self.__table = cursor.execute("SHOW TABLES")
         cursor.close()

@@ -5,7 +5,7 @@ from datetime import date
 class Controller(SQLCloud):
 
     def __init__(self):
-        SQLCloud.__init__(self)
+        super(Controller, self).__init__()
 
     def do(self, argumnets) -> str:
         email = argumnets.email
