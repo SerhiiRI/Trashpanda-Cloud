@@ -124,7 +124,7 @@ def mytrashbox(pathToDir):
     if paths == 'home':
         backpath = ''
         currentdir = 'home'
-        finalPath = '/home'
+        finalPath = ''
     else:
         paths = paths.split('.')
         finalPath = ''
@@ -139,7 +139,8 @@ def mytrashbox(pathToDir):
         finalPath = '/' + session['googleID'] + finalPath + '/'
     else:
         return render_template('info_pages/404.html'), 404
-    files = FileController.gatherDiskInfo(finalPath)
+    filecontroller = FileController()
+    files = filecontroller.gatherDiskInfo(finalPath)
     print("Get pathToDir: " + pathToDir)
     print("Set currentDir: " + currentdir)
     print("Set backPath: " + backpath)
