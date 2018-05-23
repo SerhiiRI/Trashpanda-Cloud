@@ -24,6 +24,7 @@ class File(IFile.File):
         self.HashSum = str(data[5])
 
         if(self.Extension == "None"):
+
             self.Icon = "folder-open-empty"
         else:
             self.Icon = "file-image"
