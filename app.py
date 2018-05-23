@@ -43,7 +43,7 @@ def getTestPathData():
 def index():
     return render_template('index.html')
 
-  
+
 '''
     Dodanie/Update/Odczyt sesji
     
@@ -76,7 +76,7 @@ def sessionControler():
         else:
             print("Nie znaleziono sesji: " + name)
             return jsonify({'param': ''})
-          
+
 
 @app.route('/info')
 def info():
@@ -127,7 +127,6 @@ def mytrashbox(pathToDir):
     if(pathToDir == "home"):
         return render_template('trashbox.html', file=paths, backpath=backpath, currentdir=currentdir)
 
-
 @app.route('/upload/',  methods=['POST'])
 def upload():
     REQUESTED_FILES = request.files.getlist('fileToUpload')
@@ -139,12 +138,8 @@ def upload():
 
     return render_template('/upload_download/upload.html')
 
-
-if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0", port=5000)
-
-@Permission.login
-@Log(LogType.INFO, 2, "-", printToConsole=False)
+# @Permission.login
+# @Log(LogType.INFO, 2, "-", printToConsole=False)
 def startServer():
     if __name__ == '__main__':
         app.run(debug=True, host="0.0.0.0", port=5000)
