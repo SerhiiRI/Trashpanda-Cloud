@@ -23,19 +23,23 @@ app.secret_key = os.urandom(24)
 
 def getTestFiles():
     paths = [{
-        'icon': 'file-image',
-        'name': 'twoja_stara.png',
-        'lock': 'lock',
-        'size': '2.4 MB',
-        'tag': ['#hehe', '#lol', '#yolololololo', '#hehe', '#lol', '#yololo'],
+        'fileID': '1',
+        'Name': 'kociaki',
+        'Extension': '.png',
+        'FilePath': '/',
+        'Size': '240000',
+        'HashSum': '123',
+        'Icon': 'file-image',
     },
         {
-            'icon': 'folder-open-empty',
-            'name': 'twoja_stara.png',
-            'lock': '',
-            'size': '',
-            'tag': [],
-        }
+            'fileID': '2',
+            'Name': 'TrashPanda',
+            'Extension': 'None',
+            'FilePath': '/',
+            'Size': '2450000',
+            'HashSum': '4556',
+            'Icon': 'folder-open-empty',
+        },
     ]
     return paths
 
@@ -94,12 +98,13 @@ def kontakt():
     return render_template('info_pages/contact.html')
 
 
-@app.route('/download')
+@app.route('/download', methods=['POST'])
 def download():
-    #path = request.form.get('filePath')
-    path = "/srv/Data/mikus/plik.txt"
-    name = os.path.basename(path)
-    return send_file(path, attachment_filename=name , as_attachment=True)
+    if request.form.get('action') == 'download':
+        path = request.form.get('path')
+        # path = "/srv/Data/mikus/plik.txt"
+        name = os.path.basename(path)
+        return send_file(path, attachment_filename=name , as_attachment=True)
 
 
 # @app.route('/mytrashbox', methods=['GET','POST'])
@@ -142,6 +147,8 @@ def mytrashbox(pathToDir):
 
     filecontroller = FileController()
     files = filecontroller.gatherDiskInfo(finalPath)
+    # Dane testowe
+    files = getTestFiles()
     print("Files: " + str(len(files)))
     print("Get pathToDir: " + pathToDir)
     print("Set currentDir: " + currentdir)

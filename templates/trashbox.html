@@ -6,6 +6,7 @@
     <link rel=stylesheet type=text/css href="/static/style/trashbox.css">
     <script async src="/static/scripts/js/trashoboxOptionPopUp.js"></script>
 
+
     <div id="loadContent">
         <br>
 
@@ -50,7 +51,7 @@
                             {#                        {% endif %}#}
                         </td>
                         {#  Przycisk z ikonką trzech kropek otwierający popup z opcjami dla elemntu  #}
-                        <td><i onmouseenter="openmenu()" class="icon-ellipsis-vert hover"></i></td>
+                        <td><i onmouseenter="openmenu('{{ file.FilePath }}')" class="icon-ellipsis-vert hover"></i></td>
                         <input type="hidden" value="{{ file.FilePath }}" name="filePath">
                     </form>
                 </tr>
@@ -59,11 +60,64 @@
         </table>
 
         {#  PopUp z opcjami dotyczącymi wyświerlonego rekordu z plikiem/katalogiem po najechaniu myszą #}
-        <form class="popmenu" id="popmenu" onmouseleave="closemenu()">
-            <input type="hidden" name="filepath" value="filepath">
-            <input type="submit" name="open" value="Otwórz">
+        <div class="popmenu" id="popmenu" onmouseleave="closemenu()">
+            <form action="/mytrashbox" method="post">
+                <input type="hidden" name="filePath" value="">
+                <input type="submit" name="open" value="Otwórz">
+            </form>
             <input type="button" name="close" value="Zamknij" onclick="closemenu()">
-        </form>
+        </div>
     </div>
+
+    <script>
+        /**
+         * Wyświetl menu opcji dla wybranego z listy elementu
+         */
+
+        var pop = document.getElementById("popmenu");
+        var hiddenpath = document.getElementById('filePath');
+
+        /* Wyświetla mneu opcji dla elementu z listy w trashbox */
+        function openmenu(path) {
+            var eventy = (event.clientY - 17) + 'px';
+            pop.style.top = eventy;
+            anim;
+            var anim = setInterval(function () {
+                pop.style.right = '10px';
+                clearInterval(anim);
+            }, 150);
+        }
+
+        /* Zamknięcie menu opcji */
+        function closemenu() {
+            pop.style.right = -450 + 'px';
+            console.log('close');
+        }
+
+        /* Przekazanie parametru odnośnie katalogu, po którym wyświetlone zostaną dane wybranego katalogu */
+        function openfile(link) {
+            window.location.href = '/trash/' + link;
+        }
+
+
+        function download(filePath, ex) {
+            if (ex != 'None') {
+                $.ajax({
+                    method: 'POST',
+                    url: 'download',
+                    data: {
+                        'action': 'download',
+                        'path': filePath,
+                    },
+                    success: function (response) {
+                        console.log("Pobieranie pliku: " + response.mess)
+                    },
+                    error: function (error) {
+                        console.log("Pobieranie nie powiodło się.")
+                    }
+                });
+            }
+        }
+    </script>
 
 {% endblock %}

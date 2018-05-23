@@ -38,9 +38,6 @@ function onSignIn(googleUser) {
     localStorage.setItem('userName', profile.getGivenName() + " " + x[0] + ".");
     knockknock(profile.getId(), localStorage.getItem('userName'), profile.getEmail(), token, profile.getImageUrl());
     isSignIn = true;
-    closeLoginForm();
-    afterlogin();
-    loginButton();
 }
 
 /**
@@ -86,7 +83,6 @@ function knockknock(gid, name, email, token, pic) {
     $.ajax({
             method: 'POST',
             url: 'registry',
-            async: false,
             data: {
                 'action': 'auth',
                 'gid': gid,
@@ -105,7 +101,6 @@ function knockknock(gid, name, email, token, pic) {
                         $.ajax({
                             method: 'POST',
                             url: 'registry',
-                            async: false,
                             data: {
                                 'action': 'registry',
                                 'gid': gid,
