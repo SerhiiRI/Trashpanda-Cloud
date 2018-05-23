@@ -118,6 +118,7 @@ def page_not_found(e):
     return render_template('info_pages/404.html'), 404
     # return redirect("https://www.asciipr0n.com/pr0n/morepr0n/pr0n04.txt", code=302)
 
+
 @app.route('/mytrashbox', defaults={'pathToDir':'home'})
 @app.route('/mytrashbox/<pathToDir>')
 def mytrashbox(pathToDir):
