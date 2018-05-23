@@ -1,8 +1,7 @@
+/* Import bazowego stylowania dla strony */
 @import "extend/base.css";
 
-.nav{
-    top: -75px;
-}
+/* Styl odpowiedzialny za paski nawigacji oraz ich animację */
 .nav, .foo{
     position: fixed;
     z-index: 2;
@@ -15,37 +14,31 @@
     justify-content: center;
     background-color: #fff;
 }
-.foo{
-    bottom: -75px;
-}
-.foo:hover, .nav:hover{
+.nav{ top: -75px; }
+
+.foo{ bottom: -75px; }
+
+/* Animacja hover */
+.nav:hover, .foo:hover{
+    height: 70px;
     cursor: default;
 }
+.nav:hover{ top:0; }
 
-.alx-foo {
-    box-shadow: none !important;
-}
+.foo:hover{ bottom: 0; }
+
+/* Modyfikacja do podłączonego modułu z zawartością stopki */
+.alx-foo { box-shadow: none !important; }
 
 .content{
     z-index: 1;
     height: 100%;
 }
 
-.nav:first-child{
-    justify-content: left;
-}
+/* Stylowanie dla avatara użytkownika w pasku nawigacji */
+.nav:first-child{ justify-content: left; }
 
-#foo-inside{
-    display: none;
-    opacity: 0;
-    transition: opacity 500ms;
-}
-#nav-inside{
-    display: none;
-    opacity: 0;
-    transition: opacity 500ms;
-}
-
+/* Stylowanie kontenera dla listy z zawartością katalogu */
 .trashbox-container{
     width: 100%;
     height: 100%;

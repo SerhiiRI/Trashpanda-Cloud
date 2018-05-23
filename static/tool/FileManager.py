@@ -50,15 +50,15 @@ class FileManager(object):
     def remove(path: str):
         try:
             if path[len(path) - 1] != "/":
-                return FileManager.removeFile(path)
+                return FileManager.__removeFile(path)
             else:
-                return FileManager.RemoveDir(path)
+                return FileManager.__removeDir(path)
         except:
             print("Remove function fatal error")
             return False
 
     @staticmethod
-    def removeFile(path: str) -> bool:
+    def __removeFile(path: str) -> bool:
         try:
             os.remove(path)
         except:
@@ -68,7 +68,7 @@ class FileManager(object):
         return True
 
     @staticmethod
-    def removeDir(path: str) -> bool:
+    def __removeDir(path: str) -> bool:
         try:
             shutil.rmtree(path)
         except:

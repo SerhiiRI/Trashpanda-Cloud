@@ -16,12 +16,13 @@ zostanie pominięty dla funkcji *gatherInfo*
 
 import glob, os, shutil
 import static.classes.File as File
-
+from static.classes.datacontroller.SQLController import SQLCloud
 
 
 class FileController(object):
     def __init__(self):
         self.defaultRoute = "/srv/Data"
+        self.SQL_Controller = SQLCloud()
 
     """Ścieżka *Path* powinna być w formacie [ /userID/katalog1/katalog2/ ], czyli slash na początku i końcu"""
     def gatherDiskInfo(self, Path = "") -> list:
@@ -32,11 +33,19 @@ class FileController(object):
         for file in temp:
             Size = os.stat(file).st_size
             FullPath = file
-            Name = "test"
             hash = file.split("/")[-1]
-            fileID = hash
 
-            Extension = self.extensionSpliter(file)
+            Data_Reader = self.SQL_Controller.merge("file", "idFile", "version", where={"hashsume" : hash})
+
+            if(len(Data_Reader) > 0):
+                Name = Data_Reader[0][2]
+                fileID = Data_Reader[0][0]
+                Extension = self.extensionSpliter(file)
+            else:
+                Name = file.split("/")[-1]
+                fileID = "Folder"
+                Extension = "None"
+
             """Wypełnianie Listy informacjami dla konstruktora klasy File"""
             TEMP = list()
             TEMP.append(fileID)
@@ -48,19 +57,7 @@ class FileController(object):
             """Dodawanie do listy plików obiektów klasy File"""
             Files.append(File.File(TEMP))
 
-        """
-        Brak informacji o FileName -> Aktualnie ustawione na *Test*, 
-        Pamiętać o przekierowaniu generowania listy Plików file do funkcji *gatherItemInfo*
-        Bo FileName jest w Bazie danych    
-        """
         return Files
-
-    def gatherItemInfo(self, hashsum: str):
-        pass
-
-    def createLists(self, hashes: list) -> list:
-        pass
-
 
     def extensionSpliter(self, filename : str):
         ext = ""
