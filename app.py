@@ -10,7 +10,6 @@ from static.tool.Logs import Log, LogType
 from static.tool.FileManager import FileManager
 from static.controllers.FileController import FileController
 from static.classes.Registration import Register, isRegistered
-
 from static.classes.FileUpload import FileUpload
 
 from flask import Flask, render_template, send_file

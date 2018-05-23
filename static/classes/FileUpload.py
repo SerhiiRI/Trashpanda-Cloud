@@ -47,14 +47,10 @@ class Uploaded_File():
             print("Blad")
 
 
-
-
-
-
 class FileUpload():
 
     @staticmethod
-    def upload(filelist, path):
+    def upload(filelist, path, google_ID):
         DUMP_DIR = "/srv/DUMP/"
         Destination_DIR = "/srv/Data/" + path
         """Lista mówiąca ile plików udało się pobrać bez problemów"""
@@ -73,6 +69,9 @@ class FileUpload():
 
                 if not FileManager.moveFile(DUMP_destination, Destination_DIR, SHA1):
                     FileManager.remove(DUMP_destination)
+                    temp = Uploaded_File(filename, )
+                    temp.getInfo()
+
                     statusList.append([False, filename, DUMP_destination, str(datetime.datetime.today())])
                 else:
                     statusList.append([True, filename, DUMP_destination, str(datetime.datetime.today())])
