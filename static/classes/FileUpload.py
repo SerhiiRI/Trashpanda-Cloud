@@ -69,13 +69,15 @@ class FileUpload():
 
                 if not FileManager.moveFile(DUMP_destination, Destination_DIR, SHA1):
                     FileManager.remove(DUMP_destination)
-                    temp = Uploaded_File(filename, )
-                    temp.getInfo()
-
                     statusList.append([False, filename, DUMP_destination, str(datetime.datetime.today())])
                 else:
-                    statusList.append([True, filename, DUMP_destination, str(datetime.datetime.today())])
-
+                    try:
+                        temp = Uploaded_File()
+                        temp.getInfo(filename, Destination_DIR, google_ID)
+                        temp.uploadTheShit()
+                        statusList.append([True, filename, DUMP_destination, str(datetime.datetime.today())])
+                    except:
+                        print("SQL FAKAP")
             except:
                 print("Error, Error blyat")
 

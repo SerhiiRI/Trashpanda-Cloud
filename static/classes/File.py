@@ -11,6 +11,7 @@ class File(IFile.File):
         self.FilePath=""
         self.Size=""
         self.HashSum=""
+        self.Icon=""
         self.construct(data)
 
     def construct(self, data: list):
@@ -20,6 +21,11 @@ class File(IFile.File):
         self.FilePath = str(data[3])
         self.Size = str(data[4])
         self.HashSum = str(data[5])
+
+        if(self.Extension == None):
+            self.Icon = "folder-open-empty"
+        else:
+            self.Icon = "file-image"
 
     def serialize(self) -> str:
         """Serialized format ID:Name:Extension:FilePath:Size:HashSum"""
