@@ -21,6 +21,7 @@ class File(IFile.File):
         self.FilePath = str(data[3])
         self.Size = str(data[4])
         self.HashSum = str(data[5])
+
         if(self.Extension is None):
             self.Icon = "folder-open-empty"
         else:
