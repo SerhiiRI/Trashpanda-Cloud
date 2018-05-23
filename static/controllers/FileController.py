@@ -46,7 +46,6 @@ class FileController(object):
                 fileID = "Folder"
                 Extension = None
 
-
             """Wypełnianie Listy informacjami dla konstruktora klasy File"""
             TEMP = list()
             TEMP.append(fileID)
