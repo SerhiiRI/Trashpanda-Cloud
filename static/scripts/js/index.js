@@ -14,6 +14,8 @@ if (localStorage.getItem('userID') != null) {
 var testID = "1234567890";
 var testPic = "https://lh5.googleusercontent.com/-p-7kqdTngmk/AAAAAAAAAAI/AAAAAAAAAkA/LS9olK6iiME/s96-c/photo.jpg";
 var testName = "Aleks S.";
+var testEmail = "aleks@wp.pl";
+var testToken = "102938xcvb47565xb6478bxcvb349021b";
 
 
 /**
@@ -60,12 +62,61 @@ function afterlogin() {
  * Testowe logowanie
  * */
 function loginTest() {
-    localStorage.setItem('userID', testID);
-    localStorage.setItem('userPic', testPic);
-    localStorage.setItem('userName', testName);
-    closeLoginForm();
-    afterlogin();
-    loginButton();
+    var gid = testID;
+    var name = testName;
+    var email = testEmail;
+    var token = testToken;
+    $.ajax({
+            method: 'POST',
+            url: 'registry',
+            async: false,
+            data: {
+                'action': 'auth',
+                'gid': gid,
+            },
+            success: function (response) {
+                console.log("Auth: " + response.auth)
+                if (response.auth == true) {
+                    localStorage.setItem('userID', testID);
+                    localStorage.setItem('userPic', testPic);
+                    localStorage.setItem('userName', testName);
+                    closeLoginForm();
+                    afterlogin();
+                    loginButton();
+                } else {
+                    if (confirm("Nie widzieliśmy Cię tu wcześniej drogi szopie. Chcesz do nas dołączyć?")) {
+                        $.ajax({
+                            method: 'POST',
+                            url: 'registry',
+                            async: false,
+                            data: {
+                                'action': 'registry',
+                                'gid': gid,
+                                'name': name,
+                                'email': email,
+                                'token': token,
+                            },
+                            success: function (response) {
+                                txt = response.res;
+                                closeLoginForm();
+                            },
+                            error: function (error) {
+                                txt = "Niestety coś poszło nie tak, spróbuj innym razem ; - ;";
+                                console.log("Błąd przy rejestracji!")
+                            }
+                        });
+                    } else {
+                        txt = "No to może innym razem. Trzym się <(^ u ^)/";
+                    }
+                    alert(txt);
+                }
+            }
+            ,
+            error: function (error) {
+                console.log("Nie autoryzowano.")
+            }
+        }
+    );
 }
 
 /**

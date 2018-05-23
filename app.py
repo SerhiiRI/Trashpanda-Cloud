@@ -10,6 +10,9 @@ from static.controllers.Permission import Permission
 from static.tool.Logs import Log, LogType
 from static.tool.FileManager import FileManager
 from static.controllers.FileController import FileController
+from static.classes.Registration import Register, isRegistered
+
+from static.classes.FileUpload import FileUpload
 
 from flask import Flask, render_template, send_file
 from flask import request, session, jsonify
@@ -41,7 +44,7 @@ def getTestPathData():
 def index():
     return render_template('index.html')
 
-  
+
 '''
     Dodanie/Update/Odczyt sesji
     
@@ -74,7 +77,7 @@ def sessionControler():
         else:
             print("Nie znaleziono sesji: " + name)
             return jsonify({'param': ''})
-          
+
 
 @app.route('/info')
 def info():
@@ -125,8 +128,48 @@ def mytrashbox(pathToDir):
     if(pathToDir == "home"):
         return render_template('trashbox.html', file=paths, backpath=backpath, currentdir=currentdir)
 
+'''
+    - Sprawdzenie czy użytkownik jest w bazie
+    - Rejestracja użytkownika
+'''
+@app.route('/registry', methods=['POST'])
+def registry():
+    print("Autoryzacja rozpoczęta.")
+    if request.form.get('action') == 'auth':
+        gid = request.form.get('gid')
+        res = isRegistered(gid)
+        if res == True:
+            print("Sukces!");
+            return jsonify({'auth': res})
+        else:
+            print("Failed! isRegistred: {}".format(res));
+            return jsonify({'auth': res})
 
-# @Permission.login
+    if request.form.get('action') == 'registry':
+        print("Proces rejestracji: przechwycenie danych.")
+        gid = request.form.get('gid')
+        name = request.form.get('name')
+        email = request.form.get('email')
+        token = request.form.get('token')
+        print("Zapis do bazy.")
+        ans = Register(gid, name, email, token)
+        print("Rejestracja: {0}".format(ans))
+        print("Odebrano dane: " + gid + " " + name + " " + email + " " + token);
+        return jsonify({'res': "Teraz jesteś jednym z nas i masz dostęp do swojego TrashBox'a! Najpierw jednak się zaloguj!"})
+
+
+@app.route('/upload/',  methods=['POST'])
+def upload():
+    REQUESTED_FILES = request.files.getlist('fileToUpload')
+    current_path = request.files.getlist('pathToDir')
+    tab = FileUpload.upload(REQUESTED_FILES, current_path)
+
+    for item in tab:
+        print(item)
+
+    return render_template('/upload_download/upload.html')
+
+@Permission.login
 # @Log(LogType.INFO, 2, "-", printToConsole=False)
 def startServer():
     if __name__ == '__main__':
