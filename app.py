@@ -136,9 +136,9 @@ def mytrashbox(pathToDir):
 def registry():
     print("Autoryzacja rozpoczęta.")
     if request.form.get('action') == 'auth':
-        gid = request.form.get('googleID')
+        gid = request.form.get('gid')
         res = isRegistered(gid)
-        if res == 1:
+        if res == True:
             print("Sukces!");
             return jsonify({'auth': res})
         else:
@@ -169,7 +169,7 @@ def upload():
 
     return render_template('/upload_download/upload.html')
 
-# @Permission.login
+@Permission.login
 # @Log(LogType.INFO, 2, "-", printToConsole=False)
 def startServer():
     if __name__ == '__main__':
