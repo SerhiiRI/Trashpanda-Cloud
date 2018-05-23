@@ -11,10 +11,9 @@ def isRegistered(google_id) -> bool:
 
 def Register(google_id : str, full_name : str, google_email : str, google_token : str) -> bool:
     if (not isRegistered(google_id)):
-        idUserType = 1
+        idUserType = "1"
         nickname = "Noob"
         publicKey = google_id
-
         DB = SQLCloud()
         DB_Insert = DB.insert("users")
         DB_Insert(idUserType, nickname, publicKey, google_id, full_name, google_email, google_token)

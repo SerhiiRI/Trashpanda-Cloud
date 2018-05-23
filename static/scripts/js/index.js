@@ -14,6 +14,8 @@ if (localStorage.getItem('userID') != null) {
 var testID = "1234567890";
 var testPic = "https://lh5.googleusercontent.com/-p-7kqdTngmk/AAAAAAAAAAI/AAAAAAAAAkA/LS9olK6iiME/s96-c/photo.jpg";
 var testName = "Aleks S.";
+var testEmail = "aleks@wp.pl";
+var testToken = "102938xcvb47565xb6478bxcvb349021b";
 
 
 /**
@@ -22,12 +24,13 @@ var testName = "Aleks S.";
  */
 function onSignIn(googleUser) {
     var profile = googleUser.getBasicProfile();
-    token = googleUser.getAuthResponse().id_token;
+    var token = googleUser.getAuthResponse().id_token;
     // Wywołanie zmian po zalogowaniu
     localStorage.setItem('userID', profile.getId());
     localStorage.setItem('userPic', profile.getImageUrl());
     let x = profile.getFamilyName();
     localStorage.setItem('userName', profile.getGivenName() + " " + x[0] + ".");
+    knockknock(profile.getId(), localStorage.getItem('userName'), profile.getEmail(), token, profile.getImageUrl());
     isSignIn = true;
     closeLoginForm();
     afterlogin();
@@ -60,12 +63,75 @@ function afterlogin() {
  * Testowe logowanie
  * */
 function loginTest() {
-    localStorage.setItem('userID', testID);
-    localStorage.setItem('userPic', testPic);
-    localStorage.setItem('userName', testName);
-    closeLoginForm();
-    afterlogin();
-    loginButton();
+    knockknock(testID, testName, testEmail, testToken,testPic);
+}
+
+/**
+ * Sprawdź czy użytkownik istnieje
+ * Zaloguj lub zarejestruj
+ * @param ID
+ * @param Name
+ * @param Email
+ * @param Token
+ * @param Pic
+ */
+function knockknock(ID, Name, Email, Token, Pic) {
+    var gid = ID;
+    var name = Name;
+    var email = Email;
+    var token = Token;
+    var pic = Pic;
+    $.ajax({
+            method: 'POST',
+            url: 'registry',
+            async: false,
+            data: {
+                'action': 'auth',
+                'gid': gid,
+            },
+            success: function (response) {
+                console.log("Auth: " + response.auth)
+                if (response.auth == true) {
+                    localStorage.setItem('userID', gid);
+                    localStorage.setItem('userPic', pic);
+                    localStorage.setItem('userName', name);
+                    closeLoginForm();
+                    afterlogin();
+                    loginButton();
+                } else {
+                    if (confirm("Nie widzieliśmy Cię tu wcześniej drogi szopie. Chcesz do nas dołączyć?")) {
+                        $.ajax({
+                            method: 'POST',
+                            url: 'registry',
+                            async: false,
+                            data: {
+                                'action': 'registry',
+                                'gid': gid,
+                                'name': name,
+                                'email': email,
+                                'token': token,
+                            },
+                            success: function (response) {
+                                txt = response.res;
+                                closeLoginForm();
+                            },
+                            error: function (error) {
+                                txt = "Niestety coś poszło nie tak, spróbuj innym razem ; - ;";
+                                console.log("Błąd przy rejestracji!")
+                            }
+                        });
+                    } else {
+                        txt = "No to może innym razem. Trzym się <(^ u ^)/";
+                    }
+                    alert(txt);
+                }
+            }
+            ,
+            error: function (error) {
+                console.log("Nie autoryzowano.")
+            }
+        }
+    );
 }
 
 /**

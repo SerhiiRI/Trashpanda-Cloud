@@ -3,13 +3,13 @@ import os
 import sys
 import static.configs.EnvConf
 import tempfile
-from static.classes.Registration import Register
 from time import sleep
 
 from static.controllers.Permission import Permission
 from static.tool.Logs import Log, LogType
 from static.tool.FileManager import FileManager
 from static.controllers.FileController import FileController
+from static.classes.Registration import Register, isRegistered
 
 from static.classes.FileUpload import FileUpload
 
@@ -118,7 +118,6 @@ def page_not_found(e):
     return render_template('info_pages/404.html'), 404
     # return redirect("https://www.asciipr0n.com/pr0n/morepr0n/pr0n04.txt", code=302)
 
-
 @app.route('/mytrashbox', defaults={'pathToDir':'home'})
 @app.route('/mytrashbox/<pathToDir>')
 def mytrashbox(pathToDir):
@@ -127,6 +126,36 @@ def mytrashbox(pathToDir):
     currentdir = 'home'
     if(pathToDir == "home"):
         return render_template('trashbox.html', file=paths, backpath=backpath, currentdir=currentdir)
+
+'''
+    - Sprawdzenie czy użytkownik jest w bazie
+    - Rejestracja użytkownika
+'''
+@app.route('/registry', methods=['POST'])
+def registry():
+    print("Autoryzacja rozpoczeta.")
+    if request.form.get('action') == 'auth':
+        gid = request.form.get('gid')
+        res = isRegistered(gid)
+        if res == True:
+            print("Sukces!");
+            return jsonify({'auth': res})
+        else:
+            print("Failed! isRegistred: {}".format(res));
+            return jsonify({'auth': res})
+
+    if request.form.get('action') == 'registry':
+        print("Proces rejestracji: przechwycenie danych.")
+        gid = request.form.get('gid')
+        name = request.form.get('name')
+        email = request.form.get('email')
+        token = request.form.get('token')
+        print("Zapis do bazy.")
+        print("Odebrano dane: " + gid + " " + name + " " + email + " " + token);
+        ans = Register(gid, name, email, token)
+        print("Rejestracja: {0}".format(ans))
+        return jsonify({'res': "Teraz jesteś jednym z nas i masz dostęp do swojego TrashBox'a! Najpierw jednak się zaloguj!"})
+
 
 @app.route('/upload/',  methods=['POST'])
 def upload():
