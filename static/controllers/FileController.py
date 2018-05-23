@@ -40,12 +40,13 @@ class FileController(object):
             if(len(Data_Reader) > 0):
                 Name = Data_Reader[0][2]
                 fileID = Data_Reader[0][0]
+                Extension = self.extensionSpliter(file)
             else:
                 Name = file.split("/")[-1]
                 fileID = "Folder"
+                Extension = None
 
 
-            Extension = self.extensionSpliter(file)
             """Wypełnianie Listy informacjami dla konstruktora klasy File"""
             TEMP = list()
             TEMP.append(fileID)
