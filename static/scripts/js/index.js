@@ -4,9 +4,14 @@
  */
 var isSignIn = false;
 if (localStorage.getItem('userID') != null) {
-    afterlogin();
-    loginButton();
-    isSignIn = true;
+    if (getSession('googleID') == '') {
+        window.localStorage.clear();
+        isSignIn = false;
+    } else {
+        afterlogin();
+        loginButton();
+        isSignIn = true;
+    }
 }
 
 /**

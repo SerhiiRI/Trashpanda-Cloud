@@ -41,7 +41,8 @@ function getSession(name) {
             localStorage.setItem("param", response.param);
         },
         error: function (error) {
-            console.log("Pobranie sesji nie powiodło się.");
+            console.log("Sesja nie istnieje.");
+            localStorage.setItem("param", '');
         },
     });
     return localStorage.getItem("param");
