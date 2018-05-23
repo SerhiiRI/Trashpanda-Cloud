@@ -75,12 +75,8 @@ function loginTest() {
  * @param Token
  * @param Pic
  */
-function knockknock(ID, Name, Email, Token, Pic) {
-    var gid = ID;
-    var name = Name;
-    var email = Email;
-    var token = Token;
-    var pic = Pic;
+function knockknock(gid, name, email, token, pic) {
+    console.log("Run Auth.");
     $.ajax({
             method: 'POST',
             url: 'registry',
