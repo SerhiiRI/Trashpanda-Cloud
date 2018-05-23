@@ -53,24 +53,24 @@ def index():
 '''
 @app.route('/sessionControler', methods=['POST'])
 def sessionControler():
-    print("Wywołano session flask.")
+    print("Wywolano session flask.")
     if request.form.get('action') == 'set':
         name = request.form.get('name')
         param = request.form.get('param')
         session[name] = param
-        print("Dodano sesję o nazwie: " + name + " = " + param)
+        print("Dodano sesje o nazwie: " + name + " = " + param)
         return jsonify({'param': param})
 
     if request.form.get('action') == 'get':
         name = request.form.get('name')
-        if session[name]:
+        if name in session:
             param = session[name]
-            print("Pobrano sesję o nazwie: " + name)
+            print("Pobrano sesje o nazwie: " + name)
             return jsonify({'param': param})
-        elif session[name]:
+        elif name in session:
             sleep(0.5)
             param = session[name]
-            print("Pobrano sesję o nazwie: " + name)
+            print("Pobrano sesje o nazwie: " + name)
             return jsonify({'param': param})
         else:
             print("Nie znaleziono sesji: " + name)
@@ -141,6 +141,7 @@ def mytrashbox(pathToDir):
         return render_template('info_pages/404.html'), 404
     filecontroller = FileController()
     files = filecontroller.gatherDiskInfo(finalPath)
+    print("Files: " + str(len(files)))
     print("Get pathToDir: " + pathToDir)
     print("Set currentDir: " + currentdir)
     print("Set backPath: " + backpath)
