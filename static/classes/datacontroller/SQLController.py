@@ -187,7 +187,8 @@ class SQLCloud(IDataConnector):
         String = "def delete_" + tableName + "(self, **kwargs):\n"
         String = String + '\tsql = "DELETE FROM `' + tableName + '`\"\n'
         String = String + '\tif(len(kwargs) > 0):\n'
-        String = String + '\t\tsql = sql + " WHERE "+" AND ".join([\"`\"+str(key)+"`=%s" for key, value in kwargs.items()])\n'
+        String = String + '\t\tsql = sql + " WHERE "+" AND ".join([\"`\"+str(key)+\"`=%s\" for key, value in kwargs.items()])\n'
+        String = String + "\t\tprint(sql, kwargs)\n"
         String = String + '\t__cursor = self._connector.cursor()\n'
         String = String + '\t__cursor.execute(sql, tuple(( kwargs[key] for key, value in kwargs.items())))\n'
         String = String + "\tself._connector.commit()\n"
@@ -196,14 +197,14 @@ class SQLCloud(IDataConnector):
         String = String + "self.delete_" + tableName + " = MethodType(delete_" + tableName + ", self)\n"
         print(String)
         try:
-
             exec(String)
-            return getattr(self, "update_" + tableName)
+            return getattr(self, "delete_" + tableName)
         except Exception as n:
-            print("{:-^211}".format("Data Base ERROR"))
+            _, column = getTerminalSize()
+            print("{:-^{column}}".format("Data Base ERROR", column=column))
             return None
 
-    def merge(self, *args: list, where: dict={}) -> dict:
+    def merge(self, *args, where: dict={}) -> dict:
         before = lambda _id: str(args[args.index(_id)-1])
         after = lambda _id: str(args[args.index(_id)+1])
         concatinate = lambda tableName, _id: str(tableName)+"."+str(_id)
@@ -213,9 +214,10 @@ class SQLCloud(IDataConnector):
             sql = sql + " AND ".join([ "{}={}".format(concatinate(before(id), id), concatinate(after(id), id)) for id in args[1::2]])
             if(len(where) > 0):
                 sql = sql + " AND " + " AND ".join(["{}={}".format(key,str(where[key])) for key, _ in where.items()])
+            #print(sql)
             cursor = self._connector.cursor()
             cursor.execute(sql)
-            cursor.close()
+            # cursor.close()
             return cursor.fetchall()
         return dict()
 
