@@ -10,6 +10,7 @@ from static.tool.Logs import Log, LogType
 from static.tool.FileManager import FileManager
 from static.controllers.FileController import FileController
 from static.classes.Registration import Register, isRegistered
+
 from static.classes.FileUpload import FileUpload
 
 from flask import Flask, render_template, send_file
@@ -20,7 +21,7 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
 
-def getTestPathData():
+def getTestFiles():
     paths = [{
         'icon': 'file-image',
         'name': 'twoja_stara.png',
@@ -49,7 +50,6 @@ def index():
     :param name
     :param value
     :return value
-
 '''
 @app.route('/sessionControler', methods=['POST'])
 def sessionControler():
@@ -120,13 +120,34 @@ def page_not_found(e):
 @app.route('/mytrashbox', defaults={'pathToDir':'home'})
 @app.route('/mytrashbox/<pathToDir>')
 def mytrashbox(pathToDir):
-    paths = getTestPathData()
-    backpath = ''
-    currentdir = 'home'
-    if(pathToDir == "home"):
-        return render_template('trashbox.html', file=paths, backpath=backpath, currentdir=currentdir)
+    paths = pathToDir
+    if paths == 'home':
+        backpath = ''
+        currentdir = 'home'
+        finalPath = '/home'
+    else:
+        paths = paths.split('.')
+        finalPath = ''
+        currentdir = paths[-1]
+        if len(paths)>1:
+            backpath = paths[-2]
+        else:
+            backpath = paths[0]
+        for path in paths:
+            finalPath = finalPath + '/' + path
+    if 'googleID' in session:
+        finalPath = '/' + session['googleID'] + finalPath + '/'
+    else:
+        return render_template('info_pages/404.html'), 404
+    files = FileController.gatherDiskInfo(finalPath)
+    print("Get pathToDir: " + pathToDir)
+    print("Set currentDir: " + currentdir)
+    print("Set backPath: " + backpath)
+    print("Set finalPath: " + finalPath)
+    return render_template('trashbox.html', files=files, backpath=backpath, currentdir=currentdir)
 
 '''
+    - AJAX
     - Sprawdzenie czy użytkownik jest w bazie
     - Rejestracja użytkownika
 '''
@@ -138,6 +159,7 @@ def registry():
         res = isRegistered(gid)
         if res == True:
             print("Sukces!");
+            session['googleID'] = gid
             return jsonify({'auth': res})
         else:
             print("Failed! isRegistred: {}".format(res));
@@ -167,7 +189,7 @@ def upload():
 
     return render_template('/upload_download/upload.html')
 
-# @Permission.login
+@Permission.login
 # @Log(LogType.INFO, 2, "-", printToConsole=False)
 def startServer():
     if __name__ == '__main__':

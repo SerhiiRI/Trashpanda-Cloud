@@ -5,6 +5,7 @@
 var isSignIn = false;
 if (localStorage.getItem('userID') != null) {
     afterlogin();
+    loginButton();
     isSignIn = true;
 }
 
@@ -137,11 +138,15 @@ function knockknock(gid, name, email, token, pic) {
  * */
 function loginButton() {
     document.getElementById("isSignIn").innerText = "My Trashbox";
-    let btn = document.createElement("BUTTON");
-    btn.className = "alx-btn";
-    btn.innerText = "Wyloguj";
-    btn.addEventListener("click", logout);
-    document.getElementById("func-btn").appendChild(btn);
+    var LBTN = document.getElementById("logoutBTN");
+    if (LBTN == null) {
+        let btn = document.createElement("BUTTON");
+        btn.id = "logoutBTN";
+        btn.className = "alx-btn";
+        btn.innerText = "Wyloguj";
+        btn.addEventListener("click", logout);
+        document.getElementById("func-btn").appendChild(btn);
+    }
     isSignIn = true;
 }
 

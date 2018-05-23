@@ -30,24 +30,29 @@
             </thead>
             <tbody>
             {#  Wypisanie przekazanych elementów katalogu  #}
-            {% for file in file %}
-                <tr ondblclick="">
-                    {#  Ikona odpowiadająca typowi pliku  #}
-                    <td><i class="icon-{{ file.icon }}"></i></td>
+            {% for file in files %}
+                <tr>
+                    <form action="/mytrashbox" method="post" ondblclick="">
+                        {#  Ikona odpowiadająca typowi pliku  #}
+                        <td><i class="icon-{{ file.Icon }}"></i></td>
 
-                    <td>{{ file.name }} <i class="icon-{{ file.lock }}"></i></td>
-                    <td>{{ file.size }}</td>
-                    <td>
-                        {% if file.tag | length > 1 %}
-                            <select class="hover">
-                                {% for tag in file.tag %}
-                                    <option>{{ tag }}</option>
-                                {% endfor %}
-                            </select>
-                        {% endif %}
-                    </td>
-                    {#  Przycisk z ikonką trzech kropek otwierający popup z opcjami dla elemntu  #}
-                    <td><i onmouseenter="openmenu()" class="icon-ellipsis-vert hover"></i></td>
+                        <td>{{ file.Name }}.{{ file.Extension }}
+                            {#                        <i class="icon-{{ file.lock }}"></i>#}
+                        </td>
+                        <td>{{ file.Size }}</td>
+                        <td>
+                            {#                        {% if file.tag | length > 1 %}#}
+                            {#                            <select class="hover">#}
+                            {#                                {% for tag in file.tag %}#}
+                            {#                                    <option>{{ tag }}</option>#}
+                            {#                                {% endfor %}#}
+                            {#                            </select>#}
+                            {#                        {% endif %}#}
+                        </td>
+                        {#  Przycisk z ikonką trzech kropek otwierający popup z opcjami dla elemntu  #}
+                        <td><i onmouseenter="openmenu()" class="icon-ellipsis-vert hover"></i></td>
+                        <input type="hidden" value="{{ file.FilePath }}" name="filePath">
+                    </form>
                 </tr>
             {% endfor %}
             </tbody>
