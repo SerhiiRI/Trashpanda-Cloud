@@ -138,7 +138,8 @@ def mytrashbox(pathToDir):
     if 'googleID' in session:
         finalPath = '/' + session['googleID'] + finalPath + '/'
     else:
-        return render_template('info_pages/404.html'), 404
+        return render_template('index.html')
+
     filecontroller = FileController()
     files = filecontroller.gatherDiskInfo(finalPath)
     print("Files: " + str(len(files)))
