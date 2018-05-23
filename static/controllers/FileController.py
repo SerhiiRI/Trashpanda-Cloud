@@ -37,8 +37,13 @@ class FileController(object):
 
             Data_Reader = self.SQL_Controller.merge("file", "idFile", "version", where={"hashsume" : hash})
 
-            Name = Data_Reader[0][2]
-            fileID = Data_Reader[0][0]
+            if(len(Data_Reader) > 0):
+                Name = Data_Reader[0][2]
+                fileID = Data_Reader[0][0]
+            else:
+                Name = file.split("/")[-1]
+                fileID = "Folder"
+
 
             Extension = self.extensionSpliter(file)
             """Wypełnianie Listy informacjami dla konstruktora klasy File"""
