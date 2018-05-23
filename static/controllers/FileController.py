@@ -44,7 +44,7 @@ class FileController(object):
             else:
                 Name = file.split("/")[-1]
                 fileID = "Folder"
-                Extension = None
+                Extension = "None"
 
             """Wypełnianie Listy informacjami dla konstruktora klasy File"""
             TEMP = list()
