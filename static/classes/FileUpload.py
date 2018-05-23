@@ -22,30 +22,35 @@ class Uploaded_File():
         self.OwnerID = ""
 
     def getInfo(self, file_dir : str, destination_DIR : str, google_ID : str):
-        self.HashSum = FileUpload.countHashSum(file_dir)
-        self.Size = os.stat(file_dir).st_size
+        self.HashSum = str(FileUpload.countHashSum(file_dir))
+        self.Size = str(os.stat(file_dir).st_size)
         self.extension = FileManager.extensionSpliter(file_dir)
         self.Name = os.path.basename(file_dir)
         self.path = destination_DIR + self.HashSum + self.extension
-        self.OwnerID = google_ID
+        self.OwnerID = str(google_ID)
 
     def uploadTheShit(self):
-        DB = SQLCloud()
+        try:
+            DB = SQLCloud()
 
-        SQL_Insert = DB.insert("file")
-        SQL_Select = DB.select("file")
+            SQL_Insert = DB.insert("file")
+            SQL_Select = DB.select("file")
 
-        SQL_Insert(self.OwnerID, self.Name)
-        file_data = SQL_Select(self.OwnerID)
+            SQL_Insert(self.OwnerID, self.Name)
+            file_data = SQL_Select(idUser=self.OwnerID)
 
+            SQL_Insert = DB.insert("version")
+            SQL_Insert(file_data[0][0], self.Version, self.HashSum, self.Size, self.extension, self.path, self.accessType, self.garbage, self.timeCreate, self.lastAccess)
 
-
+            print("Dodano")
+        except:
+            print("Blad")
 
 
 class FileUpload():
 
     @staticmethod
-    def upload(filelist, path):
+    def upload(filelist, path, google_ID):
         DUMP_DIR = "/srv/DUMP/"
         Destination_DIR = "/srv/Data/" + path
         """Lista mówiąca ile plików udało się pobrać bez problemów"""
@@ -64,6 +69,9 @@ class FileUpload():
 
                 if not FileManager.moveFile(DUMP_destination, Destination_DIR, SHA1):
                     FileManager.remove(DUMP_destination)
+                    temp = Uploaded_File(filename, )
+                    temp.getInfo()
+
                     statusList.append([False, filename, DUMP_destination, str(datetime.datetime.today())])
                 else:
                     statusList.append([True, filename, DUMP_destination, str(datetime.datetime.today())])

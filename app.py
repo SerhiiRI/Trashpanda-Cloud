@@ -3,7 +3,6 @@ import os
 import sys
 import static.configs.EnvConf
 import tempfile
-
 from time import sleep
 
 from static.controllers.Permission import Permission
@@ -11,7 +10,6 @@ from static.tool.Logs import Log, LogType
 from static.tool.FileManager import FileManager
 from static.controllers.FileController import FileController
 from static.classes.Registration import Register, isRegistered
-
 from static.classes.FileUpload import FileUpload
 
 from flask import Flask, render_template, send_file
@@ -169,7 +167,7 @@ def upload():
 
     return render_template('/upload_download/upload.html')
 
-@Permission.login
+# @Permission.login
 # @Log(LogType.INFO, 2, "-", printToConsole=False)
 def startServer():
     if __name__ == '__main__':
