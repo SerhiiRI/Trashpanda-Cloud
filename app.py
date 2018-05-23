@@ -152,7 +152,7 @@ def registry():
         email = request.form.get('email')
         token = request.form.get('token')
         print("Zapis do bazy.")
-        print("Odebrano dane: " + gid + " " + name + " " + email + " " + token);
+        # print("Odebrano dane: " + gid + " " + name + " " + email + " " + token);
         ans = Register(gid, name, email, token)
         print("Rejestracja: {0}".format(ans))
         return jsonify({'res': "Teraz jesteś jednym z nas i masz dostęp do swojego TrashBox'a! Najpierw jednak się zaloguj!"})
@@ -174,6 +174,5 @@ def upload():
 def startServer():
     if __name__ == '__main__':
         app.run(debug=True, host="0.0.0.0", port=5000)
-
 
 startServer()

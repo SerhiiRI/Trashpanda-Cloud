@@ -63,7 +63,7 @@ function afterlogin() {
  * Testowe logowanie
  * */
 function loginTest() {
-    knockknock(testID, testName, testEmail, testToken,testPic);
+    knockknock(testID, testName, testEmail, testToken, testPic);
 }
 
 /**
@@ -117,7 +117,9 @@ function knockknock(gid, name, email, token, pic) {
                             }
                         });
                     } else {
+                        localStorage.clear();
                         txt = "No to może innym razem. Trzym się <(^ u ^)/";
+                        closeLoginForm();
                     }
                     alert(txt);
                 }
