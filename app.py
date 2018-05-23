@@ -124,7 +124,7 @@ def mytrashbox(pathToDir):
     if paths == 'home':
         backpath = ''
         currentdir = 'home'
-        finalPath = '/home'
+        finalPath = ''
     else:
         paths = paths.split('.')
         finalPath = ''
