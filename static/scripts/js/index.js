@@ -24,12 +24,13 @@ var testToken = "102938xcvb47565xb6478bxcvb349021b";
  */
 function onSignIn(googleUser) {
     var profile = googleUser.getBasicProfile();
-    token = googleUser.getAuthResponse().id_token;
+    var token = googleUser.getAuthResponse().id_token;
     // Wywołanie zmian po zalogowaniu
     localStorage.setItem('userID', profile.getId());
     localStorage.setItem('userPic', profile.getImageUrl());
     let x = profile.getFamilyName();
     localStorage.setItem('userName', profile.getGivenName() + " " + x[0] + ".");
+    knockknock(profile.getId(), localStorage.getItem('userName'), profile.getEmail(), token, profile.getImageUrl());
     isSignIn = true;
     closeLoginForm();
     afterlogin();
@@ -62,10 +63,24 @@ function afterlogin() {
  * Testowe logowanie
  * */
 function loginTest() {
-    var gid = testID;
-    var name = testName;
-    var email = testEmail;
-    var token = testToken;
+    knockknock(testID, testName, testEmail, testToken,testPic);
+}
+
+/**
+ * Sprawdź czy użytkownik istnieje
+ * Zaloguj lub zarejestruj
+ * @param ID
+ * @param Name
+ * @param Email
+ * @param Token
+ * @param Pic
+ */
+function knockknock(ID, Name, Email, Token, Pic) {
+    var gid = ID;
+    var name = Name;
+    var email = Email;
+    var token = Token;
+    var pic = Pic;
     $.ajax({
             method: 'POST',
             url: 'registry',
@@ -77,9 +92,9 @@ function loginTest() {
             success: function (response) {
                 console.log("Auth: " + response.auth)
                 if (response.auth == true) {
-                    localStorage.setItem('userID', testID);
-                    localStorage.setItem('userPic', testPic);
-                    localStorage.setItem('userName', testName);
+                    localStorage.setItem('userID', gid);
+                    localStorage.setItem('userPic', pic);
+                    localStorage.setItem('userName', name);
                     closeLoginForm();
                     afterlogin();
                     loginButton();

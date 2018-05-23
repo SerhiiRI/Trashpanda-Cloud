@@ -134,7 +134,7 @@ def mytrashbox(pathToDir):
 '''
 @app.route('/registry', methods=['POST'])
 def registry():
-    print("Autoryzacja rozpoczęta.")
+    print("Autoryzacja rozpoczeta.")
     if request.form.get('action') == 'auth':
         gid = request.form.get('gid')
         res = isRegistered(gid)
@@ -152,9 +152,9 @@ def registry():
         email = request.form.get('email')
         token = request.form.get('token')
         print("Zapis do bazy.")
+        print("Odebrano dane: " + gid + " " + name + " " + email + " " + token);
         ans = Register(gid, name, email, token)
         print("Rejestracja: {0}".format(ans))
-        print("Odebrano dane: " + gid + " " + name + " " + email + " " + token);
         return jsonify({'res': "Teraz jesteś jednym z nas i masz dostęp do swojego TrashBox'a! Najpierw jednak się zaloguj!"})
 
 
