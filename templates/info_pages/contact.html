@@ -11,7 +11,7 @@
         <br>Aleksander Sinkowski
         <br>Serhii Riznychuk
         <br>Mikołaj Rychel
-        <br>Aleksander Pawlaczyk
+        <br>Aleksandra Pawlaczyk
         <br>Marcin Ochociński
         <br>
         <br>
@@ -20,10 +20,29 @@
         <form action="maill" method="post">
             <textarea name="message" placeholder="Napisz wiadomość..."></textarea>
             <br>Podpis:
-            <br><input class="podpis" type="text" name="podpis" maxlength="50">
+            <br><div id="podpis"></div>
             <br>
             <button type="submit">Wyślij</button>
         </form>
     </div>
+
+    <script>
+    var podpis=document.getElementById('podpis');
+    if(localStorage.getItem('userName')){
+        var hidden = document.createElement("input");
+        hidden.type="hidden";
+        hidden.value=localStorage.getItem('userName');
+        hidden.name="podpis";
+        podpis.appendChild(hidden);
+    } else{
+        var signature = document.createElement("input");
+        signature.type="text";
+        signature.placeholder="Podpis";
+        signature.name="podpis";
+        signature.className = "podpis";
+        signature.maxLength = "50";
+        podpis.appendChild(signature);
+    }
+    </script>
 
 {% endblock %}
