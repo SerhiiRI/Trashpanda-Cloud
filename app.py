@@ -7,6 +7,9 @@ from time import sleep
 
 from static.controllers.Permission import Permission
 from static.tool.Logs import Log, LogType
+from flask_mail import Mail, _Mail
+from flask_mail import Message
+
 from static.tool.FileManager import FileManager
 from static.controllers.FileController import FileController
 from static.classes.Registration import Register, isRegistered
@@ -15,7 +18,6 @@ from static.classes.FileUpload import FileUpload
 
 from flask import Flask, render_template, send_file
 from flask import request, session, jsonify
-
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -43,9 +45,37 @@ def getTestFiles():
     ]
     return paths
 
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'trashpandacloud@gmail.com'
+app.config['MAIL_PASSWORD'] = 'TrashPanda1'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+
+mail = Mail()
+mail.init_app(app)
+
+
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+
+@app.route('/maill', methods=['POST'])
+def maill():
+    text = request.form.get('message')
+    tresc = text
+    podpis = request.form.get('podpis')
+    msg = Message("Message from user: " + podpis, sender='trashpandacloud@gmail.com', recipients=['orlikx@gmail.com'])
+    msg.body = tresc + '\n' + podpis
+    mail.send(msg)
+    return "Sent"
+    # text = request.form.get('message')
+    # print("Mail: " + text)
+    # return text
 
 
 '''
@@ -81,6 +111,7 @@ def sessionControler():
             return jsonify({'param': ''})
 
 
+
 @app.route('/info')
 def info():
     return render_template('info_pages/info.html')
@@ -105,16 +136,6 @@ def download():
         # path = "/srv/Data/mikus/plik.txt"
         name = os.path.basename(path)
         return send_file(path, attachment_filename=name , as_attachment=True)
-
-
-# @app.route('/mytrashbox', methods=['GET','POST'])
-# def mytrashbox():
-#     try:
-#         path = "/" + request.form.get('google_id') + "/"
-#     except:
-#         path = "/"
-#     files = FileManager.listDir(path)
-#     return render_template('trashbox_test.html', items=files, path=path)
 
 
 @app.errorhandler(404)
@@ -203,6 +224,6 @@ def upload():
 # @Log(LogType.INFO, 2, "-", printToConsole=False)
 def startServer():
     if __name__ == '__main__':
-        app.run(debug=True, host="0.0.0.0", port=5000)
+        app.run(debug=True, host="127.0.0.1", port=80)
 
 startServer()

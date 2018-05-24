@@ -5,22 +5,44 @@
 {% endblock %}
 
 {% block content %}
-        <div>
-            <h1>Kontakt</h1>
-            <p>Szukaj nas w PWSZ w Nysie</p>
-            <br>Aleksander Sinkowski
-            <br>Serhii Riznychuk
-            <br>Mikołaj Rychel
-            <br>Aleksander Pawlaczyk
-            <br>Marcin Ochociński
+    <div>
+        <h1>Kontakt</h1>
+        <p>Szukaj nas w PWSZ w Nysie</p>
+        <br>Aleksander Sinkowski
+        <br>Serhii Riznychuk
+        <br>Mikołaj Rychel
+        <br>Aleksandra Pawlaczyk
+        <br>Marcin Ochociński
+        <br>
+        <br>
+        <br>Lub napisz do nas!
+
+        <form action="maill" method="post">
+            <textarea name="message" placeholder="Napisz wiadomość..."></textarea>
+            <br>Podpis:
+            <br><div id="podpis"></div>
             <br>
-            <br>
-            <br>Lub napisz do nas!
-            <form method="post">
-                <textarea placeholder="Napisz wiadomość..."></textarea>
-                <br>
-                <button type="button">Wyślij</button>
-            </form>
-        </div>
+            <button type="submit">Wyślij</button>
+        </form>
+    </div>
+
+    <script>
+    var podpis=document.getElementById('podpis');
+    if(localStorage.getItem('userName')){
+        var hidden = document.createElement("input");
+        hidden.type="hidden";
+        hidden.value=localStorage.getItem('userName');
+        hidden.name="podpis";
+        podpis.appendChild(hidden);
+    } else{
+        var signature = document.createElement("input");
+        signature.type="text";
+        signature.placeholder="Podpis";
+        signature.name="podpis";
+        signature.className = "podpis";
+        signature.maxLength = "50";
+        podpis.appendChild(signature);
+    }
+    </script>
 
 {% endblock %}
