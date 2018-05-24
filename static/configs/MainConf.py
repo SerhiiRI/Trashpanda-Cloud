@@ -7,7 +7,7 @@ from os import environ as ENV
 Configuration file use "Snake case" syntax: cos_tam_jest
 For dictionary standart of name is UPPERCASE.
   
-Autor: Serhii Riznychuk
+Autor: Serhii Riznychuk 
 """
 
 DATABASE = {

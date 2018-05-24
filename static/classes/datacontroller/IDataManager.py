@@ -25,12 +25,14 @@
 import MySQLdb
 from static.configs.MainConf import DATABASE
 from static.controllers.Permission import Permission
-import os
+
 
 class IDataConnector(object):
+
     @Permission.login
     def __init__(self, DataBase="test_cloud"):
         ''' reconstruct SQL requests and create a table '''
+        #print(DATABASE[DataBase])
         host = DATABASE[DataBase]["host"]
         user = DATABASE[DataBase]["user"]
         password = DATABASE[DataBase]["password"]
@@ -38,12 +40,8 @@ class IDataConnector(object):
         self._connector = ""
         try:
             self._connector = MySQLdb.connect(host, user, password, database)
-            print(self._connector)
         except (MySQLdb.Error, MySQLdb.Warning) as errorMessage:
             self._connector = None
-            # TODO: pozabieraj stad to
-            print("\nnie udalo ci sie\n")
-
 
     @Permission.login
     def _reconfigurate_connection(self, DataBase="test_cloud"):
@@ -56,8 +54,6 @@ class IDataConnector(object):
             self._connector = MySQLdb.connect(host, user, password, database)
         except (MySQLdb.Error, MySQLdb.Warning) as errorMessage:
             self._connector = None
-            # TODO: pozabieraj stad to
-            print("\nnie udalo ci sie\n")
 
 
 

@@ -3,8 +3,61 @@ import threading, MySQLdb, pickle, random
 from multiprocessing import Queue
 from .Process import Process
 from .Controller import Controller
+from static.classes.datacontroller.IDataManager import IDataConnector
+from static.classes.Pipeline.Container import Container
+"""
 
-class PipeBuilder(object):
+
+
+
+PipelineBuilder
+
+   _________________________________________________Zalożenia____________
+  / 1. Pipeline - stworznie Kolejki wykonywanlnej z doczepiąną          |
+ |  - don niej jednometodowa logika zbadania i porusznaia sie po niej   |
+ |  2. Kontrolla oraz zabiezpiecznia Kontenera procesowego, który jest  |
+ |  - zbadany po stronie PipelineBuildera                               |
+ |  3. Zapisywania serializowanych objektów do bazy danych              |
+ |_____________________________________________________________________/
+
+  ___________________________Start-life______
+ /                                           \
+|  1. Podciągania procesa z kontenera wg. ID  |
+|  2. Deserializacja objekta                  |
+|  3. Process.start()                         |
+|  4*.Implementacja slownika kolejki          |
+|  5*.Stwożenia lambda-buildera funkjalności  |
+|     - wedlug parametrów                     | 
+| ____________________________________________|
+|/                                                    
+
+(Container)              (Contai...)              (Con...)
+----------      .......> ----------      .......> ---...
+|1.Func. |      :        |1.Func. |      :        |...
+|2.Ctrlr.|      :        |2.Ctrlr.|      :        |...
+---------- ``````        ---------- ``````        ----...
+       ^ 
+       |\______________________End-life_________
+       |                                       |
+       | 1. SQL Clean-up                       |
+       | 2. Sprawdzenia dostępnośći przejśćia  |
+       | 3. Przejścia                          |
+        \______________________________________|
+
+
+_______________________________________Contaner:_________
+
+1. Process, w śriodeczku którego jest zapakowana Funkcja 
+   Podciągana z SQL serializowanego objektu
+2. Controller Przejścia 
+   Funkcja odpalona zad pomącą subprocesu odczytuje  
+   parameter zezwolenia dla każdego przejścia po 
+   kolejce
+3. Slownik Wagi
+
+"""
+
+class PipeBuilder(IDataConnector):
     """
                 PipeBuilder
     """
@@ -12,7 +65,7 @@ class PipeBuilder(object):
     __queue = Queue()
     __table = None
 
-    def __init__(self, function, controllers: Controller ):
+    def __init__(self, function, controller: str ):
         """
                       __init__
           __Konstruktor__ klasy PipeBuilder
@@ -30,20 +83,16 @@ class PipeBuilder(object):
 
         @Serhii Riznychuk
         """
+        IDataConnector.__init__(self, DataBase="pipeline")
+        # controller - sterownik i glówny architekt przejśćia po obciążeniach procesora
 
-        self.controllers = controllers
+        # funkcja do wykonywania przez procesor
         self.function = function
+        self.pathToController = controller
         self.__table = function.__name__
-        host = 'trashpanda.pwsz.nysa.pl'
-        login = 'sergiy1998'
-        passwd = 'hspybxeR98>'
-        db_name = 'pipeline'
-        self.__connector = MySQLdb.connect(host, login, passwd, db_name)
-        self.__cursor = self.__connector.cursor()
-        self.__tables = self.__cursor.execute("SHOW TABLES")
-        self._createQueueTable()
+        self._createTable()
 
-    def _createQueueTable(self):
+    def _createTable(self):
         """
         private: CreateQueueTable
         ---------------------------
@@ -56,9 +105,9 @@ class PipeBuilder(object):
         @Serhii Riznychuk
         """
         sql = "CREATE TABLE IF NOT EXISTS %s (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, obj TEXT NOT NULL)"
-        __cursor = self.__connector.cursor()
+        __cursor = self._connector.cursor()
         __cursor.execute(sql, tuple(self.__table))
-        self.__connector.commit()
+        self._connector.commit()
         return True
 
     def _deleteTable(self):
@@ -72,12 +121,12 @@ class PipeBuilder(object):
         @Serhii Rinzychuk
         """
         sql = "DROP TABLE %s"
-        __cursor = self.__connector.cursor()
+        __cursor = self._connector.cursor()
         __cursor.execute(sql, tuple(self.__table))
-        self.__connector.commit()
+        self._connector.commit()
         return True
 
-    def _addObject(self):
+    def addProcess(self, *args):
         """
                     Add Object
         ----------------------------------
@@ -88,19 +137,26 @@ class PipeBuilder(object):
 
         @Serhii Riznychuk
         """
-        tempProcessObject = Process(self.function, tuple(10, ), self.controllers)
+        tempProcessObject = Process(self.function, args[0])
         # pickle.dump - serializacja objektu
         stringProcessObject = pickle.dump(tempProcessObject)
         sql = "INSERT INTO `"+self.__table+"`(`id`, `object`) VALUES (NULL, %s)"
-        __cursor = self.__connector.cursor()
-        __cursor.execute(sql, (stringProcessObject))
+        __cursor = self._connector.cursor()
+        __cursor.execute(sql, tuple(stringProcessObject))
         del(tempProcessObject)
         del(stringProcessObject)
-        self.__connector.commit()
+        self._connector.commit()
         __cursor.close()
 
-    def buildQueue(self):
-        self.__queue.put(Controller())
+    def buildQueue(self) -> Queue:
+        sql = "SELECT count(*) FROM `{}`".format(self.__table)
+        __cursor = self._connector.cursor()
+        __cursor.execute(sql, tuple(self.__table))
+        count = __cursor.fetchall()
+        for _ in range(count):
+            self.__queue.put(Container(self.__table, Controller(self.pathToController)))
+        return self.__queue
+
 
 
 

@@ -4,33 +4,20 @@ from static.classes.Pipeline.Controller import Controller
 import pickle
 import threading
 
-class Process():
 
+class Process(threading.Thread):
 
-    def __init__(self, func, values: tuple, controllers: str):
+    def __init__(self, func, values: tuple):
         self.function = func
         self.parameter = values
-        self.controller = controllers
-
+        threading.Thread.__init__(self)
 
     def run(self):
         try:
-            controllerProcess = Popen((self.controller), shell=True, stdout=PIPE)
-            controllerProcess.wait()
-            controllerProcess.communicate()
-            if controllerProcess.returncode:
-                raise IOError
-            output = controllerProcess.communicate()
-            loadProcent = output[1]
-            try:
-                if (float(loadProcent) < 20):
-                    self.function(self.parameter)
-                else:
-                    raise BufferError
-            except BufferError:
-                print("[*] Your process load processor")
-            except Exception:
-                print("[*] Bad` converting value - LoadProcent")
-            "construct and deconstruct object"
-        except:
-            print("Dobra jest mocno późna godzina i ja nie rozumiem po jakiego ****** to nie dziala")
+            self.function(*self.parameter)
+        except RuntimeError as message:
+            print("[!] Bląd krytyczny")
+            print(message)
+        except Exception as message:
+            print("[!] Wyjątek!")
+            print(message)

@@ -6,44 +6,58 @@
     <link rel=stylesheet type=text/css href="/static/style/index.css">
 </head>
 <body>
+
+{#  Form logowania wyświetlany po kliknięciu zaloguj  #}
 <div id="alx-gbtn">
     <div class="alx-gbtn">
+        {#  Przycisk logowania przez Google  #}
         <h2>Zaloguj sie przez Google!</h2>
         <div class="g-signin2" align="center" data-width="300" data-height="50" data-onsuccess="onSignIn"
              data-theme="dark"></div>
         <div>
-{#            Przycisk do tesotowani połączenia na maszynie lokalnej #}
-            <button class="alx-btn" style="border-radius: 10px" onclick="loginTest()">Login Test</button>
+            {#  Przycisk do tesotowani połączenia na maszynie lokalnej  #}
+            <button class="alx-btn" style="border-radius: 10px" onclick="loginTest()">Faker</button>
             <button class="alx-btn" style="border-radius: 10px" onclick="closeLoginForm()">Zamknij</button>
         </div>
         <div class="classicfont">
-            Jeśli masz problem z przelogowaniem, spróbuj zalogować się na inne konto po stronie google.
+            Jeśli masz problem z przelogowaniem,<br>spróbuj zalogować się na inne konto po stronie google.
         </div>
     </div>
 </div>
+
+{#  Po zalogowaniu wyświetla obrazek użytkownika i jego imię  #}
 <div id="userinfo">
     <img id="userimg" src="">
     <span id="username"></span>
 </div>
 <div class="alx-cont">
     <div class="alx-flex">
+
+        {#   Napis + obraz z logo  #}
         <div class="alx-flex-box margin">
-                <h1>Trashpanda</h1>
-                <img src="/static/pic/raccoon.svg" class="alx-img-logo">
+            <h1>Trashpanda</h1>
+            <img src="/static/pic/raccoon.svg" class="alx-img-logo">
         </div>
+
+        {#  Input z wyszukiwaniem  #}
         <div class="alx-flex-box">
             <form>
                 <input type="text" class="search-in" placeholder="Wpisz czego szukasz...">
                 <button type="submit" class="search-btn">Szukaj</button>
             </form>
         </div>
+
+        {#  Menu z przyciskiem Zaloguj/Info -> Po zalogowaniu My Trashbox/Info/Wygloguj  #}
         <div class="alx-flex-box" id="func-btn">
-            <button class="alx-btn" onclick="openLoginForm()"><span id="isSignIn"></span></button>
+            <button class="alx-btn" onclick="openLoginForm()"><span id="isSignIn">Zaloguj</span></button>
             <button class="alx-btn" onclick="goTo('info')">Info</button>
         </div>
     </div>
 </div>
 <div class="alx-freeSpace"></div>
+
+
+{#  Podłączenie stopki  #}
 {% include 'extend/footer.html' %}
 <script src="/static/scripts/js/index.js"></script>
 </body>

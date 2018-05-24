@@ -1,16 +1,49 @@
 import logging
+import os
 import sys
 import static.configs.EnvConf
+import tempfile
+from time import sleep
+
 from static.controllers.Permission import Permission
 from static.tool.Logs import Log, LogType
-# from Mail import mail
-from flask import Flask, render_template, redirect, request, jsonify, render_template_string, make_response
-from flask import Flask, request
 from flask_mail import Mail, _Mail
 from flask_mail import Message
 
-app = Flask(__name__)
+from static.tool.FileManager import FileManager
+from static.controllers.FileController import FileController
+from static.classes.Registration import Register, isRegistered
 
+from static.classes.FileUpload import FileUpload
+
+from flask import Flask, render_template, send_file
+from flask import request, session, jsonify
+
+app = Flask(__name__)
+app.secret_key = os.urandom(24)
+
+
+def getTestFiles():
+    paths = [{
+        'fileID': '1',
+        'Name': 'kociaki',
+        'Extension': '.png',
+        'FilePath': '/',
+        'Size': '240000',
+        'HashSum': '123',
+        'Icon': 'file-image',
+    },
+        {
+            'fileID': '2',
+            'Name': 'TrashPanda',
+            'Extension': 'None',
+            'FilePath': '/',
+            'Size': '2450000',
+            'HashSum': '4556',
+            'Icon': 'folder-open-empty',
+        },
+    ]
+    return paths
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
@@ -30,6 +63,7 @@ def index():
     return render_template('index.html')
 
 
+
 @app.route('/maill', methods=['POST'])
 def maill():
     text = request.form.get('message')
@@ -44,16 +78,38 @@ def maill():
     # return text
 
 
-@app.route('/userCheck', methods=['POST'])
-def userCheck():
-    # print('Check userID...')
-    id = request.form['uid']
-    # print(id)
-    if id:
-        inDB = 'true'
-        return jsonify({'res': inDB})
+'''
+    Dodanie/Update/Odczyt sesji
+    
+    :param name
+    :param value
+    :return value
+'''
+@app.route('/sessionControler', methods=['POST'])
+def sessionControler():
+    print("Wywolano session flask.")
+    if request.form.get('action') == 'set':
+        name = request.form.get('name')
+        param = request.form.get('param')
+        session[name] = param
+        print("Dodano sesje o nazwie: " + name + " = " + param)
+        return jsonify({'param': param})
 
-    return jsonify({'error': 'Missing data!'})
+    if request.form.get('action') == 'get':
+        name = request.form.get('name')
+        if name in session:
+            param = session[name]
+            print("Pobrano sesje o nazwie: " + name)
+            return jsonify({'param': param})
+        elif name in session:
+            sleep(0.5)
+            param = session[name]
+            print("Pobrano sesje o nazwie: " + name)
+            return jsonify({'param': param})
+        else:
+            print("Nie znaleziono sesji: " + name)
+            return jsonify({'param': ''})
+
 
 
 @app.route('/info')
@@ -73,56 +129,101 @@ def kontakt():
     return render_template('info_pages/contact.html')
 
 
-# @app.route('/mytrashbox')
-# def mytrashbox():
-#     return render_template('trashbox.html')
+@app.route('/download', methods=['POST'])
+def download():
+    if request.form.get('action') == 'download':
+        path = request.form.get('path')
+        # path = "/srv/Data/mikus/plik.txt"
+        name = os.path.basename(path)
+        return send_file(path, attachment_filename=name , as_attachment=True)
 
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('info_pages/404.html')
+    return render_template('info_pages/404.html'), 404
     # return redirect("https://www.asciipr0n.com/pr0n/morepr0n/pr0n04.txt", code=302)
 
+@app.route('/mytrashbox', defaults={'pathToDir':'home'})
+@app.route('/mytrashbox/<pathToDir>')
+def mytrashbox(pathToDir):
+    paths = pathToDir
+    if paths == 'home':
+        backpath = ''
+        currentdir = 'home'
+        finalPath = ''
+    else:
+        paths = paths.split('.')
+        finalPath = ''
+        currentdir = paths[-1]
+        if len(paths)>1:
+            backpath = paths[-2]
+        else:
+            backpath = paths[0]
+        for path in paths:
+            finalPath = finalPath + '/' + path
+    if 'googleID' in session:
+        finalPath = '/' + session['googleID'] + finalPath + '/'
+    else:
+        return render_template('index.html')
 
-@app.route('/mytrashbox', methods=['GET'])
-def mytrashbox():
-    getPath = request.args.get('path')
-    print(getPath)
-    '''
-    ! Od Aleksa dla mikusia
-    ! Tu ci podsyłam zmienną path w której będzie np home
-    ! Zwróć mi ls (katalogi i piliki w home)    
-    '''
-    paths = [{
-        'icon': 'file-image',
-        'name': 'twoja_stara.png',
-        'lock': 'lock',
-        'size': '2.4 MB',
-        'tag': ['#hehe', '#lol', '#yolololololo', '#hehe', '#lol', '#yololo'],
-    },
-        {
-            'icon': 'folder-open-empty',
-            'name': 'twoja_stara.png',
-            'lock': '',
-            'size': '',
-            'tag': [],
-        }
-    ]
-    # backpath pozwoli wrócić do poprzedniego katalogu
-    backpath = 'home'
-    currentdir = 'home'
-    # lista symuluje pętlę for w jinja2
-    lista = []
-    for x in range(0, 20):
-        lista.append(x)
-    return render_template('trashbox.html', file=paths, lista=lista, backpath=backpath, currentdir=currentdir)
+    filecontroller = FileController()
+    files = filecontroller.gatherDiskInfo(finalPath)
+    # Dane testowe
+    files = getTestFiles()
+    print("Files: " + str(len(files)))
+    print("Get pathToDir: " + pathToDir)
+    print("Set currentDir: " + currentdir)
+    print("Set backPath: " + backpath)
+    print("Set finalPath: " + finalPath)
+    return render_template('trashbox.html', files=files, backpath=backpath, currentdir=currentdir)
+
+'''
+    - AJAX
+    - Sprawdzenie czy użytkownik jest w bazie
+    - Rejestracja użytkownika
+'''
+@app.route('/registry', methods=['POST'])
+def registry():
+    print("Autoryzacja rozpoczeta.")
+    if request.form.get('action') == 'auth':
+        gid = request.form.get('gid')
+        res = isRegistered(gid)
+        if res == True:
+            print("Sukces!");
+            session['googleID'] = gid
+            return jsonify({'auth': res})
+        else:
+            print("Failed! isRegistred: {}".format(res));
+            return jsonify({'auth': res})
+
+    if request.form.get('action') == 'registry':
+        print("Proces rejestracji: przechwycenie danych.")
+        gid = request.form.get('gid')
+        name = request.form.get('name')
+        email = request.form.get('email')
+        token = request.form.get('token')
+        print("Zapis do bazy.")
+        # print("Odebrano dane: " + gid + " " + name + " " + email + " " + token);
+        ans = Register(gid, name, email, token)
+        print("Rejestracja: {0}".format(ans))
+        return jsonify({'res': "Teraz jesteś jednym z nas i masz dostęp do swojego TrashBox'a! Najpierw jednak się zaloguj!"})
 
 
-# @Permission.login
+@app.route('/upload/',  methods=['POST'])
+def upload():
+    REQUESTED_FILES = request.files.getlist('fileToUpload')
+    current_path = request.files.getlist('pathToDir')
+    tab = FileUpload.upload(REQUESTED_FILES, current_path)
+
+    for item in tab:
+        print(item)
+
+    return render_template('/upload_download/upload.html')
+
+@Permission.login
 # @Log(LogType.INFO, 2, "-", printToConsole=False)
 def startServer():
     if __name__ == '__main__':
         app.run(debug=True, host="127.0.0.1", port=80)
-
 
 startServer()

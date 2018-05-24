@@ -1,39 +1,40 @@
 import threading, MySQLdb, pickle, random
-from static.classes.interfaces.IRunnable import IRunnable
-from multiprocessing import Queue
-
-class Container(threading.Thread):
+from static.classes.datacontroller.IDataManager import IDataConnector
+from static.classes.Pipeline.Process import Process
 
 
-    def __init__(self, table, dependProcess="/home/serhii/Projects/llapCloudFlask/static/tool/Binary/cpuController"):
+class Container(threading.Thread, IDataConnector):
+    # def __init__(self, table, dependProcess="/home/serhii/Projects/llapCloudFlask/static/tool/Binary/cpuController"):
+
+    def __init__(self, table, controller):
         self.table = table
-        self.controller = dependProcess
-        host = 'trashpanda.pwsz.nysa.pl'
-        login = 'sergiy1998'
-        passwd = 'hspybxeR98>'
-        db_name = 'pipeline'
-        ''' Private constructor  '''
-        self.__connector = MySQLdb.connect(host, login, passwd, db_name)
-        self.__cursor = self.__connector.cursor()
-        self.__table = self.__cursor.execute("SHOW TABLES")
+        self.controller = controller
         threading.Thread.__init__(self)
 
-    def __getObject(self):
+    def __getProcess(self):
         sql = "SELECT * FROM `%s` ORDER BY id ASC LIMIT 1"
-        __cursor = self.__connector.cursor()
+        __cursor = self._connector.cursor()
         __cursor.execute(sql, tuple(self.table))
-        return __cursor.fetchall()
+        return __cursor.fetchall()[1]
 
-    def __rmObject(self, object_id):
+    def __delProcess(self, object_id):
         sql = "DELETE FROM `%s` WHERE `id`=%s"
-        __cursor = self.__connector.cursor()
+        __cursor = self._connector.cursor()
         __cursor.execute(sql, tuple(self.table, object_id))
-        self.__connector.commit()
+        self._connector.commit()
+
 
     def run(self):
-        costam = self.GetFirstObject()
-        Runner = pickle.load(costam)
-
-
-    def sqlSelect(self, table_name):
-        pass
+        id, process_object = self.__getProcess()
+        ThreadProcess = pickle.load(process_object)
+        # TODO multiselect to lambda
+        if self.controller.verify(lambda x: x < 50):
+            return False
+        try:
+            ThreadProcess.start()
+            self.__delProcess(object_id=id)
+            del (ThreadProcess)
+        except:
+            del (ThreadProcess)
+            raise RuntimeError("[!] Nie udalo ci sie odpalic proces {} o id".format(id))
+        return True

@@ -1,19 +1,23 @@
 from static.classes.datacontroller.SQLController import SQLCloud
-import re
+from static.classes.datacontroller.TableParsers import TableTypeParser
+from MySQLdb import MySQLError
 
 
-class TableFillController(SQLCloud):
+class TableFillController(SQLCloud, TableTypeParser):
 
-    def __init__(self, database : str = "test_cloud", tablename:str="user"):
-        super(TableFillController, self).__init__(database)
-        self._table__with__type(table_name=tablename)
+    def __init__(self, database : str = "test_cloud", tablename: str="users"):
+        SQLCloud.__init__(self, database)
+        self.table = tablename
+        TableTypeParser.__init__(self, self._getTableMeta(table_name=tablename))
 
-    def printting(self):
-        print(self._DBTypeDICT)
-
-    def type_parsing(self):
-        self.slownik = dict()
-        for key, *_ in self._DBTypeDICT:
-            self.slownik[key] = re.split(r'[()]', data[1])[0:-1] if re.search(r'\([0-9]{1,4}\)',data[1]) else [data[1],]
-
-
+    def fill(self, record_count : int = 1) -> None:
+        InsertFunction = self.insert(self.table)
+        GeneratorFuncion = [ temp[0] for temp in self.Lambda_FieldList ]
+        for x in range(record_count):
+            keylist = list(map(lambda f: f(x), GeneratorFuncion))
+            print(end="\n")
+            print("Insert Keylist : \t", keylist)
+            try:
+                InsertFunction(*keylist)
+            except MySQLError:
+                print("\nTHIS COLUMN NOT HAVE INDEX")
