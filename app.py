@@ -23,8 +23,6 @@ mail = Mail()
 mail.init_app(app)
 
 
-zmienna = "nr uzytkownika lub tytul maila"
-podpis = "przeslany podpis"
 
 
 @app.route('/')
@@ -36,7 +34,8 @@ def index():
 def maill():
     text = request.form.get('message')
     tresc = text
-    msg = Message(zmienna, sender='trashpandacloud@gmail.com', recipients=['orlikx@gmail.com'])
+    podpis = request.form.get('podpis')
+    msg = Message("Message from user: " + podpis, sender='trashpandacloud@gmail.com', recipients=['orlikx@gmail.com'])
     msg.body = tresc + '\n' + podpis
     mail.send(msg)
     return "Sent"
