@@ -3,14 +3,46 @@ import sys
 import static.configs.EnvConf
 from static.controllers.Permission import Permission
 from static.tool.Logs import Log, LogType
+# from Mail import mail
 from flask import Flask, render_template, redirect, request, jsonify, render_template_string, make_response
+from flask import Flask, request
+from flask_mail import Mail, _Mail
+from flask_mail import Message
 
 app = Flask(__name__)
+
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'trashpandacloud@gmail.com'
+app.config['MAIL_PASSWORD'] = 'TrashPanda1'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+
+mail = Mail()
+mail.init_app(app)
+
+
+zmienna = "nr uzytkownika lub tytul maila"
+podpis = "przeslany podpis"
 
 
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+@app.route('/maill', methods=['POST'])
+def maill():
+    text = request.form.get('message')
+    tresc = text
+    msg = Message(zmienna, sender='trashpandacloud@gmail.com', recipients=['orlikx@gmail.com'])
+    msg.body = tresc + '\n' + podpis
+    mail.send(msg)
+    return "Sent"
+    # text = request.form.get('message')
+    # print("Mail: " + text)
+    # return text
 
 
 @app.route('/userCheck', methods=['POST'])
@@ -53,7 +85,6 @@ def page_not_found(e):
     # return redirect("https://www.asciipr0n.com/pr0n/morepr0n/pr0n04.txt", code=302)
 
 
-
 @app.route('/mytrashbox', methods=['GET'])
 def mytrashbox():
     getPath = request.args.get('path')
@@ -68,7 +99,7 @@ def mytrashbox():
         'name': 'twoja_stara.png',
         'lock': 'lock',
         'size': '2.4 MB',
-        'tag':['#hehe', '#lol', '#yolololololo', '#hehe', '#lol', '#yololo'],
+        'tag': ['#hehe', '#lol', '#yolololololo', '#hehe', '#lol', '#yololo'],
     },
         {
             'icon': 'folder-open-empty',
@@ -88,11 +119,11 @@ def mytrashbox():
     return render_template('trashbox.html', file=paths, lista=lista, backpath=backpath, currentdir=currentdir)
 
 
-@Permission.login
-@Log(LogType.INFO, 2, "-", printToConsole=False)
+# @Permission.login
+# @Log(LogType.INFO, 2, "-", printToConsole=False)
 def startServer():
     if __name__ == '__main__':
-        app.run(debug=True, host="0.0.0.0", port=5000)
+        app.run(debug=True, host="127.0.0.1", port=80)
 
 
 startServer()

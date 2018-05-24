@@ -1,15 +1,15 @@
 @import "base.css";
 
-.content{
+.content {
     width: 80%;
     margin: 0 10%;
     min-height: 95%;
-	display:flex;
-	flex-direction:column;
-	text-align: center;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
 }
 
-.justydiv{
+.justydiv {
     text-align: justify;
 }
 
@@ -20,7 +20,7 @@ h1 {
     text-align: center;
 }
 
-textarea{
+textarea, .podpis {
     border: none;
     margin: 10px 0px;
     min-width: 250px;
@@ -30,10 +30,10 @@ textarea{
     border-radius: 10px;
     box-shadow: 3px 3px 10px #555;
     transition: all 200ms;
-    text-align:center;
+    text-align: center;
 }
 
-button{
+button {
     border: none;
     border-radius: 10px;
     width: 150px;
@@ -44,17 +44,24 @@ button{
     transition: all 200ms;
 }
 
+.podpis {
+    position: relative;
+    width: 200px;
+    height: 15px;
+    border-radius: 5px;
+}
+
 button:hover {
     cursor: pointer;
     color: #161F40;
     background: #fff;
 }
 
-p{
+p {
     text-indent: 4rem;
 }
 
-hr{
+hr {
     width: 70%;
     border: 0;
     height: 1px;

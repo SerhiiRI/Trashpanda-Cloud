@@ -5,22 +5,25 @@
 {% endblock %}
 
 {% block content %}
-        <div>
-            <h1>Kontakt</h1>
-            <p>Szukaj nas w PWSZ w Nysie</p>
-            <br>Aleksander Sinkowski
-            <br>Serhii Riznychuk
-            <br>Mikołaj Rychel
-            <br>Aleksander Pawlaczyk
-            <br>Marcin Ochociński
+    <div>
+        <h1>Kontakt</h1>
+        <p>Szukaj nas w PWSZ w Nysie</p>
+        <br>Aleksander Sinkowski
+        <br>Serhii Riznychuk
+        <br>Mikołaj Rychel
+        <br>Aleksander Pawlaczyk
+        <br>Marcin Ochociński
+        <br>
+        <br>
+        <br>Lub napisz do nas!
+
+        <form action="maill" method="post">
+            <textarea name="message" placeholder="Napisz wiadomość..."></textarea>
+            <br>Podpis:
+            <br><input class="podpis" type="text" name="podpis" maxlength="50">
             <br>
-            <br>
-            <br>Lub napisz do nas!
-            <form method="post">
-                <textarea placeholder="Napisz wiadomość..."></textarea>
-                <br>
-                <button type="button">Wyślij</button>
-            </form>
-        </div>
+            <button type="submit">Wyślij</button>
+        </form>
+    </div>
 
 {% endblock %}
