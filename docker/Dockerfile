@@ -10,6 +10,7 @@ RUN apt-get -y install build-essential libssl-dev libffi-dev python3-dev
 # dabase mysql driver. Dep. for "mysqlclient" python library
 RUN apt-get -y install libmariadbclient-dev
 RUN pip install mysqlclient
+RUN pip install flask_mail
 RUN apt -y install git
 RUN pip3 install Flask
 RUN mkdir /server
