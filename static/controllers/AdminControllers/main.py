@@ -76,7 +76,7 @@ iterator = d.__iter__()
 
 dupa, dlugosc = createSquare1(d, z)
 def render():
-   String = "<header><link href="https://fonts.googleapis.com/css?family=Nova+Mono" rel="stylesheet"></header><body><pre style="font-family: 'Nova Mono', monospace;">"
+   String = "<header><link href=\"https://fonts.googleapis.com/css?family=Nova+Mono\" rel=\"stylesheet\"></header><body><pre style=\"font-family: 'Nova Mono', monospace;\">"
    String = string + dupa, createrectangle(dlugosc-2)) + "<br> Люблю тебе!</pre></body>"
    
 
