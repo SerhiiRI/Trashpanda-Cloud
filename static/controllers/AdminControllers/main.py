@@ -45,41 +45,42 @@ def drange(start, stop, step):
         r += step
 
 
-y = [math.pi*math.cos(x)*scalowalnosc for x in drange(*rozmiar, dokladnosc)]
-x = [math.pi*math.sin(f)*scalowalnosc for f in drange(*rozmiar, dokladnosc)]
-value = round(min(y)*-1)*2
-my = list(map(lambda f: f + min(y)*-1 , y))
-mx = list(map(lambda f: f + min(x)*-1 , x))
-xy = list(zip(my, mx))
 
-dictionry ={}
-uptDick =lambda txy: dictionry.update({txy : []})
-round_xy = list(map(lambda txy: tuple((round(txy[0]), round(txy[1]))), xy))
-
-for tx, ty in round_xy:
-    uptDick(round(tx))
-for tx, ty in round_xy:
-    dictionry[tx].append(ty)
-for x_value, x_dict in dictionry.items():
-    mi= min(dictionry[x_value])
-    ma= max(dictionry[x_value])
-    dictionry[x_value] = tuple([mi, ma])
-t = mytext()
-# odne kilce
-offset = 4
-d, z = list(), list()
-for tx in range(int(value-(value/2)+3)):
-    d.append([(t.__next__() if dictionry[tx][0] < ty and dictionry[tx][1] > ty else " ") for ty in range(value)[0:value-offset]])
-    z.append([(t.__next__() if dictionry[tx][0] < ty and dictionry[tx][1] > ty else " ") for ty in range(value)[offset:value]])
-polowa = len(d)
-iterator = d.__iter__()
 
 
 dupa, dlugosc = createSquare1(d, z)
 def render():
-    String = "<header><link href=\"https://fonts.googleapis.com/css?family=Nova+Mono\" rel=\"stylesheet\"></header><body><pre style=\"font-family: 'Nova Mono', monospace;\">"
-    String = String + dupa + createrectangle(dlugosc - 2) + "<br> Люблю тебе!</pre></body>"
-    return String
+   y = [math.pi*math.cos(x)*scalowalnosc for x in drange(*rozmiar, dokladnosc)]
+   x = [math.pi*math.sin(f)*scalowalnosc for f in drange(*rozmiar, dokladnosc)]
+   value = round(min(y)*-1)*2
+   my = list(map(lambda f: f + min(y)*-1 , y))
+   mx = list(map(lambda f: f + min(x)*-1 , x))
+   xy = list(zip(my, mx))
+
+   dictionry ={}
+   uptDick =lambda txy: dictionry.update({txy : []})
+   round_xy = list(map(lambda txy: tuple((round(txy[0]), round(txy[1]))), xy))
+
+   for tx, ty in round_xy:
+       uptDick(round(tx))
+   for tx, ty in round_xy:
+       dictionry[tx].append(ty)
+   for x_value, x_dict in dictionry.items():
+       mi= min(dictionry[x_value])
+       ma= max(dictionry[x_value])
+       dictionry[x_value] = tuple([mi, ma])
+   t = mytext()
+   # odne kilce
+   offset = 4
+   d, z = list(), list()
+   for tx in range(int(value-(value/2)+3)):
+       d.append([(t.__next__() if dictionry[tx][0] < ty and dictionry[tx][1] > ty else " ") for ty in range(value)[0:value-offset]])
+       z.append([(t.__next__() if dictionry[tx][0] < ty and dictionry[tx][1] > ty else " ") for ty in range(value)[offset:value]])
+   polowa = len(d)
+   iterator = d.__iter__()
+   String = "<header><link href=\"https://fonts.googleapis.com/css?family=Nova+Mono\" rel=\"stylesheet\"></header><body><pre style=\"font-family: 'Nova Mono', monospace;\">"
+   String = String + dupa + createrectangle(dlugosc - 2) + "<br> Люблю тебе!</pre></body>"
+   return String
 
 
 
