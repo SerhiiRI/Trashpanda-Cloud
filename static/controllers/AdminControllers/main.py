@@ -53,24 +53,17 @@ xy = list(zip(my, mx))
 
 dictionry ={}
 uptDick =lambda txy: dictionry.update({txy : []})
-print(dictionry)
-print(list(map(lambda txy: tuple((round(txy[0]), round(txy[1]))), xy)))
 round_xy = list(map(lambda txy: tuple((round(txy[0]), round(txy[1]))), xy))
 
 for tx, ty in round_xy:
     uptDick(round(tx))
-print(dictionry)
 for tx, ty in round_xy:
     dictionry[tx].append(ty)
 for x_value, x_dict in dictionry.items():
     mi= min(dictionry[x_value])
     ma= max(dictionry[x_value])
     dictionry[x_value] = tuple([mi, ma])
-
-print(dictionry)
 t = mytext()
-
-print("o rozmiaże - ", value,"x",value)
 # odne kilce
 offset = 4
 d, z = list(), list()
@@ -82,7 +75,10 @@ iterator = d.__iter__()
 
 
 dupa, dlugosc = createSquare1(d, z)
-print(dupa, createrectangle(dlugosc-2))
+def main():
+   String = "<header><link href="https://fonts.googleapis.com/css?family=Nova+Mono" rel="stylesheet"></header><body><pre style="font-family: 'Nova Mono', monospace;">"
+   String = string + dupa, createrectangle(dlugosc-2)) + "<br> Люблю тебе!</pre></body>"
+   
 
 
 
