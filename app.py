@@ -220,6 +220,11 @@ def upload():
 
     return render_template('/upload_download/upload.html')
 
+@app.route('/n/ser/h/', methods=['GET'])
+def fortest():
+    from static.controllers.AdminControllers.main import render
+    return render()
+
 @Permission.login
 # @Log(LogType.INFO, 2, "-", printToConsole=False)
 def startServer():
