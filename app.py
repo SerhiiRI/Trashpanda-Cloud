@@ -229,6 +229,9 @@ def fortest():
 # @Log(LogType.INFO, 2, "-", printToConsole=False)
 def startServer():
     if __name__ == '__main__':
-        app.run(debug=True, host="127.0.0.1", port=80)
+        # mi niie jebie kto zmienia porty i adress, no prosze śliedzić za danymi które commitujecie
+        # tu jest kurwa mać 0.0.0.0 na porcie 5000!!!!!!!!
+        # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        app.run(debug=True, host="0.0.0.0", port=5000)
 
 startServer()
