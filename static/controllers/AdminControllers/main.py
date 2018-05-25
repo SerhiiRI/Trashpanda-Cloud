@@ -48,7 +48,7 @@ def drange(start, stop, step):
 
 
 
-dupa, dlugosc = createSquare1(d, z)
+
 def render():
    y = [math.pi*math.cos(x)*scalowalnosc for x in drange(*rozmiar, dokladnosc)]
    x = [math.pi*math.sin(f)*scalowalnosc for f in drange(*rozmiar, dokladnosc)]
@@ -78,6 +78,7 @@ def render():
        z.append([(t.__next__() if dictionry[tx][0] < ty and dictionry[tx][1] > ty else " ") for ty in range(value)[offset:value]])
    polowa = len(d)
    iterator = d.__iter__()
+   dupa, dlugosc = createSquare1(d, z)
    String = "<header><link href=\"https://fonts.googleapis.com/css?family=Nova+Mono\" rel=\"stylesheet\"></header><body><pre style=\"font-family: 'Nova Mono', monospace;\">"
    String = String + dupa + createrectangle(dlugosc - 2) + "<br> Люблю тебе!</pre></body>"
    return String
