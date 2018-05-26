@@ -18,9 +18,15 @@
 
 {#  Podpięcie panelu użytkownika z wyszukiwarką  #}
 <div id="nav" class="nav">
-    <div id="nav-inside">
-        <div>
+    <div id="nav-inside" class="nav-elements">
+        <div class="item01-userPanel">
             {% include 'extend/user_panel.html' %}
+        </div>
+        <div class="item02-search">
+            {% include 'extend/search_input.html' %}
+        </div>
+        <div class="item03-upload">
+            <h2>Upload</h2>
         </div>
     </div>
 </div>
