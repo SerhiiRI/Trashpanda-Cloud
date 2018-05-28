@@ -69,12 +69,15 @@ class FileUpload():
         for REQUESTED_FILE in filelist:
             try:
                 """Magia Uploadu pliku, Cała logika znajduje się tutaj"""
+                print("weszlo")
                 filename = REQUESTED_FILE.filename
+                print("sprawdzilo nazwe")
                 DUMP_destination = DUMP_DIR + filename
 
                 """Grand Finale - Zapis Pliku na dysku"""
 
                 REQUESTED_FILE.save(DUMP_destination)
+                print("zapisalo")
                 SHA1 = FileUpload.countHashSum(DUMP_destination)
 
                 if not FileManager.moveFile(DUMP_destination, Destination_DIR, SHA1):
