@@ -7,6 +7,7 @@
 
     {#  Podpięcie bazowego stylu  #}
     <link rel=stylesheet type=text/css href="/static/style/trashbox-base.css">
+    <link rel=stylesheet type=text/css href="/static/style/trashbox.css">
 
     {#  Podpiecie modułu z ikonami fontello  #}
     <link rel="stylesheet" href="/static/style/fontello-c536326c/css/fontello.css" type="text/css"/>
@@ -24,14 +25,16 @@
             {% include 'extend/search_input.html' %}
         </div>
         <div class="item03-upload">
-            <h2>Upload</h2>
+            <span id="btnAction">
+                <img src="../static/pic/spinner.gif" style="width: 75px">
+            </span>
         </div>
     </div>
 </div>
 
 {#  Wstrzyknięcie zewnętrznego html'a  #}
 <!--Body, do którego AJAX'em ładowane są fragmenty html'a-->
-    <div id="include"></div>
+<div id="include"></div>
 
 {#  Podpięcie stopki  #}
 <div id="foo" class="foo" onclick="fooAct('foo', 'bottom')">

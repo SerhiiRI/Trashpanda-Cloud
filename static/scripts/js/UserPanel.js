@@ -18,5 +18,6 @@ function signOut() {
         console.log('User signed out.');
     });
     window.localStorage.clear();
+    clearSession();
     goTo('/');
 }

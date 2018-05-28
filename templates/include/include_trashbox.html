@@ -6,7 +6,6 @@
     }
 </script>
 {#  Pobranie stylu dla zakładki trashbox  #}
-<link rel=stylesheet type=text/css href="/static/style/trashbox.css">
 <script async src="/static/scripts/js/trashoboxOptionPopUp.js"></script>
 
 
@@ -73,10 +72,14 @@
 </div>
 
 <script>
+    document.getElementById('btnAction').innerHTML = '<h2><a onclick="clickUpload()">UPLOAD</a></h2>';
+    function clickUpload() {
+        {#alert('Upload clicked');#}
+        showPanelPost('upload', "{{ currentdir }}")
+    }
     /**
      * Wyświetl menu opcji dla wybranego z listy elementu
      */
-
     var pop = document.getElementById("popmenu");
     var hiddenpath = document.getElementById('filePath');
 

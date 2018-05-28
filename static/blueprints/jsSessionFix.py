@@ -11,29 +11,35 @@ def sessionControler():
         * Add
         * Update
         * Get
+        * Delete
         :param set name of session
         :param set value in to session
         :return get value from session
     '''
     print("Wywolano session flask.")
+    if request.form.get('action') == 'clear':
+        session.clear()
+        print('Session is clear')
+        return jsonify({'param': 'Session Clear'})
+
     if request.form.get('action') == 'set':
         name = request.form.get('name')
         param = request.form.get('param')
         session[name] = param
-        print("Dodano sesje o nazwie: " + name + " = " + param)
+        print("Set session: " + name + " = " + param)
         return jsonify({'param': param})
 
     if request.form.get('action') == 'get':
         name = request.form.get('name')
         if name in session:
             param = session[name]
-            print("Pobrano sesje o nazwie: " + name)
+            print("Get session: " + name)
             return jsonify({'param': param})
         elif name in session:
             sleep(0.5)
             param = session[name]
-            print("Pobrano sesje o nazwie: " + name)
+            print("Get session: " + name)
             return jsonify({'param': param})
         else:
-            print("Nie znaleziono sesji: " + name)
+            print("Session is missing: " + name)
             return jsonify({'param': ''})
