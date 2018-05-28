@@ -73,7 +73,7 @@ class FileUpload():
                 filename = REQUESTED_FILE.filename
                 print("sprawdzilo nazwe")
                 DUMP_destination = DUMP_DIR + filename
-
+                print("Zebralo info")
                 """Grand Finale - Zapis Pliku na dysku"""
 
                 REQUESTED_FILE.save(DUMP_destination)
