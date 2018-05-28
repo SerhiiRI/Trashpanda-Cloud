@@ -15,7 +15,7 @@
     {#  Wypisanie aktualnej ścieżki, czyli tej w któirej znajduje się użytkownik  #}
     <span style="font-size: 1.2rem;">Katalog: {{ currentdir }}</span>
     <br>
-    <form class="display-flex-col" action="/upload_file_to_db" method="post">
+    <form class="display-flex-col" action="/upload_file_to_db" method="post" enctype="multipart/form-data">
         <input type="hidden" name="currentdir" value="{{ currentdir }}">
         <input class="type_file" type="file" name="file_to_upload" >
         <textarea class="" name="description" placeholder="Opis pliku..."></textarea>

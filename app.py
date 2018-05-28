@@ -45,7 +45,11 @@ def download():
 @app.route('/upload_file_to_db', methods=['POST'])
 def upload():
     path = "/" + request.form.get('currentdir') + "/"
-    file = request.form.get('file_to_upload')
+    if 'file_to_upload' in request.files:
+        file = request.files['file_to_upload']
+        print("File: " + file.filename)
+    else:
+        print("Ni ma ; - ;")
     desc = request.form.get('description')
     tab = FileUpload.upload(file, path, session.get('googleID'), desc)
 
