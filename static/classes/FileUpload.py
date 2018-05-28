@@ -20,14 +20,16 @@ class Uploaded_File():
         self.timeCreate = str(datetime.datetime.today())
         self.lastAccess = str(datetime.datetime.today())
         self.OwnerID = ""
+        self.Description = ""
 
-    def getInfo(self, file_dir : str, destination_DIR : str, google_ID : str):
+    def getInfo(self, file_dir: str, destination_DIR: str, google_ID: str, description: str):
         self.HashSum = str(FileUpload.countHashSum(file_dir))
         self.Size = str(os.stat(file_dir).st_size)
         self.extension = FileManager.extensionSpliter(file_dir)
         self.Name = os.path.basename(file_dir)
         self.path = destination_DIR + self.HashSum + self.extension
-        self.OwnerID = str(google_ID)
+        self.OwnerID = google_ID
+        self.Description = description
 
     def uploadTheShit(self):
         try:
@@ -36,23 +38,31 @@ class Uploaded_File():
             SQL_Insert = DB.insert("file")
             SQL_Select = DB.select("file")
 
-            SQL_Insert(self.OwnerID, self.Name)
+            SQL_Insert(self.OwnerID, self.Name, self.Description)
             file_data = SQL_Select(idUser=self.OwnerID)
+
+            File_ID = file_data[0][0]
+            User_ID = file_data[0][1]
 
             SQL_Insert = DB.insert("version")
             SQL_Insert(file_data[0][0], self.Version, self.HashSum, self.Size, self.extension, self.path, self.accessType, self.garbage, self.timeCreate, self.lastAccess)
 
+            SQL_Insert = DB.insert("info")
+            SQL_Insert(File_ID, User_ID, self.Description, "Nie wiem co to jest, wiec nic nie daje, albo i daje, ale nic to nie znaczy. Jak cos to tego nie ma.")
+
             print("Dodano")
+            return True
         except:
             print("Blad")
-
+            raise ValueError()
 
 class FileUpload():
 
     @staticmethod
-    def upload(filelist, path, google_ID):
+    def upload(filelist, path, google_ID, Description):
         DUMP_DIR = "/srv/DUMP/"
-        Destination_DIR = "/srv/Data/" + path
+        Destination_DIR = "/srv/Data" + path
+
         """Lista mówiąca ile plików udało się pobrać bez problemów"""
         statusList = list()
 
@@ -73,7 +83,7 @@ class FileUpload():
                 else:
                     try:
                         temp = Uploaded_File()
-                        temp.getInfo(filename, Destination_DIR, google_ID)
+                        temp.getInfo(filename, Destination_DIR, google_ID, Description)
                         temp.uploadTheShit()
                         statusList.append([True, filename, DUMP_destination, str(datetime.datetime.today())])
                     except:

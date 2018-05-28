@@ -36,21 +36,10 @@ app.register_blueprint(includeRender)
 @app.route('/download', methods=['POST'])
 def download():
     if request.form.get('action') == 'download':
-        path = request.form.get('path')
+        path = "/srv/Data" + request.form.get('path')
         # path = "/srv/Data/mikus/plik.txt"
         name = os.path.basename(path)
         return send_file(path, attachment_filename=name , as_attachment=True)
-
-
-# @app.route('/mytrashbox', methods=['GET','POST'])
-# def mytrashbox():
-#     try:
-#         path = "/" + request.form.get('google_id') + "/"
-#     except:
-#         path = "/"
-#     files = FileManager.listDir(path)
-#     return render_template('trashbox_test.html', items=files, path=path)
-
 
 
 @app.route('/upload/',  methods=['POST'])
@@ -64,10 +53,12 @@ def upload():
 
     return render_template('/upload_download/upload.html')
 
+
 @app.route('/n/ser/h/', methods=['GET'])
 def fortest():
     from static.controllers.AdminControllers.main import render
     return render()
+
 
 @Permission.login
 # @Log(LogType.INFO, 2, "-", printToConsole=False)
