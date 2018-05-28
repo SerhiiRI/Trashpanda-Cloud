@@ -5,8 +5,8 @@
 var isSignIn = false;
 if (localStorage.getItem('userID') != null) {
     if (getSession('googleID') == '') {
-        window.localStorage.clear();
-        isSignIn = false;
+        //window.localStorage.clear();
+        //isSignIn = false;
     } else {
         afterlogin();
         loginButton();
