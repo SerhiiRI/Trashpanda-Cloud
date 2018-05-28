@@ -12,6 +12,6 @@ window.onload = function () {
 function goTo(where) {
     this.document.body.style.opacity = "0";
     setTimeout(function () {
-        window.location.replace(where);
+        window.location.href = where;
     }, 500);
 }

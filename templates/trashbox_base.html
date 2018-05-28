@@ -5,8 +5,6 @@
     {#  Podpięcie danych header z zewnętrznego pliku  #}
     {% include 'extend/head.html' %}
 
-    <script src="/static/scripts/js/auth.js" async defer></script>
-
     {#  Podpięcie bazowego stylu  #}
     <link rel=stylesheet type=text/css href="/static/style/trashbox-base.css">
 
@@ -32,9 +30,8 @@
 </div>
 
 {#  Wstrzyknięcie zewnętrznego html'a  #}
-<div id="content" class="content">
-    {% block content %}{% endblock %}
-</div>
+<!--Body, do którego AJAX'em ładowane są fragmenty html'a-->
+    <div id="include"></div>
 
 {#  Podpięcie stopki  #}
 <div id="foo" class="foo" onclick="fooAct('foo', 'bottom')">
@@ -42,5 +39,8 @@
         {% include 'extend/footer.html' %}
     </div>
 </div>
+<script>
+    showPanel('{{ init.include }}');
+</script>
 </body>
 </html>
