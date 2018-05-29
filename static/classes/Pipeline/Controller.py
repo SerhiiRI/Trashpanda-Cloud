@@ -10,6 +10,15 @@ class Controller(object):
         
     @property
     def PathToSystemCommand(self) -> str:
+        """
+              PathToSystemCommand
+        -----------------------------------------
+        zbierania danych o pliku i podciąga
+        META-informacje dla interpretacji w
+        system dla liczenia przez PipeBuilder-a
+
+        @Serhii Riznychuk
+        """
         return self.__PathToSystemCommand
 
     @PathToSystemCommand.setter
@@ -42,7 +51,7 @@ class Controller(object):
             print(message)
         except Exception as message:
             print(message)
-        return True if lambda_cmpr(loadProcent) else False
+        return True if lambda_cmpr(float(loadProcent)) else False
 
     def VerifyDecorator(self, lambda_cmpr):
         def FunctionLogic(function):
@@ -64,6 +73,6 @@ class Controller(object):
                     print(message)
                 except Exception as message:
                     print(message)
-                return function(*args, **kwargs) if lambda_cmpr(loadProcent) else error()
+                return function(*args, **kwargs) if lambda_cmpr(float(loadProcent)) else error()
             return wraper
         return FunctionLogic
