@@ -79,3 +79,12 @@
 .item03-upload{
     min-width: 200px;
 }
+
+.txt-r{ text-align: right }
+.txt-l{ text-align: left }
+
+.loading_screen{
+    position: fixed;
+    left: calc(50% - 128px);
+    top: calc(50% - 128px);
+}

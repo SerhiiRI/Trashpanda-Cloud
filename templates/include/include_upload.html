@@ -1,10 +1,4 @@
-<script>
-    if(document.getElementById('include')){
-        console.log('Stop redirect.')
-    }else{
-        window.location.href = '/';
-    }
-</script>
+<script>redirectIF();</script>
 
 <div id="loadContent">
     <br>
@@ -20,5 +14,14 @@
         <input class="type_file" type="file" name="file_to_upload" >
         <textarea class="" name="description" placeholder="Opis pliku..."></textarea>
         <button class="btn-upload" type="submit">Upload!</button>
+        <button class="btn-upload" type="button" onclick="showPanel('trashbox/{{ currentdir }}')">Wróć do My Trashbox</button>
     </form>
 </div>
+<script>
+    document.getElementById('btnAction').innerHTML = '<h2><a onclick="clickUpload()">My Trashbox</a></h2>';
+
+    function clickUpload() {
+        {#alert('Upload clicked');#}
+        showPanel('trashbox');
+    }
+</script>

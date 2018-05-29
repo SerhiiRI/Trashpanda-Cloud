@@ -5,13 +5,15 @@
 function showPanel(what) {
     console.log('Include: ' + what);
     console.log('Animation: 0%');
+    document.getElementById('btnAction').innerHTML = '<img src="../static/pic/spinner.gif" style="width: 75px">';
+    document.getElementById('loading_screen').style.display = 'block';
     $("#include").animate({
             opacity: 0,
         }, {
             duration: 500,
             complete: function () {
                 console.log('Animation: 50%');
-                $("#include").load("/include/include_"+what, function () {
+                $("#include").load("/include/include_" + what, function () {
                     $("#include").animate({
                         opacity: '1'
                     }, 500);
@@ -29,13 +31,15 @@ function showPanel(what) {
 function showPanelPost(what, item1) {
     console.log('Include: ' + what + '_with: ' + item1);
     console.log('Animation: 0%');
+    document.getElementById('btnAction').innerHTML = '<img src="../static/pic/spinner.gif" style="width: 75px">';
+    document.getElementById('loading_screen').style.display = 'block';
     $("#include").animate({
             opacity: 0,
         }, {
             duration: 500,
             complete: function () {
                 console.log('Animation: 50%');
-                $("#include").load("/include/include_"+what, { 'attr1' : item1 } ,function () {
+                $("#include").load("/include/include_" + what, {'attr1': item1}, function () {
                     $("#include").animate({
                         opacity: '1'
                     }, 500);
@@ -44,4 +48,13 @@ function showPanelPost(what, item1) {
             }
         }
     );
+}
+
+function redirectIF() {
+    if (document.getElementById('include')) {
+        console.log('Stop redirect.')
+        document.getElementById('loading_screen').style.display = 'none';
+    } else {
+        window.location.href = '/';
+    }
 }

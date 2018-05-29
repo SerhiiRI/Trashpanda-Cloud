@@ -3,7 +3,7 @@ def getTestFiles():
         'fileID': '1',
         'Name': 'kociaki',
         'Extension': '.png',
-        'FilePath': '/',
+        'FilePath': '/home/',
         'Size': '240000',
         'HashSum': '123',
         'Icon': 'file-image',
