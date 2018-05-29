@@ -5,6 +5,7 @@ import static.configs.EnvConf
 import tempfile
 from time import sleep
 
+from static.blueprints.pathFix import pathFixer
 from static.controllers.Permission import Permission
 from static.tool.Logs import Log, LogType
 from static.tool.FileManager import FileManager
@@ -35,6 +36,7 @@ app.register_blueprint(includeRender)
 app.register_blueprint(ajaxAction)
 
 
+
 @app.route('/download', methods=['POST'])
 def download():
     if request.form.get('action') == 'download':
@@ -46,7 +48,14 @@ def download():
 
 @app.route('/upload_file_to_db', methods=['POST'])
 def upload():
-    path = "/" + request.form.get('currentdir') + "/"
+    path = request.form.get('currentdir')
+    print('Orginal path: {}'.format(path))
+    if path[0] != '/':
+        path = '/' + path
+    if path[-1] != '/':
+        path = path + '/'
+    path = pathFixer(path, session.get('googleID'))
+    print('Upload path: {0}'.format(path))
     if 'file_to_upload' in request.files:
         file = request.files['file_to_upload']
         print("File: " + file.filename)

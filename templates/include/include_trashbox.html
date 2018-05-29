@@ -1,4 +1,7 @@
 <script>redirectIF();</script>
+<script>
+    localStorage.setItem('currentdir', '{{ currentdir }}')
+</script>
 <div id="loadContent">
     <br>
 
@@ -9,7 +12,8 @@
     <span style="font-size: 1.2rem;">
         Katalog: /{{ currentdir }}
         <br>
-        <div style="margin-top: 10px"><a onclick="openmenu('newDir', '{{ currentdir }}')">- Stwórz nowy katalog -</a></div>
+        <div style="margin-top: 10px"><a
+                onclick="openmanuQuick('newDir', '{{ currentdir }}')">- Stwórz nowy katalog -</a></div>
 </span>
     <br>
 
@@ -52,15 +56,13 @@
     </div>
 
     {#  Nowy katalog #}
-    <div class="popmenu" id="newDir" onmouseleave="closemenu('newDir')">
-        <input type="text" class="alx-add-dir" name="name-of-dir" placeholder="Nazwa katalogu">
+    <div class="popmenu" id="newDir">
+        <input type="text" class="alx-add-dir" id="input_dir_name" placeholder="Nazwa katalogu">
         <input type="button" name="add-new-dir" value="Dodaj" onclick="createDir()">
         <input type="button" name="close" value="Zamknij" onclick="closemenu('newDir')">
     </div>
 
 </div>
-{# Pop menu #}
-<script src="../../static/scripts/js/myTrashbox.js"></script>
 <script>
     document.getElementById('btnAction').innerHTML = '<h2><a onclick="clickUpload()">UPLOAD</a></h2>';
 
@@ -69,27 +71,85 @@
         showPanelPost('upload', "{{ currentdir }}")
     }
 
+    /**
+     * Open pop menu
+     * @param tag
+     * @param path
+     */
+    function openmenu(tag, path) {
+        console.log(tag)
+        console.log(path)
+        $('#' + tag).css({
+            'display': 'flex',
+            'top': (event.clientY - 17) + 'px',
+            'left': (event.clientX - 100) + 'px',
+            'width': '200px'
+        });
+        $('#' + tag).animate({
+            opacity: 1,
+            left: (event.clientX - 150) + 'px',
+        }, {duration: 500});
+        console.log('pop open');
+    }
+
+    /**
+     *
+     * @param tag
+     * @param path
+     */
+    function openmanuQuick(tag, path) {
+        console.log(tag)
+        console.log(path)
+        $('#' + tag).css({
+            'display': 'flex',
+            'top': (event.clientY - 17) + 'px',
+            'left': (event.clientX - 150) + 'px',
+            'width': '200px'
+        });
+        $('#' + tag).animate({
+            opacity: 1
+        }, {duration: 200});
+        console.log('pop open');
+    }
+
+    /* Zamknięcie menu opcji */
+    function closemenu(tag) {
+        $('#' + tag).css({
+            'display': 'none',
+            'opacity': '0'
+        });
+        console.log('pop close');
+    }
+
     function createDir() {
-        var nod = $("input[name*='name-of-dir']").val();
-        var cur = '{{ currentdir }}';
+        var nod = $("#input_dir_name").val();
+        var cur = localStorage.getItem('currentdir');
         console.log('Dir name: ' + nod);
         console.log('Current dir: ' + cur);
-        $.ajax({
-            method: 'POST',
-            url: 'ajax_action',
-            data: {
-                'action': 'add-dir',
-                'currentdir': cur,
-                'name': nod
-            },
-            success(response) {
-                console.log('Stworzono nowy katalog: ' + response.name);
-                showPanel('trasbox')
-            },
-            error(error) {
-                console.log('Dodanie katalogu zakończyło się niepowodzeniem.')
-            }
-        })
+        if (nod != '') {
+            $.ajax({
+                method: 'POST',
+                url: 'ajax_action',
+                data: {
+                    'action': 'add-dir',
+                    'currentdir': cur,
+                    'name': nod
+                },
+                success(response) {
+                    console.log('Stworzono nowy katalog: ' + response.name);
+                    showPanel('trashbox')
+                },
+                error(error) {
+                    console.log('Dodanie katalogu zakończyło się niepowodzeniem.')
+                }
+            })
+        } else {
+            alert('Musisz podać nazwę katalogu!')
+        }
+    }
+
+    function message() {
+        alert('Dziła!')
     }
 
     function download(filePath, ex) {
