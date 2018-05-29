@@ -9,8 +9,8 @@
     <span style="font-size: 1.2rem;">
         Katalog: /{{ currentdir }}
         <br>
-        <a onclick="openmenu('newDir', '{{ currentdir }}')">- Stwórz nowy katalog -</a>
-    </span>
+        <div style="margin-top: 10px"><a onclick="openmenu('newDir', '{{ currentdir }}')">- Stwórz nowy katalog -</a></div>
+</span>
     <br>
 
     {#  Tabela wyświetlająca zawartość kadalogu  #}
@@ -76,16 +76,17 @@
         console.log('Current dir: ' + cur);
         $.ajax({
             method: 'POST',
-            url : 'ajax_action',
-            data : {
-                'action' : 'add-dir',
-                'currentdir' : cur,
-                'name' : nod
+            url: 'ajax_action',
+            data: {
+                'action': 'add-dir',
+                'currentdir': cur,
+                'name': nod
             },
-            success(response){
+            success(response) {
                 console.log('Stworzono nowy katalog: ' + response.name);
+                showPanel('trasbox')
             },
-            error(error){
+            error(error) {
                 console.log('Dodanie katalogu zakończyło się niepowodzeniem.')
             }
         })
