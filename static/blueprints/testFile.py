@@ -19,3 +19,15 @@ def getTestFiles():
         },
     ]
     return paths
+
+def getEmptyFiles():
+    paths = [{
+        'fileID': '1',
+        'Name': 'Nome',
+        'Extension': '',
+        'FilePath': '/home/',
+        'Size': 'None',
+        'HashSum': 'None',
+        'Icon': 'cancel',
+    }]
+    return paths
