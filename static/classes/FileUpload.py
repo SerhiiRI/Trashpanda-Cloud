@@ -114,8 +114,8 @@ class FileUpload():
                 pathB = Destination_DIR
                 FileManager.createLink(pathA, pathB)
 
-        except:
-            print("Error, Error blyat")
+        except Exception as Ex:
+            print(Ex)
 
         return statusList
 
