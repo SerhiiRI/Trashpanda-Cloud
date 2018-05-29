@@ -226,7 +226,7 @@ def fortest():
     return render()
 
 @Permission.login
-# @Log(LogType.INFO, 2, "-", printToConsole=False)
+@Log(LogType.INFO, 2, "-", printToConsole=False)
 def startServer():
     if __name__ == '__main__':
         # mi niie jebie kto zmienia porty i adress, no prosze śliedzić za danymi które commitujecie
