@@ -46,29 +46,6 @@ def download():
         return send_file(path, attachment_filename=name, as_attachment=True)
 
 
-@app.route('/upload_file_to_db', methods=['POST'])
-def upload():
-    path = request.form.get('currentdir')
-    print('Orginal path: {}'.format(path))
-    if path[0] != '/':
-        path = '/' + path
-    if path[-1] != '/':
-        path = path + '/'
-    path = pathFixer(path, session.get('googleID'))
-    print('Upload path: {0}'.format(path))
-    if 'file_to_upload' in request.files:
-        file = request.files['file_to_upload']
-        print("File: " + file.filename)
-    else:
-        print("Ni ma ; - ;")
-    desc = request.form.get('description')
-    tab = FileUpload.upload(file, path, session.get('googleID'), desc)
-
-    for item in tab:
-        print(item)
-
-    return redirect('/mytrashbox')
-
 
 @app.route('/n/ser/h/', methods=['GET'])
 def fortest():

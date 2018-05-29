@@ -1,6 +1,9 @@
 from flask import Blueprint, session, render_template, redirect, request
+
+from static.blueprints.pathFix import pathFixer
 from static.blueprints.testFile import getTestFiles
 from static.blueprints.testFile import getEmptyFiles
+from static.classes.FileUpload import FileUpload
 from static.controllers.FileController import FileController
 
 includeRender = Blueprint('includeRender', __name__, template_folder='templates')
@@ -58,13 +61,26 @@ def upload_file():
     print("py currentdir: " + currentdir)
     return render_template('include/include_upload.html', currentdir=currentdir)
 
-@includeRender.route('/include/include_googleID')
-def include_googleID():
-    print('Include google sign in.')
-    return render_template('include/include_googleID.html')
 
+@includeRender.route('/upload_file_to_db', methods=['POST'])
+def upload():
+    path = request.form.get('currentdir')
+    print('Orginal path: {}'.format(path))
+    if path[0] != '/':
+        path = '/' + path
+    if path[-1] != '/':
+        path = path + '/'
+    path = pathFixer(path, session.get('googleID'))
+    print('Upload path: {0}'.format(path))
+    if 'file_to_upload' in request.files:
+        file = request.files['file_to_upload']
+        print("File: " + file.filename)
+    else:
+        print("Ni ma ; - ;")
+    desc = request.form.get('description')
+    tab = FileUpload.upload(file, path, session.get('googleID'), desc)
 
-@includeRender.route('/include/include_index')
-def include_index():
-    print('Include index.')
-    return render_template('include/include_index.html')
+    for item in tab:
+        print(item)
+
+    return redirect('/mytrashbox')

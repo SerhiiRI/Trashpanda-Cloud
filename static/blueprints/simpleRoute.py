@@ -40,6 +40,18 @@ def page_not_found(e):
     return render_template('info_pages/404.html'), 404
 
 
+@simpleRoute.route('/include/include_googleID')
+def include_googleID():
+    print('Include google sign in.')
+    return render_template('include/include_googleID.html')
+
+
+@simpleRoute.route('/include/include_index')
+def include_index():
+    print('Include index.')
+    return render_template('include/include_index.html')
+
+
 @simpleRoute.route('/mytrashbox')
 def mytrashbox():
     '''
