@@ -90,29 +90,22 @@ class FileUpload():
             print(Destination_DIR)
             print("DUMP Destination: " + DUMP_destination)
 
-            DB = SQLCloud()
-            DB_Select = DB.select("version")
-            result = DB_Select(hashsume= SHA1)
 
-            if len(result) < 0:
 
-                if not FileManager.moveFile(DUMP_destination, Destination_DIR, SHA1):
-                    FileManager.remove(DUMP_destination)
-                    statusList.append([False, filename, DUMP_destination, str(datetime.datetime.today())])
-                else:
-                    try:
-                        temp = Uploaded_File()
-                        File_DIR = Destination_DIR + SHA1 + FileManager.extensionSpliter(filename)
-                        temp.getInfo(filename, File_DIR, Destination_DIR, google_ID, Description)
-
-                        temp.uploadTheShit()
-                        statusList.append([True, filename, File_DIR, str(datetime.datetime.today())])
-                    except:
-                        print("SQL FAKAP")
+            if not FileManager.moveFile(DUMP_destination, Destination_DIR, SHA1):
+                FileManager.remove(DUMP_destination)
+                statusList.append([False, filename, DUMP_destination, str(datetime.datetime.today())])
             else:
-                pathA = result[0][6]
-                pathB = Destination_DIR
-                FileManager.createLink(pathA, pathB)
+                try:
+                    temp = Uploaded_File()
+                    File_DIR = Destination_DIR + SHA1 + FileManager.extensionSpliter(filename)
+                    temp.getInfo(filename, File_DIR, Destination_DIR, google_ID, Description)
+
+                    temp.uploadTheShit()
+                    statusList.append([True, filename, File_DIR, str(datetime.datetime.today())])
+                except:
+                    print("SQL FAKAP")
+
 
         except:
             print("Error, Error blyat")
