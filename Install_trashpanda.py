@@ -3,7 +3,7 @@ import os
 '''variables'''
 
 directories = ["/srv/Data/",
-               "/srv/Data/DUMP/",
+               "/srv/DUMP",
                "/var/log/trashpanda/"]
 
 
@@ -45,38 +45,31 @@ Pobieranie listy katalogów do zamontowania, zostaną przekazane do tablicy envi
 
 def getMounts():
 
-    MOUNT = str(input("Please, list directories you wish to mount into your docker container \n"
-                      "separate them with whitespaces (example: /dir1/ /example_dir/dir2/ ... \n"))
-    TEST_MOUNT = MOUNT.split(" ")
-    not_existing = testForExistence(TEST_MOUNT)
+    print("Please, list directories you wish to mount into your docker container \n"
+                      "(example: /dir1/ /example_dir/dir2/ ... \n")
+    DIRS = list()
 
-    if len(not_existing) != 0:
+    while True:
+        DIRECTORY = input()
 
-        BAD_DIR = list()
-
-        if askForCreating():
-
-            for dirs in not_existing:
+        if not testForExistence(DIRECTORY):
+            if askForCreating():
                 try:
-                    os.makedirs(dirs)
+                    os.makedirs(DIRECTORY)
+                    DIRS.append(DIRECTORY)
                 except:
-                    BAD_DIR.append(dirs)
-
-            if len(BAD_DIR) > 0:
-                if askForSkip():
-                    for item in BAD_DIR:
-                        TEST_MOUNT.remove(item)
-                else:
-                    return None
+                    print("Brak uprawnien, kurde \n")
+            else:
+                print("Tobie dupa")
         else:
-            return None
+            DIRS.append(DIRECTORY)
 
-    MOUNT = ""
+        if str(input("Would you like to mount more directories ? y/n \n"))[0] == "y":
+            pass
+        else:
+            break
 
-    for item in TEST_MOUNT:
-        MOUNT = MOUNT + " " + item
-
-    return MOUNT
+    return DIRS
 
 
 '''
@@ -84,15 +77,12 @@ Test istnienia podanej ścieżki
 '''
 
 
-def testForExistence(GIVEN_LIST):
+def testForExistence(GIVEN_DIR):
 
-    not_existing = list()
-
-    for smth in GIVEN_LIST:
-        if not os.path.exists(smth):
-            not_existing.append(smth)
-
-    return not_existing
+    if not os.path.exists(GIVEN_DIR):
+        return False
+    else:
+        return True
 
 '''
 Zapytanie o utworzenie brakujących ścieżek
@@ -101,7 +91,7 @@ Zapytanie o utworzenie brakujących ścieżek
 
 def askForCreating():
 
-    answer = str(input("Some of listed directions don't exist. \n"
+    answer = str(input("Listed directions don't exist. \n"
                        "Do you wish to create them ? Otherwise all correct directories will be discarded \n"
                        "Type y to agree for creating mentioned directions \n"))
     if answer == "y":
@@ -122,10 +112,26 @@ def askForSkip():
     else:
         return False
 
+def askForRepo():
+    return str(input("Podaj lokalne repozytorium docker'a"))
+
+def startDocker(DIRS: list, port, repo: str):
+    docker_start = "sudo docker run -it -p "
+    PORT = str(port) + ":5000 "
+
+    mounted = ""
+    for item in DIRS:
+        mounted = mounted + "-v" + item + ":" + item + ":Z \\ "
+
+    return docker_start + PORT + mounted + askForRepo()
+
+
 
 ''' MAIN '''
-print(makedirs())
-print(str(getPort()))
-print(getMounts())
+print("Status code tworzenia folderow: {0}".format(makedirs()))
+PORT = print(str(getPort()))
+DIRS = getMounts()
 
+Command = startDocker(DIRS, PORT, askForRepo())
+os.system(Command)
 

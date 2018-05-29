@@ -37,16 +37,19 @@ class FileController(object):
             hash = file.split("/")[-1]
             print('szukamy')
             try:
-                Data_Reader = self.SQL_Controller.merge("file", "idFile", "version", where={"hashsume" : hash})
+                Data_Reader = self.SQL_Controller.merge("file", "idFile", "version", where={"version.hashsume" : hash.split(".")[0]})
 
                 Name = Data_Reader[0][2]
+                print("imie " + Name)
                 fileID = Data_Reader[0][0]
                 Extension = self.extensionSpliter(file)
-            except:
+            except Exception as ex:
+                print(ex)
                 Name = file.split("/")[-1]
                 fileID = "Folder"
                 Extension = "None"
                 FullPath = FullPath + '/'
+
 
             """Wypełnianie Listy informacjami dla konstruktora klasy File"""
             TEMP = list()
