@@ -16,6 +16,7 @@ RUN pip3 install Flask
 RUN mkdir /server
 RUN mkdir -p /var/log/trashpanda
 RUN mkdir /scripts
+RUN mkdir -p /srv/DUMP
 ADD startup.sh /scripts/startup.sh
 EXPOSE 5000
 
