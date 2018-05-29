@@ -1,0 +1,23 @@
+<script>redirectIF();</script>
+{# google sign in #}
+<meta name="google-signin-client_id"
+      content="557305630089-3sr6loe91a193q6t9e2du5np98rt0khf.apps.googleusercontent.com">
+<script src="https://apis.google.com/js/platform.js"></script>
+{#  Form logowania wyświetlany po kliknięciu zaloguj  #}
+<div id="alx-gbtn">
+    <div class="alx-gbtn">
+        {#  Przycisk logowania przez Google  #}
+        <h2>Zaloguj sie przez Google!</h2>
+        <div class="g-signin2" align="center" data-width="300" data-height="50" data-onsuccess="onSignIn"
+             data-theme="dark"></div>
+        <div>
+            {#  Przycisk do tesotowani połączenia na maszynie lokalnej  #}
+            <button class="alx-btn" style="border-radius: 10px" onclick="loginTest()">Faker</button>
+            <button class="alx-btn" style="border-radius: 10px" onclick="closeLoginForm()">Zamknij</button>
+        </div>
+        <div class="classicfont">
+            Jeśli masz problem z przelogowaniem,<br>spróbuj zalogować się na inne konto po stronie google.
+        </div>
+    </div>
+</div>
+<script>console.log('Included index.')</script>

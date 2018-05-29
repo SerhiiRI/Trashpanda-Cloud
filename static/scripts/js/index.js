@@ -9,8 +9,7 @@ if (localStorage.getItem('userID') != null) {
         clearSession();
         isSignIn = false;
     } else {
-        afterlogin();
-        loginButton();
+        localStorage.setItem('userPanel', 'open');
         isSignIn = true;
     }
 }
@@ -58,10 +57,13 @@ function signOut() {
  * Zmiana w interfejsie po zalogowaniu
  * */
 function afterlogin() {
-    document.getElementById("userinfo").style.display = "initial";
-    document.getElementById("userimg").src = localStorage.getItem('userPic');
-    document.getElementById("username").innerHTML = localStorage.getItem('userName');
-    localStorage.setItem('signed', 'true');
+    if (localStorage.getItem('userPanel') == 'open') {
+        console.log('Update user panel.')
+        document.getElementById("userinfo").style.display = "initial";
+        document.getElementById("userimg").src = localStorage.getItem('userPic');
+        document.getElementById("username").innerHTML = localStorage.getItem('userName');
+        localStorage.setItem('signed', 'true');
+    }
 }
 
 /**
@@ -96,8 +98,6 @@ function knockknock(gid, name, email, token, pic) {
                     localStorage.setItem('userPic', pic);
                     localStorage.setItem('userName', name);
                     closeLoginForm();
-                    afterlogin();
-                    loginButton();
                 } else {
                     if (confirm("Nie widzieliśmy Cię tu wcześniej drogi szopie. Chcesz do nas dołączyć?")) {
                         $.ajax({
@@ -139,17 +139,19 @@ function knockknock(gid, name, email, token, pic) {
  *Edycja przycisku logowania i wylogowania
  * */
 function loginButton() {
-    document.getElementById("isSignIn").innerText = "My Trashbox";
-    var LBTN = document.getElementById("logoutBTN");
-    if (LBTN == null) {
-        let btn = document.createElement("BUTTON");
-        btn.id = "logoutBTN";
-        btn.className = "alx-btn";
-        btn.innerText = "Wyloguj";
-        btn.addEventListener("click", logout);
-        document.getElementById("func-btn").appendChild(btn);
+    if (localStorage.getItem('userPanel') == 'open') {
+        document.getElementById("isSignIn").innerText = "My Trashbox";
+        var LBTN = document.getElementById("logoutBTN");
+        if (LBTN == null) {
+            let btn = document.createElement("BUTTON");
+            btn.id = "logoutBTN";
+            btn.className = "alx-btn";
+            btn.innerText = "Wyloguj";
+            btn.addEventListener("click", logout);
+            document.getElementById("func-btn").appendChild(btn);
+        }
+        isSignIn = true;
     }
-    isSignIn = true;
 }
 
 /**
@@ -166,12 +168,10 @@ function logout() {
 var glogin = document.getElementById("alx-gbtn");
 
 function openLoginForm() {
-    if (isSignIn) {
-        goTo('mytrashbox')
+    if (localStorage.getItem('userPanel') == 'open') {
+        goTo('mytrashbox');
     } else {
-        glogin.style.transition = "all 200ms";
-        glogin.style.opacity = "1";
-        glogin.style.zIndex = "10";
+        showPanel('googleID');
     }
 }
 
@@ -179,6 +179,5 @@ function openLoginForm() {
  * Zamknij okno logowania
  * */
 function closeLoginForm() {
-    glogin.style.opacity = "0";
-    glogin.style.zIndex = "-10";
+    goTo('/');
 }

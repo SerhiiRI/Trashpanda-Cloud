@@ -1,20 +1,15 @@
-from subprocess import Popen, PIPE
-from static.classes.Pipeline.Controller import Controller
-
-import pickle
 import threading
-
 
 class Process(threading.Thread):
 
-    def __init__(self, func, values: tuple):
+    def __init__(self, func):
         self.function = func
-        self.parameter = values
+        # self.parameter = values
         threading.Thread.__init__(self)
 
     def run(self):
         try:
-            self.function(*self.parameter)
+            self.function(5)
         except RuntimeError as message:
             print("[!] Bląd krytyczny")
             print(message)

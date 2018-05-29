@@ -1,7 +1,22 @@
 #!/usr/bin/python3
-from os import popen
-from static.tool.console.vt1000 import ForeGround as fg, BackGround as bg, FormatCode as cd
-import npyscreen
+# from os import popen
+# from static.tool.console.vt1000 import ForeGround as fg, BackGround as bg, FormatCode as cd
+# import npyscreen
+
+from static.classes.Pipeline.Agents.ClientAgent import Agent
+
+client = Agent()
+client.hand_shacking(target_host="0.0.0.0", target_port=9999)
+
+
+
+
+
+
+
+
+
+
 
 """
 ten skrypt genteruje symulacje użytkowników 
@@ -44,7 +59,7 @@ class MyView(object):
 
 """
 
-
+"""
 import npyscreen
 class TestApp(npyscreen.NPSApp):
     def main(self):
@@ -57,7 +72,7 @@ class TestApp(npyscreen.NPSApp):
         dt = F.add(npyscreen.TitleDateCombo, name = "Date:")
         s  = F.add(npyscreen.TitleSlider, out_of=12, name = "Slider")
         ml = F.add(npyscreen.MultiLineEdit,
-               value = """try typing here!\nMutiline text, press ^R to reformat.\n""",
+               value = 'try typing here!\nMutiline text, press ^R to reformat.\n'
                max_height=5, rely=9)
         ms = F.add(npyscreen.TitleSelectOne, max_height=4, value = [1,], name="Pick One",
                 values = ["Option1","Option2","Option3"], scroll_exit=True)
@@ -72,3 +87,4 @@ class TestApp(npyscreen.NPSApp):
 if __name__ == "__main__":
     App = TestApp()
     App.run()
+"""

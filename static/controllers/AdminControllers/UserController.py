@@ -14,6 +14,7 @@ class Controller(SQLCloud):
         links = argumnets.links
         to_delete = argumnets.to_delete
         to_root = argumnets.to_root
+        no_root = argumnets.no_root
         issetUser, idUser = False, 0
         try:
             issetUser, idUser = self._test_user(email)
@@ -34,6 +35,13 @@ class Controller(SQLCloud):
             function = self.update("users")
             try:
                 function(idUserType=2)(idUser=idUser)
+                return "[*] Success! Now user by Email -{}- get root-access".format(email)
+            except:
+                return "[!] Error!"
+        elif (no_root):
+            function = self.update("users")
+            try:
+                function(idUserType=1)(idUser=idUser)
                 return "[*] Success! Now user by Email -{}- get root-access".format(email)
             except:
                 return "[!] Error!"

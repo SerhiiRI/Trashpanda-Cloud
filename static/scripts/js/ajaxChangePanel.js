@@ -5,8 +5,12 @@
 function showPanel(what) {
     console.log('Include: ' + what);
     console.log('Animation: 0%');
-    document.getElementById('btnAction').innerHTML = '<img src="../static/pic/spinner.gif" style="width: 75px">';
-    document.getElementById('loading_screen').style.display = 'block';
+    if (document.getElementById('btnAction')) {
+        document.getElementById('btnAction').innerHTML = '<img src="../static/pic/spinner.gif" style="width: 75px">';
+    }
+    if (document.getElementById('loading_screen')) {
+        document.getElementById('loading_screen').style.display = 'block';
+    }
     $("#include").animate({
             opacity: 0,
         }, {
@@ -31,8 +35,12 @@ function showPanel(what) {
 function showPanelPost(what, item1) {
     console.log('Include: ' + what + '_with: ' + item1);
     console.log('Animation: 0%');
-    document.getElementById('btnAction').innerHTML = '<img src="../static/pic/spinner.gif" style="width: 75px">';
-    document.getElementById('loading_screen').style.display = 'block';
+    if (document.getElementById('btnAction')) {
+        document.getElementById('btnAction').innerHTML = '<img src="../static/pic/spinner.gif" style="width: 75px">';
+    }
+    if (document.getElementById('loading_screen')) {
+        document.getElementById('loading_screen').style.display = 'block';
+    }
     $("#include").animate({
             opacity: 0,
         }, {
@@ -53,7 +61,9 @@ function showPanelPost(what, item1) {
 function redirectIF() {
     if (document.getElementById('include')) {
         console.log('Stop redirect.')
-        document.getElementById('loading_screen').style.display = 'none';
+        if (document.getElementById('loading_screen')) {
+            document.getElementById('loading_screen').style.display = 'none';
+        }
     } else {
         window.location.href = '/';
     }

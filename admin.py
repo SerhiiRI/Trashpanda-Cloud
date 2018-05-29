@@ -38,6 +38,7 @@ COMMAND-LINE OPTIONS
                 
 """
 
+
 def admin():
     '''
     parser = argparse.ArgumentParser(description='Admin tool script')
@@ -45,25 +46,25 @@ def admin():
     parser.add_argument('host', action="store", help="Ip or name to ping")
     parser.add_argument('-f', '--file', action="store", dest="file", default="/user/home/default", help="file descriptor")
     '''
-    # TODO: konfigurate DOC
-
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(title="Type of change", description="valid subcommand", help='descriptor')
-    import datetime
     user_parser = subparsers.add_parser('user', help="user manager command")
     user_parser.add_argument('email', action="store", help="user google-mail adress")
     user_parser.add_argument('-b', '--ban', action="store", dest="ban", type=int, default=0, help="add user to ban list")
     user_parser.add_argument('-s', '--stat', action= "store_true", dest="stat", default=False, help="write user statistics")
     user_parser.add_argument('-l', '--links', action="store_true", dest="links", default=False, help="list user links")
     user_parser.add_argument('--delete', action="store_true", dest="to_delete", default=False, help="delete current user")
-    user_parser.add_argument('--add-to-root', action="store_true", dest="to_root", default=False, help="delete current user")
+    user_parser.add_argument('-R', '--add-to-root', action="store_true", dest="to_root", default=False, help="delete current user")
+    user_parser.add_argument('-N', '--delete-from-root', action="store_true", dest="no_root", default=False, help="delete current user")
     user_parser.set_defaults(func=user.do)
 
     file_parser = subparsers.add_parser('file', help='file manager command')
     file_parser.add_argument('filename', action="store", help="get file name")
+    file_parser.add_argument('-v', '--versions', action="store", dest="version", default=False, help="versions of system file")
+    file_parser.add_argument('-u', '--users', action="store", dest="users", default=False, help="file users owners")
     file_parser.add_argument('-d', '--delete', action="store_true", dest="to_delete", default=False, help="remove file")
     file_parser.add_argument('--lock-link', action="store_true", dest="to_lock", default=False, help="")
-    file_parser.add_argument('--open-link', action="store_true", dest="to_open", default=False, help="")
+    file_parser.add_argument('-s', '--stat', action="store_true", dest="stat", default=False, help="")
     file_parser.set_defaults(func=file.do)
 
     stat_parser = subparsers.add_parser('stat', help='Trashpanda-server statisctics')
@@ -81,6 +82,6 @@ def admin():
         if not vars(args):
             parser.print_usage()
         else:
-            return(args.func(args))
+            args.func(args)
 
-print(admin())
+admin()
