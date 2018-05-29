@@ -1,0 +1,174 @@
+<script>redirectIF();</script>
+<script>
+    localStorage.setItem('currentdir', '{{ currentdir }}')
+</script>
+<div id="loadContent">
+    <br>
+
+    {#  Tytuł dla aktywnej zakładki  #}
+    <h1>- My Trashbox -</h1>
+
+    {#  Wypisanie aktualnej ścieżki, czyli tej w któirej znajduje się użytkownik  #}
+    <span style="font-size: 1.2rem;">
+        Katalog: /{{ currentdir }}
+        <br>
+        <div style="margin-top: 10px"><aaz
+                onclick="openmanuQuick('newDir', '{{ currentdir }}')">- Stwórz nowy katalog -</aaz></div>
+</span>
+    <br>
+
+    {#  Tabela wyświetlająca zawartość kadalogu  #}
+    <table>
+        <thead>
+        <tr>
+            {#  backpath przetrzymuje ścieżkę prowadzącą do strony poprzedniej  #}
+            <th><a href="/{{ backpath }}"><i class="icon-left-big"></i></a></th>
+            <th>Nazwa</th>
+            <th>Rozmiar</th>
+            <th>Opcje</th>
+        </tr>
+        </thead>
+        <tbody>
+        {#  Wypisanie przekazanych elementów katalogu  #}
+        {% for file in files %}
+            <tr>
+                <form action="/mytrashbox" method="post" ondblclick="">
+                    {#  Ikona odpowiadająca typowi pliku  #}
+                    <td><i class="icon-{{ file.Icon }}"></i></td>
+
+                    <td class="txt-l">{{ file.Name }}</td>
+                    <td>{{ file.Size }} B</td>
+
+                    {#  Przycisk z ikonką trzech kropek otwierający popup z opcjami dla elemntu  #}
+                    <td><i onmouseenter="openmenu('popmenu', '{{ file.FilePath }}')"
+                           class="icon-ellipsis-vert hover"></i></td>
+                    <input type="hidden" value="{{ file.FilePath }}" name="filePath">
+                    <script>console.log('{{ file.FilePath }}')</script>
+                </form>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {#  PopUp z opcjami dotyczącymi wyświerlonego rekordu z plikiem/katalogiem po najechaniu myszą #}
+    <div class="popmenu" id="popmenu" onmouseleave="closemenu('popmenu')">
+        <input type="button" class="btn" name="open" value="Otwórz" onclick="openit()">
+        <input type="button" name="close" value="Zamknij" onclick="closemenu('popmenu')">
+    </div>
+
+    {#  Nowy katalog #}
+    <div class="popmenu" id="newDir">
+        <input type="text" class="alx-add-dir" id="input_dir_name" placeholder="Nazwa katalogu">
+        <input type="button" name="add-new-dir" value="Dodaj" onclick="createDir()">
+        <input type="button" name="close" value="Zamknij" onclick="closemenu('newDir')">
+    </div>
+
+</div>
+<script>
+    document.getElementById('btnAction').innerHTML = '<h2><a onclick="clickUpload()">UPLOAD</a></h2>';
+
+    function clickUpload() {
+        {#alert('Upload clicked');#}
+        showPanelPost('upload', "{{ currentdir }}")
+    }
+
+    /**
+     * Open pop menu
+     * @param tag
+     * @param path
+     */
+    function openmenu(tag, path) {
+        console.log(tag)
+        console.log(path)
+        $('#' + tag).css({
+            'display': 'flex',
+            'top': (event.clientY - 17) + 'px',
+            'left': (event.clientX - 100) + 'px',
+            'width': '200px'
+        });
+        $('#' + tag).animate({
+            opacity: 1,
+            left: (event.clientX - 150) + 'px',
+        }, {duration: 500});
+        console.log('pop open');
+    }
+
+    /**
+     *
+     * @param tag
+     * @param path
+     */
+    function openmanuQuick(tag, path) {
+        console.log(tag)
+        console.log(path)
+        $('#' + tag).css({
+            'display': 'flex',
+            'top': (event.clientY - 17) + 'px',
+            'left': (event.clientX - 150) + 'px',
+            'width': '200px'
+        });
+        $('#' + tag).animate({
+            opacity: 1
+        }, {duration: 200});
+        console.log('pop open');
+    }
+
+    /* Zamknięcie menu opcji */
+    function closemenu(tag) {
+        $('#' + tag).css({
+            'display': 'none',
+            'opacity': '0'
+        });
+        console.log('pop close');
+    }
+
+    function createDir() {
+        var nod = $("#input_dir_name").val();
+        var cur = localStorage.getItem('currentdir');
+        console.log('Dir name: ' + nod);
+        console.log('Current dir: ' + cur);
+        if (nod != '') {
+            $.ajax({
+                method: 'POST',
+                url: 'ajax_action',
+                data: {
+                    'action': 'add-dir',
+                    'currentdir': cur,
+                    'name': nod
+                },
+                success(response) {
+                    console.log('Stworzono nowy katalog: ' + response.name);
+                    showPanel('trashbox')
+                },
+                error(error) {
+                    console.log('Dodanie katalogu zakończyło się niepowodzeniem.')
+                }
+            })
+        } else {
+            alert('Musisz podać nazwę katalogu!')
+        }
+    }
+
+    function message() {
+        alert('Dziła!')
+    }
+
+    function download(filePath, ex) {
+        if (ex != 'None') {
+            $.ajax({
+                method: 'POST',
+                url: 'download',
+                data: {
+                    'action': 'download',
+                    'path': filePath,
+                },
+                success: function (response) {
+                    console.log("Pobieranie pliku: " + response.mess)
+                },
+                error: function (error) {
+                    console.log("Pobieranie nie powiodło się.")
+                }
+            });
+        }
+    }
+</script>

@@ -1,0 +1,40 @@
+<script>redirectIF();</script>
+{# google sign in #}
+    <meta name="google-signin-client_id"
+          content="557305630089-3sr6loe91a193q6t9e2du5np98rt0khf.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js"></script>
+{#  Po zalogowaniu wyświetla obrazek użytkownika i jego imię  #}
+<div id="userinfo">
+    <img id="userimg" src="">
+    <span id="username"></span>
+</div>
+<div class="alx-cont">
+    <div class="alx-flex">
+
+        {#   Napis + obraz z logo  #}
+        <div class="alx-flex-box margin">
+            <h1>Trashpanda</h1>
+            <img src="/static/pic/raccoon.svg" class="alx-img-logo">
+        </div>
+
+        {#  Input z wyszukiwaniem  #}
+        <div class="alx-flex-box">
+            <form>
+                <input type="text" class="search-in" placeholder="Wpisz czego szukasz...">
+                <button type="submit" class="search-btn">Szukaj</button>
+            </form>
+        </div>
+
+        {#  Menu z przyciskiem Zaloguj/Info -> Po zalogowaniu My Trashbox/Info/Wygloguj  #}
+        <div class="alx-flex-box" id="func-btn">
+            <button class="alx-btn" onclick="openLoginForm()"><span id="isSignIn">Zaloguj</span></button>
+            <button class="alx-btn" onclick="goTo('info')">Info</button>
+        </div>
+    </div>
+</div>
+<div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark" style="position: fixed; opacity: 0; z-index: -10;"></div>
+<div class="alx-freeSpace"></div>
+<script>
+    afterlogin();
+    loginButton();
+</script>

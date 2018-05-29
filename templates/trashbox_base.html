@@ -5,10 +5,9 @@
     {#  Podpięcie danych header z zewnętrznego pliku  #}
     {% include 'extend/head.html' %}
 
-    <script src="/static/scripts/js/auth.js" async defer></script>
-
     {#  Podpięcie bazowego stylu  #}
     <link rel=stylesheet type=text/css href="/static/style/trashbox-base.css">
+    <link rel=stylesheet type=text/css href="/static/style/trashbox.css">
 
     {#  Podpiecie modułu z ikonami fontello  #}
     <link rel="stylesheet" href="/static/style/fontello-c536326c/css/fontello.css" type="text/css"/>
@@ -18,17 +17,25 @@
 
 {#  Podpięcie panelu użytkownika z wyszukiwarką  #}
 <div id="nav" class="nav">
-    <div id="nav-inside">
-        <div>
+    <div id="nav-inside" class="nav-elements">
+        <div class="item01-userPanel">
             {% include 'extend/user_panel.html' %}
+        </div>
+        <div class="item02-search">
+            {% include 'extend/search_input.html' %}
+        </div>
+        <div class="item03-upload">
+            <span id="btnAction">
+                <img src="../static/pic/spinner.gif" style="width: 75px">
+            </span>
         </div>
     </div>
 </div>
 
 {#  Wstrzyknięcie zewnętrznego html'a  #}
-<div id="content" class="content">
-    {% block content %}{% endblock %}
-</div>
+<!--Body, do którego AJAX'em ładowane są fragmenty html'a-->
+<img id="loading_screen" src="../static/pic/spinner.gif" class="loading_screen"></img>
+<div id="include"></div>
 
 {#  Podpięcie stopki  #}
 <div id="foo" class="foo" onclick="fooAct('foo', 'bottom')">
@@ -36,5 +43,8 @@
         {% include 'extend/footer.html' %}
     </div>
 </div>
+<script>
+    showPanel('{{ init.include }}');
+</script>
 </body>
 </html>

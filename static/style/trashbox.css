@@ -1,53 +1,65 @@
 /**
 Styl odpowiedzialny za sekcję trashbox
  */
-#loadContent{
+#loadContent {
     text-align: center;
     display: flex;
     align-items: center;
+    justify-content: center;
     flex-direction: column;
 }
-tbody{
+
+tbody {
     box-shadow: 1px 1px 5px #bbb;
 }
-table{
+
+table {
     border-collapse: collapse;
     width: 80%;
     min-width: 650px;
     margin-bottom: 25px;
 }
-th{
+
+th {
     padding: 8px;
 }
-td{
+
+td {
     border-bottom: 1px solid #ddd;
     padding: 8px;
 }
-td:first-child{
+
+td:first-child {
     text-align: center;
     width: 40px;
 }
-td:last-child{
+
+td:last-child {
     text-align: center;
     width: 40px;
 }
-th:nth-child(2), td:nth-child(2){
+
+th:nth-child(2), td:nth-child(2) {
     text-align: left;
 }
-tr{
+
+tr {
     transition: all 200ms;
     max-height: 30px;
 }
-tbody > tr:hover{
+
+tbody > tr:hover {
     background: #161F40;
     color: #fff;
     cursor: default;
 }
-.hover{
- transition: all 200ms;
+
+.hover {
+    transition: all 200ms;
     border-radius: 10px;
 }
-.hover:hover{
+
+.hover:hover {
     color: #000;
     background: #fff;
     padding: 5px;
@@ -55,31 +67,84 @@ tbody > tr:hover{
     cursor: pointer;
 }
 
-.popmenu{
+.popmenu {
     position: fixed;
-    display: flex;
-    justify-content: center;
+    display: none;
+    opacity: 0;
     flex-direction: row;
+    justify-content: center;
     z-index: 1;
-    box-shadow: 1px 1px 5px #bbb;
-    right: -450px;
+    background: #fff;
     top: 0;
     height: 40px;
-    background: #fff;
-    transition: all 200ms;
+    width: auto;
+}
+
+.alx-add-dir {
+    border-radius: 5px 0px 0px 5px;
+    border: none;
+    text-align: center;
+    box-shadow: 1px 1px 5px #555;
 }
 
 input[type=submit],
-input[type=button]{
+input[type=button] {
     border: none;
     padding: 10px 30px;
     width: 100px;
     background: #fff;
     transition: all 200ms;
+    box-shadow: 1px 1px 5px #555;
 }
+
 input[type=submit]:hover,
-input[type=button]:hover{
+input[type=button]:hover {
     background: #161F40;
     color: #fff;
     cursor: pointer;
+}
+
+.btn-upload {
+    font-family: 'Gugi', cursive;
+    font-size: 1.2rem;
+    border: none;
+    text-align: center;
+    padding: 10px 30px;
+    min-width: 100px;
+    width: 80%;
+    border-radius: 5px;
+    margin: auto;
+    background: #fff;
+    transition: all 200ms;
+}
+
+.btn-upload:hover {
+    background: #161F40;
+    color: white;
+}
+
+.display-flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+textarea {
+    border: none;
+    margin: 10px 0px;
+    min-width: 250px;
+    width: 50vw;
+    height: 15vh;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 3px 3px 10px #555;
+    transition: all 200ms;
+    text-align: center;
+}
+
+.type_file {
+    margin: 10px auto;
+    padding: 1rem 2rem;
+    cursor: pointer;
+    box-shadow: 3px 3px 10px #555;
+    border-radius: 10px;
 }

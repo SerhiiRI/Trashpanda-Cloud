@@ -1,0 +1,27 @@
+<script>redirectIF();</script>
+
+<div id="loadContent">
+    <br>
+
+    {#  Tytuł dla aktywnej zakładki  #}
+    <h1>- Upload -</h1>
+
+    {#  Wypisanie aktualnej ścieżki, czyli tej w któirej znajduje się użytkownik  #}
+    <span style="font-size: 1.2rem;">Katalog: {{ currentdir }}</span>
+    <br>
+    <form class="display-flex-col" action="/upload_file_to_db" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="currentdir" value="{{ currentdir }}">
+        <input class="type_file" type="file" name="file_to_upload" >
+        <textarea class="" name="description" placeholder="Opis pliku..."></textarea>
+        <button class="btn-upload" type="submit">Upload!</button>
+        <button class="btn-upload" type="button" onclick="showPanel('trashbox/{{ currentdir }}')">Wróć do My Trashbox</button>
+    </form>
+</div>
+<script>
+    document.getElementById('btnAction').innerHTML = '<h2><a onclick="clickUpload()">My Trashbox</a></h2>';
+
+    function clickUpload() {
+        {#alert('Upload clicked');#}
+        showPanel('trashbox');
+    }
+</script>

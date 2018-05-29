@@ -2,7 +2,7 @@
 @import "extend/base.css";
 
 /* Styl odpowiedzialny za paski nawigacji oraz ich animację */
-.nav, .foo{
+.foo{
     position: fixed;
     z-index: 2;
     width: 100vw;
@@ -13,8 +13,19 @@
     align-items: center;
     justify-content: center;
     background-color: #fff;
+    bottom: -75px;
 }
-.nav{ top: -75px; }
+/*.nav{ top: -75px; }*/
+.nav{
+    top: -75px;
+    position: fixed;
+    z-index: 2;
+    width: 100vw;
+    height: 100px;
+    box-shadow: 0px 0px 5px #000;
+    transition: all 200ms;
+    background-color: #fff;
+}
 
 .foo{ bottom: -75px; }
 
@@ -52,3 +63,28 @@
     text-align: center;
 }
 
+.nav-elements{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    text-align:center;
+}
+.item01-userPanel{
+    min-width: 200px;
+}
+.item02-search{
+    min-width: 500px;
+    width: 100%;
+}
+.item03-upload{
+    min-width: 200px;
+}
+
+.txt-r{ text-align: right }
+.txt-l{ text-align: left }
+
+.loading_screen{
+    position: fixed;
+    left: calc(50% - 128px);
+    top: calc(50% - 128px);
+}
