@@ -32,19 +32,27 @@ class FileManager(object):
     def moveFile(pathA: str, pathB: str, sha1: str):
         '''Rozbicie pathA na scieżkę pliku oraz rozszerzenie'''
 
+
         if not os.path.isfile(pathA):
             print("Brak pliku o takiej ścieżce")
             return False
 
         fileName , fileExtension = os.path.splitext(pathA)
+        print(fileExtension)
+
         if fileExtension == "":
+
             print("Requested file lacks file extension, you ain't fuckin' with trashpanda's policy NIGGAAAAAA \n")
             return False
+
         else:
+
             pathB = pathB + sha1 + FileManager.extensionSpliter(pathA)
             os.rename(pathA, pathB)
 
+
         return True
+
 
     @staticmethod
     def remove(path: str):

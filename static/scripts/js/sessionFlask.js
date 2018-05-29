@@ -47,3 +47,20 @@ function getSession(name) {
     });
     return localStorage.getItem("param");
 }
+
+function clearSession() {
+    $.ajax({
+        method: 'POST',
+        url: 'sessionControler',
+        async: true,
+        data: {
+            'action': 'clear',
+        },
+        success: function (response) {
+            console.log("Result: " + name + " = " + response.param)
+        },
+        error: function (error) {
+            console.log("Sesja nie została wyczyszczona.")
+        }
+    });
+}

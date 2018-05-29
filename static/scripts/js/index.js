@@ -5,8 +5,9 @@
 var isSignIn = false;
 if (localStorage.getItem('userID') != null) {
     if (getSession('googleID') == '') {
-        //window.localStorage.clear();
-        //isSignIn = false;
+        window.localStorage.clear();
+        clearSession();
+        isSignIn = false;
     } else {
         afterlogin();
         loginButton();
@@ -49,6 +50,7 @@ function signOut() {
         console.log('User signed out.');
     });
     window.localStorage.clear();
+    clearSession();
     goTo('/');
 }
 
