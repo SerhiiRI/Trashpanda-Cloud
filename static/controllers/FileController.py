@@ -46,6 +46,7 @@ class FileController(object):
                 Name = file.split("/")[-1]
                 fileID = "Folder"
                 Extension = "None"
+                FullPath = FullPath + '/'
 
             """Wypełnianie Listy informacjami dla konstruktora klasy File"""
             TEMP = list()

@@ -12,8 +12,8 @@
     <span style="font-size: 1.2rem;">
         Katalog: /{{ currentdir }}
         <br>
-        <div style="margin-top: 10px"><a
-                onclick="openmanuQuick('newDir', '{{ currentdir }}')">- Stwórz nowy katalog -</a></div>
+        <div style="margin-top: 10px"><aaz
+                onclick="openmanuQuick('newDir', '{{ currentdir }}')">- Stwórz nowy katalog -</aaz></div>
 </span>
     <br>
 
@@ -43,6 +43,7 @@
                     <td><i onmouseenter="openmenu('popmenu', '{{ file.FilePath }}')"
                            class="icon-ellipsis-vert hover"></i></td>
                     <input type="hidden" value="{{ file.FilePath }}" name="filePath">
+                    <script>console.log('{{ file.FilePath }}')</script>
                 </form>
             </tr>
         {% endfor %}
