@@ -37,9 +37,10 @@ def renderMyTrashbox(pathToDir):
             else:
                 return redirect('/')
 
-            filecontroller = FileController()
-            files = filecontroller.gatherDiskInfo(finalPath)
-            if not files:
+            try:
+                filecontroller = FileController()
+                files = filecontroller.gatherDiskInfo(finalPath)
+            except:
                 files = getEmptyFiles()
             print("Files: _" + str(len(files)) + "_ Get pathToDir: _" + pathToDir + "_ Set currentDir: _" + currentdir + "_ Set backPath: _" + backpath + "_Set finalPath: _" + finalPath + '_')
             return render_template('include/include_trashbox.html', files=files, backpath=backpath, currentdir=currentdir)
