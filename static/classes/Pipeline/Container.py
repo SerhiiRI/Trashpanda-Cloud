@@ -1,4 +1,6 @@
-import threading, MySQLdb, pickle, random
+import threading, MySQLdb, random
+import codecs
+import pickle
 from static.classes.datacontroller.IDataManager import IDataConnector
 from static.classes.Pipeline.Process import Process
 
@@ -27,6 +29,7 @@ class Container(threading.Thread, IDataConnector):
     def run(self):
         id, process_object = self.__getProcess()
         ThreadProcess = pickle.load(process_object)
+        # ThreadProcess = pickle.load(codecs.decode(process_object.encode(), "base64"))
         # TODO multiselect to lambda
         if self.controller.verify(lambda x: x < 50):
             return False

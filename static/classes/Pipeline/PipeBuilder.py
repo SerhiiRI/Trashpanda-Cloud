@@ -1,14 +1,13 @@
 #!/usr/bin/python3
-import threading, MySQLdb, pickle, random
+#import pickle
+import _pickle as pickle
+import threading
 from multiprocessing import Queue
 from .Process import Process
 from .Controller import Controller
 from static.classes.datacontroller.IDataManager import IDataConnector
 from static.classes.Pipeline.Container import Container
 """
-
-
-
 
 PipelineBuilder
 
@@ -57,6 +56,7 @@ _______________________________________Contaner:_________
 
 """
 
+
 class PipeBuilder(IDataConnector):
     """
                 PipeBuilder
@@ -85,7 +85,6 @@ class PipeBuilder(IDataConnector):
         """
         IDataConnector.__init__(self, DataBase="pipeline")
         # controller - sterownik i glówny architekt przejśćia po obciążeniach procesora
-
         # funkcja do wykonywania przez procesor
         self.function = function
         self.pathToController = controller
@@ -104,9 +103,9 @@ class PipeBuilder(IDataConnector):
         :return: True
         @Serhii Riznychuk
         """
-        sql = "CREATE TABLE IF NOT EXISTS %s (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, obj TEXT NOT NULL)"
+        sql = "CREATE TABLE IF NOT EXISTS `%s` (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, obj TEXT NOT NULL)"
         __cursor = self._connector.cursor()
-        __cursor.execute(sql, tuple(self.__table))
+        __cursor.execute(sql, ([self.__table]))
         self._connector.commit()
         return True
 
@@ -122,7 +121,7 @@ class PipeBuilder(IDataConnector):
         """
         sql = "DROP TABLE %s"
         __cursor = self._connector.cursor()
-        __cursor.execute(sql, tuple(self.__table))
+        __cursor.execute(sql, ([self.__table]))
         self._connector.commit()
         return True
 
@@ -137,35 +136,39 @@ class PipeBuilder(IDataConnector):
 
         @Serhii Riznychuk
         """
-        tempProcessObject = Process(self.function, args[0])
-        # pickle.dump - serializacja objektu
-        stringProcessObject = pickle.dump(tempProcessObject)
-        sql = "INSERT INTO `"+self.__table+"`(`id`, `object`) VALUES (NULL, %s)"
+        import codecs
+        import copyreg
+        tempProcessObject = Process(self.function)
+        pickle_lock = threading.Lock()
+        def serialize_it(not_serialized_object):
+            # pickle.dump - serializacja objektu
+
+            pickle_lock.acquire()
+            try:
+                #stringProcessObject = codecs.encode(pickle.dumps(not_serialized_object), "base64").decode()
+                # stringProcessObject = pickle.dumps(tempProcessObject).decode()
+                stringProcessObject = pickle.dumps(tempProcessObject).decode()
+                # stringProcessObject = copyreg.pickle(Process, not_serialized_object), "base64").decode()
+            finally:
+                pickle_lock.release()
+            return stringProcessObject
+        print(serialize_it(tempProcessObject))
+        sql = "INSERT INTO `"+self.__table+"`(`object`) VALUES (%s)"
         __cursor = self._connector.cursor()
-        __cursor.execute(sql, tuple(stringProcessObject))
-        del(tempProcessObject)
-        del(stringProcessObject)
-        self._connector.commit()
+        __cursor.execute(sql, ([serialize_it(tempProcessObject)]))
+        #self._connector.commit()
         __cursor.close()
+        del (tempProcessObject)
+
 
     def buildQueue(self) -> Queue:
         sql = "SELECT count(*) FROM `{}`".format(self.__table)
         __cursor = self._connector.cursor()
-        __cursor.execute(sql, tuple(self.__table))
+        __cursor.execute(sql, tuple((self.__table)))
         count = __cursor.fetchall()
         for _ in range(count):
             self.__queue.put(Container(self.__table, Controller(self.pathToController)))
         return self.__queue
-
-
-
-
-
-
-
-
-
-
 
 """    
     __data = list()
