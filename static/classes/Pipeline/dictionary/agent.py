@@ -1,3 +1,4 @@
+import random
 agent = {
     # Przy poprawnej realizacji wartość tego pola musi definiować
     # progama automatycznie, zależąć od tego, o jakiej specyfika-
@@ -8,15 +9,18 @@ agent = {
     # jaka ta waga będzie miala znaczenia.
     # W programie te wartośći wypelnia mega-inteligentna funkcja
     # random((range(0,101, 1)))
-    "machine-resource": {
-        "cpu": "00",
-        "disk": "00",
-        "time": "00:00",
-        "ram": "00"
+    "info": {
+        "id": random.randint(0, 10000),
     },
-    "function-value":{
-        "cp": 0,
-        "ls": 0,
-        "mv": 0
-    }
+    "machine": {
+        "cpu": random.randint(0, 101),
+        "disk": random.randint(0, 101),
+        "ram": random.randint(0, 101),
+    },
+    "function": {
+        "factorial": random.randint(0, 101),
+        "ls": random.randint(0, 101),
+        "mv": random.randint(0, 101)
+    },
+    "price": 0
 }
