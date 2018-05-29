@@ -1,5 +1,9 @@
 @import "extend/base.css";
 
+#include{
+    height: calc(100% - 50px);
+}
+
 /*
 -------------------
 ---   userinfo  ---
@@ -67,8 +71,6 @@ h1 {
     height: 100vh;
     background-color: #fff;
     position: fixed;
-    z-index: -10;
-    opacity: 0;
     text-align: center;
     display: flex;
     align-items: center;
