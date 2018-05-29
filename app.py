@@ -11,6 +11,7 @@ from static.controllers.Permission import Permission
 from static.tool.FileManager import FileManager
 from static.controllers.FileController import FileController
 from static.classes.Registration import Register, isRegistered
+from flask_mail import Mail, Message
 
 from static.classes.FileUpload import FileUpload
 
@@ -35,6 +36,25 @@ app.register_blueprint(renderTrashbox)
 app.register_blueprint(includeRender)
 app.register_blueprint(ajaxAction)
 
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'trashpandacloud@gmail.com'
+app.config['MAIL_PASSWORD'] = 'TrashPanda1'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+mail = Mail(app)
+mail.init_app(app)
+
+
+@app.route('/sendMail', methods=['POST'])
+def sendMail():
+    tresc = request.form.get('message')
+    podpis = request.form.get('podpis')
+    msg = Message("Message from user: " + podpis, sender='trashpandacloud@gmail.com',
+                  recipients=['johnhenk1122@gmail.com'])
+    msg.body = tresc + '\n' + podpis
+    mail.send(msg)
+    return 'Send message.'
 
 
 @app.route('/download', methods=['POST'])
@@ -44,7 +64,6 @@ def download():
         # path = "/srv/Data/mikus/plik.txt"
         name = os.path.basename(path)
         return send_file(path, attachment_filename=name, as_attachment=True)
-
 
 
 @app.route('/n/ser/h/', methods=['GET'])
