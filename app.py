@@ -7,7 +7,7 @@ from time import sleep
 
 from static.blueprints.pathFix import pathFixer
 from static.controllers.Permission import Permission
-from static.tool.Logs import Log, LogType
+# from static.tool.Logs import Log, LogType
 from static.tool.FileManager import FileManager
 from static.controllers.FileController import FileController
 from static.classes.Registration import Register, isRegistered
@@ -77,7 +77,7 @@ def fortest():
 
 
 @Permission.login
-@Log(LogType.INFO, 2, "-", printToConsole=False)
+# @Log(LogType.INFO, 2, "-", printToConsole=False)
 def startServer():
     if __name__ == '__main__':
         app.run(debug=True, host="0.0.0.0", port=5000)
