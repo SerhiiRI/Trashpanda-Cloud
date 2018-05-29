@@ -36,8 +36,8 @@ function onSignIn(googleUser) {
     localStorage.setItem('userPic', profile.getImageUrl());
     let x = profile.getFamilyName();
     localStorage.setItem('userName', profile.getGivenName() + " " + x[0] + ".");
-    knockknock(profile.getId(), localStorage.getItem('userName'), profile.getEmail(), token, profile.getImageUrl());
     isSignIn = true;
+    knockknock(profile.getId(), localStorage.getItem('userName'), profile.getEmail(), token, profile.getImageUrl());
 }
 
 /**
@@ -97,7 +97,9 @@ function knockknock(gid, name, email, token, pic) {
                     localStorage.setItem('userID', gid);
                     localStorage.setItem('userPic', pic);
                     localStorage.setItem('userName', name);
-                    closeLoginForm();
+                    if (localStorage.getItem('userPanel') != 'open') {
+                        closeLoginForm();
+                    }
                 } else {
                     if (confirm("Nie widzieliśmy Cię tu wcześniej drogi szopie. Chcesz do nas dołączyć?")) {
                         $.ajax({
