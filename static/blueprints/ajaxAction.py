@@ -17,7 +17,7 @@ def sessionControler():
     if request.form.get('action') == 'add-dir':
         newDir = [request.form.get('name'), request.form.get('currentdir')]
         newDir[1] = pathFixer(newDir[1])
-        create = newDir[1] + newDir[0] + '/'
+        create = '/srv/Data' + newDir[1] + newDir[0] + '/'
         result = FileManager.createFolder(create)
         print('Create path: {0} ___ Result: {1}'.format(create, result))
         return jsonify({'name': newDir[0]})
