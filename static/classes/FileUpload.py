@@ -76,7 +76,6 @@ class FileUpload():
         """Lista mówiąca ile plików udało się pobrać bez problemów"""
         statusList = list()
 
-
         try:
             """Magia Uploadu pliku, Cała logika znajduje się tutaj"""
             filename = REQUESTED_FILE.filename
@@ -90,22 +89,30 @@ class FileUpload():
             print(Destination_DIR)
             print("DUMP Destination: " + DUMP_destination)
 
+            DB = SQLCloud()
+            DB_Select = DB.select("version")
+            result = DB_Select(hashsume=SHA1)
+            print(str(len(result)))
 
+            if len(result) < 1:
 
-            if not FileManager.moveFile(DUMP_destination, Destination_DIR, SHA1):
-                FileManager.remove(DUMP_destination)
-                statusList.append([False, filename, DUMP_destination, str(datetime.datetime.today())])
+                if not FileManager.moveFile(DUMP_destination, Destination_DIR, SHA1):
+                    FileManager.remove(DUMP_destination)
+                    statusList.append([False, filename, DUMP_destination, str(datetime.datetime.today())])
+                else:
+                    try:
+                        temp = Uploaded_File()
+                        File_DIR = Destination_DIR + SHA1 + FileManager.extensionSpliter(filename)
+                        temp.getInfo(filename, File_DIR, Destination_DIR, google_ID, Description)
+
+                        temp.uploadTheShit()
+                        statusList.append([True, filename, File_DIR, str(datetime.datetime.today())])
+                    except:
+                        print("SQL FAKAP")
             else:
-                try:
-                    temp = Uploaded_File()
-                    File_DIR = Destination_DIR + SHA1 + FileManager.extensionSpliter(filename)
-                    temp.getInfo(filename, File_DIR, Destination_DIR, google_ID, Description)
-
-                    temp.uploadTheShit()
-                    statusList.append([True, filename, File_DIR, str(datetime.datetime.today())])
-                except:
-                    print("SQL FAKAP")
-
+                pathA = result[0][6]
+                pathB = Destination_DIR
+                FileManager.createLink(pathA, pathB)
 
         except:
             print("Error, Error blyat")
