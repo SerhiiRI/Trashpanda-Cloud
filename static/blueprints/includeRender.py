@@ -57,3 +57,14 @@ def upload_file():
     currentdir = request.form.get('attr1')
     print("py currentdir: " + currentdir)
     return render_template('include/include_upload.html', currentdir=currentdir)
+
+@includeRender.route('/include/include_googleID')
+def include_googleID():
+    print('Include google sign in.')
+    return render_template('include/include_googleID.html')
+
+
+@includeRender.route('/include/include_index')
+def include_index():
+    print('Include index.')
+    return render_template('include/include_index.html')
