@@ -22,63 +22,79 @@ class Uploaded_File():
         self.OwnerID = ""
         self.Description = ""
 
-    def getInfo(self, file_dir: str, destination_DIR: str, google_ID: str, description: str):
+    def getInfo(self,filename: str, file_dir: str, destination_DIR: str, google_ID: str, description: str):
         self.HashSum = str(FileUpload.countHashSum(file_dir))
         self.Size = str(os.stat(file_dir).st_size)
         self.extension = FileManager.extensionSpliter(file_dir)
-        self.Name = os.path.basename(file_dir)
+        self.Name = filename
         self.path = destination_DIR + self.HashSum + self.extension
-        self.OwnerID = google_ID
+        self.OwnerID = str(google_ID)
         self.Description = description
 
     def uploadTheShit(self):
         try:
+            """Inicjalizacja SQL controller'a"""
             DB = SQLCloud()
 
+            """Wyszukanie uzytkownika po google id"""
+            SQL_Select = DB.select("users")
+            user_data = SQL_Select(google_id = self.OwnerID)
+
+            """Przypisanie bazodanowego user ID, podany do konstruktora ID jest tylko ID google'a"""
+            ID = user_data[0][0]
+
+            """Upload informacji o pliku do bazy"""
             SQL_Insert = DB.insert("file")
             SQL_Select = DB.select("file")
 
-            SQL_Insert(self.OwnerID, self.Name, self.Description)
-            file_data = SQL_Select(idUser=self.OwnerID)
+            SQL_Insert(ID, self.Name)
+            file_data = SQL_Select(idUser=ID, description= self.Name)
 
+            """Pobranie ID pliku"""
             File_ID = file_data[0][0]
-            User_ID = file_data[0][1]
 
             SQL_Insert = DB.insert("version")
             SQL_Insert(file_data[0][0], self.Version, self.HashSum, self.Size, self.extension, self.path, self.accessType, self.garbage, self.timeCreate, self.lastAccess)
 
             SQL_Insert = DB.insert("info")
-            SQL_Insert(File_ID, User_ID, self.Description, "Nie wiem co to jest, wiec nic nie daje, albo i daje, ale nic to nie znaczy. Jak cos to tego nie ma.")
+            SQL_Insert(str(File_ID), ID,  self.Description, "Nie wiem co to jest")
 
             print("Dodano")
             return True
-        except:
+        except Exception as m :
+            print(m)
             print("Blad")
             raise ValueError()
 
 class FileUpload():
 
     @staticmethod
-    def upload(filelist, path, google_ID, Description):
+    def upload(REQUESTED_FILE, path, google_ID, Description):
         DUMP_DIR = "/srv/DUMP/"
         Destination_DIR = "/srv/Data" + path
 
         """Lista mówiąca ile plików udało się pobrać bez problemów"""
         statusList = list()
 
-        for REQUESTED_FILE in filelist:
-            try:
-                """Magia Uploadu pliku, Cała logika znajduje się tutaj"""
-                print("weszlo")
-                filename = REQUESTED_FILE.filename
-                print("sprawdzilo nazwe")
-                DUMP_destination = DUMP_DIR + filename
-                print("Zebralo info")
-                """Grand Finale - Zapis Pliku na dysku"""
 
-                REQUESTED_FILE.save(DUMP_destination)
-                print("zapisalo")
-                SHA1 = FileUpload.countHashSum(DUMP_destination)
+        try:
+            """Magia Uploadu pliku, Cała logika znajduje się tutaj"""
+            filename = REQUESTED_FILE.filename
+            DUMP_destination = DUMP_DIR + filename
+            """Grand Finale - Zapis Pliku na dysku"""
+
+            REQUESTED_FILE.save(DUMP_destination)
+
+            SHA1 = FileUpload.countHashSum(DUMP_destination)
+            print(SHA1)
+            print(Destination_DIR)
+            print("DUMP Destination: " + DUMP_destination)
+
+            DB = SQLCloud()
+            DB_Select = DB.select("version")
+            result = DB_Select(hashsume= SHA1)
+
+            if len(result) < 0:
 
                 if not FileManager.moveFile(DUMP_destination, Destination_DIR, SHA1):
                     FileManager.remove(DUMP_destination)
@@ -86,13 +102,20 @@ class FileUpload():
                 else:
                     try:
                         temp = Uploaded_File()
-                        temp.getInfo(filename, Destination_DIR, google_ID, Description)
+                        File_DIR = Destination_DIR + SHA1 + FileManager.extensionSpliter(filename)
+                        temp.getInfo(filename, File_DIR, Destination_DIR, google_ID, Description)
+
                         temp.uploadTheShit()
-                        statusList.append([True, filename, DUMP_destination, str(datetime.datetime.today())])
+                        statusList.append([True, filename, File_DIR, str(datetime.datetime.today())])
                     except:
                         print("SQL FAKAP")
-            except:
-                print("Error, Error blyat")
+            else:
+                pathA = result[0][6]
+                pathB = Destination_DIR
+                FileManager.createLink(pathA, pathB)
+
+        except:
+            print("Error, Error blyat")
 
         return statusList
 
