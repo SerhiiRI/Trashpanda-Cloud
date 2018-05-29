@@ -1,5 +1,6 @@
 from flask import Blueprint, session, render_template, redirect, request
 from static.blueprints.testFile import getTestFiles
+from static.blueprints.testFile import getEmptyFiles
 from static.controllers.FileController import FileController
 
 includeRender = Blueprint('includeRender', __name__, template_folder='templates')
@@ -38,6 +39,8 @@ def renderMyTrashbox(pathToDir):
 
             filecontroller = FileController()
             files = filecontroller.gatherDiskInfo(finalPath)
+            if not files:
+                files = getEmptyFiles()
             print("Files: _" + str(len(files)) + "_ Get pathToDir: _" + pathToDir + "_ Set currentDir: _" + currentdir + "_ Set backPath: _" + backpath + "_Set finalPath: _" + finalPath + '_')
             return render_template('include/include_trashbox.html', files=files, backpath=backpath, currentdir=currentdir)
 
