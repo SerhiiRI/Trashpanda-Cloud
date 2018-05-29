@@ -69,16 +69,22 @@ tbody > tr:hover {
 
 .popmenu {
     position: fixed;
-    display: flex;
-    justify-content: center;
+    display: none;
+    opacity: 0;
     flex-direction: row;
+    justify-content: center;
     z-index: 1;
-    box-shadow: 1px 1px 5px #bbb;
-    right: -450px;
+    background: #fff;
     top: 0;
     height: 40px;
-    background: #fff;
-    transition: all 200ms;
+    width: auto;
+}
+
+.alx-add-dir {
+    border-radius: 5px 0px 0px 5px;
+    border: none;
+    text-align: center;
+    box-shadow: 1px 1px 5px #555;
 }
 
 input[type=submit],
@@ -88,6 +94,7 @@ input[type=button] {
     width: 100px;
     background: #fff;
     transition: all 200ms;
+    box-shadow: 1px 1px 5px #555;
 }
 
 input[type=submit]:hover,

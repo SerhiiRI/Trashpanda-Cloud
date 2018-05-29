@@ -38,17 +38,15 @@ def renderMyTrashbox(pathToDir):
 
             filecontroller = FileController()
             files = filecontroller.gatherDiskInfo(finalPath)
-            # Dane testowe
-            print(files)
             print("Files: _" + str(len(files)) + "_ Get pathToDir: _" + pathToDir + "_ Set currentDir: _" + currentdir + "_ Set backPath: _" + backpath + "_Set finalPath: _" + finalPath + '_')
-            return render_template('include/include_trashbox.html', files=getTestFiles(), backpath=backpath, currentdir=currentdir)
+            return render_template('include/include_trashbox.html', files=files, backpath=backpath, currentdir=currentdir)
 
     print('My Trashbox: Access denied')
     return redirect('/')
 
 @includeRender.route('/include/include_upload', methods=['POST'])
 def upload_file():
-    currentdir = request.form.get('Include upload.')
+    print('Include upload.')
     currentdir = request.form.get('attr1')
     print("py currentdir: " + currentdir)
     return render_template('include/include_upload.html', currentdir=currentdir)

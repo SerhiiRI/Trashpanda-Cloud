@@ -1,14 +1,4 @@
-<script>
-    if(document.getElementById('include')){
-        console.log('Stop redirect.')
-    }else{
-        window.location.href = '/';
-    }
-</script>
-{#  Pobranie stylu dla zakładki trashbox  #}
-<script async src="/static/scripts/js/trashoboxOptionPopUp.js"></script>
-
-
+<script>redirectIF();</script>
 <div id="loadContent">
     <br>
 
@@ -16,7 +6,11 @@
     <h1>- My Trashbox -</h1>
 
     {#  Wypisanie aktualnej ścieżki, czyli tej w któirej znajduje się użytkownik  #}
-    <span style="font-size: 1.2rem;">Katalog: {{ currentdir }}</span>
+    <span style="font-size: 1.2rem;">
+        Katalog: /{{ currentdir }}
+        <br>
+        <a onclick="openmenu('newDir', '{{ currentdir }}')">- Stwórz nowy katalog -</a>
+    </span>
     <br>
 
     {#  Tabela wyświetlająca zawartość kadalogu  #}
@@ -27,8 +21,7 @@
             <th><a href="/{{ backpath }}"><i class="icon-left-big"></i></a></th>
             <th>Nazwa</th>
             <th>Rozmiar</th>
-            <th>Tags</th>
-            <th></th>
+            <th>Opcje</th>
         </tr>
         </thead>
         <tbody>
@@ -39,21 +32,12 @@
                     {#  Ikona odpowiadająca typowi pliku  #}
                     <td><i class="icon-{{ file.Icon }}"></i></td>
 
-                    <td>{{ file.Name }}
-                        {#                        <i class="icon-{{ file.lock }}"></i>#}
-                    </td>
-                    <td>{{ file.Size }}B</td>
-                    <td>
-                        {#                        {% if file.tag | length > 1 %}#}
-                        {#                            <select class="hover">#}
-                        {#                                {% for tag in file.tag %}#}
-                        {#                                    <option>{{ tag }}</option>#}
-                        {#                                {% endfor %}#}
-                        {#                            </select>#}
-                        {#                        {% endif %}#}
-                    </td>
+                    <td class="txt-l">{{ file.Name }}</td>
+                    <td>{{ file.Size }} B</td>
+
                     {#  Przycisk z ikonką trzech kropek otwierający popup z opcjami dla elemntu  #}
-                    <td><i onmouseenter="openmenu('{{ file.FilePath }}')" class="icon-ellipsis-vert hover"></i></td>
+                    <td><i onmouseenter="openmenu('popmenu', '{{ file.FilePath }}')"
+                           class="icon-ellipsis-vert hover"></i></td>
                     <input type="hidden" value="{{ file.FilePath }}" name="filePath">
                 </form>
             </tr>
@@ -62,49 +46,50 @@
     </table>
 
     {#  PopUp z opcjami dotyczącymi wyświerlonego rekordu z plikiem/katalogiem po najechaniu myszą #}
-    <div class="popmenu" id="popmenu" onmouseleave="closemenu()">
-        <form action="/mytrashbox" method="post">
-            <input type="hidden" name="filePath" value="">
-            <input type="submit" name="open" value="Otwórz">
-        </form>
-        <input type="button" name="close" value="Zamknij" onclick="closemenu()">
+    <div class="popmenu" id="popmenu" onmouseleave="closemenu('popmenu')">
+        <input type="button" class="btn" name="open" value="Otwórz" onclick="openit()">
+        <input type="button" name="close" value="Zamknij" onclick="closemenu('popmenu')">
     </div>
-</div>
 
+    {#  Nowy katalog #}
+    <div class="popmenu" id="newDir" onmouseleave="closemenu('newDir')">
+        <input type="text" class="alx-add-dir" name="name-of-dir" placeholder="Nazwa katalogu">
+        <input type="button" name="add-new-dir" value="Dodaj" onclick="createDir()">
+        <input type="button" name="close" value="Zamknij" onclick="closemenu('newDir')">
+    </div>
+
+</div>
+{# Pop menu #}
+<script src="../../static/scripts/js/myTrashbox.js"></script>
 <script>
     document.getElementById('btnAction').innerHTML = '<h2><a onclick="clickUpload()">UPLOAD</a></h2>';
+
     function clickUpload() {
         {#alert('Upload clicked');#}
         showPanelPost('upload', "{{ currentdir }}")
     }
-    /**
-     * Wyświetl menu opcji dla wybranego z listy elementu
-     */
-    var pop = document.getElementById("popmenu");
-    var hiddenpath = document.getElementById('filePath');
 
-    /* Wyświetla mneu opcji dla elementu z listy w trashbox */
-    function openmenu(path) {
-        var eventy = (event.clientY - 17) + 'px';
-        pop.style.top = eventy;
-        anim;
-        var anim = setInterval(function () {
-            pop.style.right = '10px';
-            clearInterval(anim);
-        }, 150);
+    function createDir() {
+        var nod = $("input[name*='name-of-dir']").val();
+        var cur = '{{ currentdir }}';
+        console.log('Dir name: ' + nod);
+        console.log('Current dir: ' + cur);
+        $.ajax({
+            method: 'POST',
+            url : 'ajax_action',
+            data : {
+                'action' : 'add-dir',
+                'currentdir' : cur,
+                'name' : nod
+            },
+            success(response){
+                console.log('Stworzono nowy katalog: ' + response.name);
+            },
+            error(error){
+                console.log('Dodanie katalogu zakończyło się niepowodzeniem.')
+            }
+        })
     }
-
-    /* Zamknięcie menu opcji */
-    function closemenu() {
-        pop.style.right = -450 + 'px';
-        console.log('close');
-    }
-
-    /* Przekazanie parametru odnośnie katalogu, po którym wyświetlone zostaną dane wybranego katalogu */
-    function openfile(link) {
-        window.location.href = '/trash/' + link;
-    }
-
 
     function download(filePath, ex) {
         if (ex != 'None') {
