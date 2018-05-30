@@ -76,7 +76,7 @@ def fortest():
 
 
 @Permission.login
-@Log(LogType.INFO, 2, "Run application", printToConsole=False)
+#@Log(LogType.INFO, 2, "Run application", printToConsole=False)
 def startServer():
     if __name__ == '__main__':
         app.run(debug=True, host="0.0.0.0", port=5000)
