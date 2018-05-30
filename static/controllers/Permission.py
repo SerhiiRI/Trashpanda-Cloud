@@ -40,7 +40,7 @@ class Permission:
         return decorated
 
     @staticmethod
-    #@Log(LogType.INFO, 105, "Brutforce login", printToConsole=False)
+    @Log(LogType.INFO, 105, "Brutforce login", printToConsole=False)
     def dataBaseAuthentificate(func):
         '''
         :Nazwa: dataBaseAuthentificate
@@ -84,7 +84,7 @@ class Permission:
             del(login, passwd)
 
     @staticmethod
-    #@Log(LogType.CRITICAL, 2, "Error: error connection with DataBase", printToConsole=False)
+    @Log(LogType.CRITICAL, 2, "Error: error connection with DataBase", printToConsole=False)
     def _error_exit():
         print("\nBye!")
 

@@ -9,7 +9,7 @@ class IDataConnector(object):
     Klass twożący sesje do bazy dany
     """
     @Permission.login
-    #@Log(LogType.INFO, 107, "Create Connection", printToConsole=True)
+    @Log(LogType.INFO, 107, "Create Connection", printToConsole=True)
     def __init__(self, DataBase="test_cloud"):
         ''' reconstruct SQL requests and create a table '''
         #print(DATABASE[DataBase])
