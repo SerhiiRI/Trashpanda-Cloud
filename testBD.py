@@ -3,7 +3,7 @@ from os import environ as ENV
 """
 ENV['TRASHPANDA_HOST'] = "trashpanda.pwsz.nysa.pl"
 ENV['CLOUD_MAX_FILE_SIZE'] = '1MB'
-ENV['CLOUD_DOWNLOAND_DAMP'] = '/srv/Dump/'
+ENV['CLOUD_DOWNLOAND_DAMP'] = '/srv/DUMP/'
 ENV['CLOUD_TRASHBOX'] = '/srv/Data/'
 ENV['TRASHPANDA_LOGIN'] = ENV['TRASHPANDA_LOGIN'] if 'TRASHPANDA_LOGIN' in ENV else "sergiy1998"
 ENV['TRASHPANDA_PASSWD'] = ENV['TRASHPANDA_PASSWD'] if 'TRASHPANDA_PASSWD' in ENV else "hspybxeR98>"
