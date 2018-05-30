@@ -124,7 +124,7 @@ class Log(object):
         def decorator(*argv,**kwargs):
             self._makeDataSET(func)(func.__name__, *argv, **kwargs)
             with open(self.SystemFilePath, "a+") as file:
-                file.write(self._createLine())
+                file.write(str(self._createLine(), encoding="UTF-8"))
             # opcja zapisywania do konsoli
             if(self.printToConsole):
                 print(self._createLine(colorise=self.printToConsole))
