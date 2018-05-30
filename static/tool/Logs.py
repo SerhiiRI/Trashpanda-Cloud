@@ -128,7 +128,7 @@ class Log(object):
             # opcja zapisywania do konsoli
             if(self.printToConsole):
                 print(self._createLine(colorise=self.printToConsole))
-            func(*argv, **kwargs)
+            return func(*argv, **kwargs)
         return decorator
 
     def _makeDataSET(self, func):
