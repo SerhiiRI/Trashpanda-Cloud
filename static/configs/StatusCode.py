@@ -115,7 +115,8 @@ STATUSCODE = {
         98: "A version number could not be parsed.",
         99: "The iterator's start position is invalid.",
         100: "The attempted operation required self healing to be enabled.",
-
+        101: "Crashed login form",
+        102: "Execution Error"
     },
     '02': {
         'type': 'critical',
