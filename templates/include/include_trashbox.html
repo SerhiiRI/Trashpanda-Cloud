@@ -32,7 +32,7 @@
         {#  Wypisanie przekazanych elementów katalogu  #}
         {% for file in files %}
             <tr ondblclick="openmenu('popmenu', '{{ file.FilePath }}')">
-                <form action="/mytrashbox" method="post">
+                <form action="/include/include_download" method="post">
                     {#  Ikona odpowiadająca typowi pliku  #}
                     <td><i class="icon-{{ file.Icon }}"></i></td>
 
@@ -43,6 +43,7 @@
                     <td><i onmouseenter="openmenu('popmenu', '{{ file.FilePath }}')"
                            class="icon-ellipsis-vert hover"></i></td>
                     <input type="hidden" value="{{ file.FilePath }}" id="filePath" name="filePath">
+
                     <script>console.log('{{ file.FilePath }}')</script>
                 </form>
             </tr>
@@ -64,6 +65,8 @@
     </div>
 
 </div>
+
+
 <script>
     document.getElementById('btnAction').innerHTML = '<h2><a onclick="clickUpload()">UPLOAD</a></h2>';
 
@@ -72,13 +75,13 @@
         showPanelPost('upload', "{{ currentdir }}")
     }
 
-    function openit(){
+    function openit() {
         var sufix = localStorage.getItem('objPath');
         console.log('ObjPath: ' + sufix);
         showPanelPost('trashbox', sufix);
     }
 
-    function backpath(where){
+    function backpath(where) {
         console.log('back to: ' + where);
         showPanelPost('trashbox', where);
     }
@@ -91,7 +94,7 @@
     function openmenu(tag, path) {
         console.log(tag);
         console.log(path);
-        localStorage.setItem('objPath',path);
+        localStorage.setItem('objPath', path);
         $('#' + tag).css({
             'display': 'flex',
             'top': (event.clientY - 17) + 'px',
@@ -167,20 +170,10 @@
 
     function download() {
         if (localStorage.getItem('objPath') != 'None') {
-            $.ajax({
-                method: 'POST',
-                url: '/download',
-                data: {
-                    'action': 'download',
-                    'path': localStorage.getItem('objPath'),
-                },
-                success: function (response) {
-                    console.log(response.resp)
-                },
-                error: function (error) {
-                    console.log("Pobieranie nie powiodło się.")
-                }
-            });
+            {#showPanelPost('download', localStorage.getItem('objPath'))#}
+            setSession('download_path', localStorage.getItem('objPath'));
+            window.open('/include/include_download','_blank');
         }
     }
+
 </script>

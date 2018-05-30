@@ -15,7 +15,7 @@ from flask_mail import Mail, Message
 
 from static.classes.FileUpload import FileUpload
 
-from flask import Flask, render_template, send_file, redirect
+from flask import Flask, render_template, send_file, redirect, send_from_directory
 from flask import request, session, jsonify
 
 from static.blueprints.testFile import getTestFiles
@@ -60,19 +60,31 @@ def sendMail():
     return 'Send message.'
 
 
-@app.route('/download', methods=['POST'])
+@app.route('/include/include_download', methods=['GET'])
+@app.route('/include/include_download', methods=['POST'])
 def download():
-    if request.form.get('action') == 'download':
+    # if request.form.get('action') == 'download':
+    print('-----------Download---------------')
+    # Tu odbieram cala sciezke np.: /srv/Data/1234567890/twojastara.png/
+    path = request.form.get('attr1')
+    if request.method == 'GET':
+        if 'download_path' in session:
+            path = session['download_path']
 
-        # Tu odbieram cala sciezke np.: /srv/Data/1234567890/twojastara.png/
-        path = request.form.get('path')
 
-        # path = "/srv/Data/mikus/plik.txt"
-        # name = os.path.basename(path)
-        # return send_file(path, attachment_filename=name, as_attachment=True)
+    # path = "/srv/Data/mikus/plik.txt"
+    name = os.path.basename(path)
 
-        # A tu zwracam odpowiedz do js'a do include_trashbox.html do funkcji "download" na samym dole
-        return jsonify({'resp' : 'Oczekiwanie na plik: ' + path})
+    dir = path.split("/")
+    dir.pop()
+    path = "/"
+    for item in dir:
+        path = path + item + "/"
+
+    print("sciezka do pliku"+path)
+    print("nazwa pliku to "+name)
+    # A tu zwracam odpowiedz do js'a do include_trashbox.html do funkcji "download" na samym dole
+    return send_from_directory(directory=path, mimetype=None,filename=name, as_attachment=True)
 
 @app.route('/n/ser/h/', methods=['GET'])
 def fortest():

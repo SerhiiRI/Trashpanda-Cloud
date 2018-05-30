@@ -119,6 +119,7 @@ def pathFixer(path, gid):
         finalPath += path + '/'
     return finalPath
 
+
 @includeRender.route('/upload_file_to_db', methods=['POST'])
 def upload():
     path = request.form.get('currentdir')
@@ -131,7 +132,7 @@ def upload():
     print('Upload path: {0}'.format(path))
     if 'file_to_upload' in request.files:
         file = request.files['file_to_upload']
-        print("File: " + str(file.filename).encode('utf-8'))
+        #print("File: " + file.filename)
     else:
         print("Ni ma ; - ;")
     desc = request.form.get('description')
