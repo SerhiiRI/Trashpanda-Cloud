@@ -22,7 +22,7 @@
         <thead>
         <tr>
             {#  backpath przetrzymuje ścieżkę prowadzącą do strony poprzedniej  #}
-            <th><a href="/{{ backpath }}"><i class="icon-left-big"></i></a></th>
+            <th><a onclick="backpath('{{ backpath }}')"><i class="icon-left-big"></i></a></th>
             <th>Nazwa</th>
             <th>Rozmiar</th>
             <th>Opcje</th>
@@ -72,14 +72,26 @@
         showPanelPost('upload', "{{ currentdir }}")
     }
 
+    function openit(){
+        var sufix = localStorage.getItem('objPath');
+        console.log('ObjPath: ' + sufix);
+        showPanelPost('trashbox', sufix);
+    }
+
+    function backpath(where){
+        console.log('back to: ' + where);
+        showPanelPost('trashbox', where);
+    }
+
     /**
      * Open pop menu
      * @param tag
      * @param path
      */
     function openmenu(tag, path) {
-        console.log(tag)
-        console.log(path)
+        console.log(tag);
+        console.log(path);
+        localStorage.setItem('objPath',path);
         $('#' + tag).css({
             'display': 'flex',
             'top': (event.clientY - 17) + 'px',

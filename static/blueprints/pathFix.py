@@ -11,3 +11,4 @@ def pathFixer(path, gid):
                 path = path + part + '/'
         print('In progress: {}'.format(path))
         return path
+    return '/' + gid + path

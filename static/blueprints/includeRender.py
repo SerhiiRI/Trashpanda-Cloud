@@ -9,9 +9,8 @@ from static.controllers.FileController import FileController
 includeRender = Blueprint('includeRender', __name__, template_folder='templates')
 
 
-@includeRender.route('/include/include_trashbox', defaults={'pathToDir': 'home'})
-@includeRender.route('/include/include_trashbox/<pathToDir>')
-def renderMyTrashbox(pathToDir):
+@includeRender.route('/include/include_trashbox', methods=['GET', 'POST'])
+def renderMyTrashbox():
     '''
     :return: my Trashbox with ajax
     '''
@@ -20,35 +19,61 @@ def renderMyTrashbox(pathToDir):
         gid = session['googleID']
         if gid:
             print('Pobranie szablonu my trashbox.')
-            paths = pathToDir
-            if paths == 'home':
+
+            if request.method == 'GET':
                 backpath = ''
                 currentdir = 'home'
+                finalPath = '/' + session['googleID'] + '/'
+
+            elif request.method == 'POST':
+                origin = request.form.get('attr1')
+                paths = origin
+                print('New path: {}'.format(origin))
+
+                if paths == '':
+                    return "<script>goTo('/');</script>"
+                if paths == 'home' or paths == '/srv/Data/home/' or paths == '/srv/Data/' + session['googleID'] + '/':
+                    paths = '/' + session['googleID'] + '/'
+
+                paths = paths.split('/')
+                paths.remove('')
+                paths.pop()
+
                 finalPath = ''
-            else:
-                paths = paths.split('.')
-                finalPath = ''
-                currentdir = paths[-1]
-                if len(paths) > 1:
-                    backpath = paths[-2]
-                else:
-                    backpath = paths[0]
+                backpath = ''
+
+                x=0
                 for path in paths:
-                    finalPath = finalPath + '/' + path
-            if 'googleID' in session:
-                finalPath = '/' + session['googleID'] + finalPath + '/'
-            else:
-                return redirect('/')
+                    if path != 'srv' and path != 'Data':
+                        finalPath = finalPath + '/' + path
+                finalPath += '/'
+
+                if len(paths) > 1:
+                    currentdir = paths[-1]
+                    if currentdir == session.get('googleID'):
+                        currentdir = 'home'
+                        backpath = ''
+                    else:
+                        bpaths = paths
+                        bpaths.pop()
+                        for path in bpaths:
+                            backpath = backpath + '/' + path
+                        backpath += '/'
+                else:
+                    currentdir = 'home'
+                    backpath = ''
+                print('Original: {} || Final: {} || Current: {} || Back: {}'.format(origin, finalPath, currentdir,
+                                                                                    backpath))
 
             try:
                 filecontroller = FileController()
                 files = filecontroller.gatherDiskInfo(finalPath)
             except:
                 files = getEmptyFiles()
-            print("Files: _" + str(len(
-                files)) + "_ Get pathToDir: _" + pathToDir + "_ Set currentDir: _" + currentdir + "_ Set backPath: _" + backpath + "_Set finalPath: _" + finalPath + '_')
             return render_template('include/include_trashbox.html', files=files, backpath=backpath,
                                    currentdir=currentdir)
+        else:
+            return redirect('/')
 
     print('My Trashbox: Access denied')
     return redirect('/')

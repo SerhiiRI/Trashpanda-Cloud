@@ -42,16 +42,17 @@ app.config['MAIL_USERNAME'] = 'trashpandacloud@gmail.com'
 app.config['MAIL_PASSWORD'] = 'TrashPanda1'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
-mail = Mail(app)
+mail = Mail()
 mail.init_app(app)
 
 
 @app.route('/sendMail', methods=['POST'])
 def sendMail():
+
     tresc = request.form.get('message')
     podpis = request.form.get('podpis')
     msg = Message("Message from user: " + podpis, sender='trashpandacloud@gmail.com',
-                  recipients=['johnhenk1122@gmail.com'])
+                  recipients=['trashpandacloud@gmail.com'])
     msg.body = tresc + '\n' + podpis
     mail.send(msg)
     return 'Send message.'
