@@ -214,6 +214,7 @@ class FileManager(object):
         """
 
         Size = os.stat(path)
+        return Size
 
     @staticmethod
     def checkPermissions(path: str):

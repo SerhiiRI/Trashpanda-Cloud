@@ -33,9 +33,10 @@ def variableconfig():
     ENV['CLOUD_PROJECT_PATH'] = os.getcwd()
     ENV['CLOUD_TRASHBOX'] = '/srv/Data/'
     ENV['CLOUD_DUMP'] = "/srv/Data/DUMP/" if createFolder('/srv/Data/DUMP/') else "jebudu"
-    ENV['TRASHPANDA_LOGIN'] = ENV.get('TRASHPANDA_LOGIN') if 'TRASHPANDA_LOGIN' in ENV else "sergiy1998"
-    ENV['TRASHPANDA_PASSWD'] = ENV.get('TRASHPANDA_PASSWD') if 'TRASHPANDA_PASSWD' in ENV else "hspybxeR98>"
+    ENV['TRASHPANDA_LOGIN'] = ENV.get('TRASHPANDA_LOGIN') if 'TRASHPANDA_LOGIN' in ENV else ""
+    ENV['TRASHPANDA_PASSWD'] = ENV.get('TRASHPANDA_PASSWD') if 'TRASHPANDA_PASSWD' in ENV else ""
     print("[*]Configure Variables...")
+
 
 variableconfig()
 print(tmp.TrashPandpa())

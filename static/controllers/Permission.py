@@ -2,6 +2,7 @@ import getpass
 from os import environ as ENV
 from functools import wraps
 import MySQLdb
+from static.tool.Logs import LogType, Log
 
 class Permission:
     '''
@@ -17,6 +18,7 @@ class Permission:
     @Serhii Riznychuk
     '''
     @staticmethod
+    @Log(LogType.INFO, 103, "Run application", printToConsole=True)
     def login(f):
         """
         :Nazwa: Login
@@ -38,6 +40,7 @@ class Permission:
         return decorated
 
     @staticmethod
+    @Log(LogType.INFO, 105, "Run application", printToConsole=False)
     def dataBaseAuthentificate(func):
         '''
         :Nazwa: dataBaseAuthentificate
@@ -81,6 +84,7 @@ class Permission:
             del(login, passwd)
 
     @staticmethod
+    @Log(LogType.CRITICAL, 2, "Error: error connection with DataBase", printToConsole=False)
     def _error_exit():
         print("\nBye!")
 

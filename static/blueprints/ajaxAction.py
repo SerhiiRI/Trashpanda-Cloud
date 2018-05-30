@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify, session
 from static.tool.FileManager import FileManager
+from static.tool.Logs import Log, LogType
 
 ajaxAction = Blueprint('ajaxAction', __name__, template_folder='templates')
 

@@ -253,7 +253,6 @@ STATUSCODE = {
         19: "The file system does not support atomic changes to the lock type.",
         20: "The system detected a segment number that was not correct.",
         21: "Cannot create a file when that file already exists.",
-        21: "The filename or extension is too long.",
         22: "The ring 2 stack is in use.",
         23: "The signal being posted is not correct.",
         24: "The file must be checked out before saving changes.",
@@ -333,6 +332,12 @@ STATUSCODE = {
         98: "The media in the drive may have changed.",
         99: "No media in drive.",
         100: "A system shutdown is in progress.",
+        101: "Start-up Server",
+        102: "Create blueprint",
+        103: "Login into system",
+        104: "The filename or extension is too long.",
+        105: "Brutal login to DataBase",
+        106: "Register new user",
+        107: "Create DataBase session"
     }
-
 }

@@ -1,5 +1,6 @@
 from static.classes.datacontroller.SQLController import SQLCloud
 from static.tool.FileManager import FileManager
+from static.tool.Logs import LogType, Log
 
 
 def isRegistered(google_id) -> bool:
@@ -11,6 +12,7 @@ def isRegistered(google_id) -> bool:
         return False
 
 
+@Log(LogType.INFO, 106, "Add new user", printToConsole=False)
 def Register(google_id : str, full_name : str, google_email : str, google_token : str) -> bool:
     if (not isRegistered(google_id)):
         idUserType = "1"
@@ -20,9 +22,7 @@ def Register(google_id : str, full_name : str, google_email : str, google_token 
         DB_Insert = DB.insert("users")
         DB_Insert(idUserType, nickname.encode('UTF-8'), publicKey, google_id, full_name.encode('UTF-8'), google_email.encode('UTF-8'), google_token)
         FileManager.createFolder("/srv/Data/"+google_id+"/")
-
         return True
-
     else:
         return False
 

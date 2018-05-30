@@ -7,7 +7,7 @@ from time import sleep
 
 from static.blueprints.pathFix import pathFixer
 from static.controllers.Permission import Permission
-# from static.tool.Logs import Log, LogType
+from static.tool.Logs import Log, LogType
 from static.tool.FileManager import FileManager
 from static.controllers.FileController import FileController
 from static.classes.Registration import Register, isRegistered
@@ -40,8 +40,8 @@ app.register_blueprint(searchEngine)
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'trashpandacloud@gmail.com'
-app.config['MAIL_PASSWORD'] = 'TrashPanda1'
+app.config['MAIL_USERNAME'] = 'dendarrus@gmail.com'
+app.config['MAIL_PASSWORD'] = 'Klaudynka123'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 mail = Mail()
@@ -76,7 +76,7 @@ def fortest():
 
 
 @Permission.login
-# @Log(LogType.INFO, 2, "-", printToConsole=False)
+@Log(LogType.INFO, 2, "Run application", printToConsole=False)
 def startServer():
     if __name__ == '__main__':
         app.run(debug=True, host="0.0.0.0", port=5000)
