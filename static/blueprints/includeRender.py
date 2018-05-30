@@ -131,7 +131,7 @@ def upload():
     print('Upload path: {0}'.format(path))
     if 'file_to_upload' in request.files:
         file = request.files['file_to_upload']
-        print("File: " + file.filename.encode('utf-8'))
+        print("File: " + str(file.filename).encode('utf-8'))
     else:
         print("Ni ma ; - ;")
     desc = request.form.get('description')
