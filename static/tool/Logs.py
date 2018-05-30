@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+
 """
                Logs
 Describe:
@@ -16,11 +17,6 @@ nazwie "Files"
 st jeden Slownik z przeliczeniam dla każd-
 ej sytuacji odpowiedniego systemowego uwi-
 adomienia
-
-
-
-
-
 
 
 
@@ -45,6 +41,7 @@ Examples:
       @Log(LogType.Error, 3, "message about action")
 
 author: Serhii Riznychuk
+author: Marcin Ochociński
 """
 
 # DateTime - klasa importowania dla fiksowania czasu w pewny okres czasu, korzystając z metody .now()
@@ -73,12 +70,12 @@ class _LogType(object):
     do konfiuguracji w poszczeg-
     ólnych dzialaniach w klasie
 
-    author: Serhii Riznychuk
+    @Serhii Riznychuk
+    @Marcin Ochociński
     '''
     def __init__(self):
         self.ERROR = self._ret_tuple(FILES["logs"]["system_error_file"], codeCategory="01")
         self.INFO = self._ret_tuple(FILES["logs"]["system_messg_file"], codeCategory="03")
-        self.WARNING = self._ret_tuple(FILES["logs"]["system_alert_file"], codeCategory="04")
         self.CRITICAL = self._ret_tuple(FILES["logs"]["system_error_file"], codeCategory="02")
         self.SYSTEM_ONLY = self._ret_tuple()
 
@@ -99,7 +96,6 @@ class _LogType(object):
 class LogType(object):
     ERROR = _LogType().ERROR
     INFO = _LogType().INFO
-    WARNING = _LogType().WARNING
     CRITICAL = _LogType().CRITICAL
     SYSTEM_ONLY = _LogType().SYSTEM_ONLY
 

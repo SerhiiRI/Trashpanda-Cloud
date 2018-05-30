@@ -9,12 +9,8 @@
 # ******************************
 import os
 from static.tool.console.ConsoleTemplate import ConsoleTemplate as tmp
-#from static.tool.Logs import Log, LogType
 from os import environ as ENV
-#from static.tool.FileManager import FileManager
-# TODO: hackerman-style init script: dużo hakowania....
-# rows, columns = os.popen('stty size', 'r').read().split()
-# os.system("clear")
+
 
 def createFolder(path: str):
     try:

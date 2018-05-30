@@ -11,29 +11,29 @@ class SQLCloud(IDataConnector):
 
     Klasa stwożona dla pobierania, generowania oraz sterowania
     Bazą Danych w jak najmniej
+
+    @Serhii Riznychuk
+    @Mikolaj Rychel
     """
-    #__instance = None
-    # MySQLdb.connect()    __table = None
+
     DBRepr = dict()
 
     def __init__(self, db_name : str ='test_cloud'):
-        ''' Private constructor  '''
         super(SQLCloud, self).__init__()
         cursor = self._connector.cursor()
         self.__table = cursor.execute("SHOW TABLES")
         cursor.close()
         self.__table__Constract()
-        #if (SQLCloud.__instance == None):
-        #   SQLCloud.__instance = self
-    """
-    @staticmethod
-    def getInstance():
-        ''' Static access method '''
-        if (SQLCloud.__instance == None):
-            SQLCloud()
-        return SQLCloud.__instance
-    """
+
     def __table__Constract(self):
+        """
+            __table__Construct
+
+        Funkcja pobiera metainformacje z kążdej tabeli
+        i przypisuje jej do zmiennej publicznej DBRepr
+
+        @Serhii Riznychuk
+        """
         __cursor = self._connector.cursor()
         __cursor.execute("SHOW TABLES")
         tabels = __cursor.fetchall()
@@ -44,6 +44,19 @@ class SQLCloud(IDataConnector):
         self.DBRepr = data
 
     def _getTableMeta(self, table_name):
+        """
+           _getTableMeta
+
+        Prywatna
+        Funkcja twoży metainformacje w postaci listy:
+        ([nazwa kolumny], [wykorzystywany w niej typ])
+        dla odpowiednio zaznaczonej w param. tabeli
+
+        :param table_name: nazwa tabeli w bazie danych
+        :return: lista column-type dla tabeli
+
+        @Serhii Riznychuk
+        """
         __cursor = self._connector.cursor()
         data = list()
         __cursor.execute("SHOW COLUMNS FROM " + table_name)
@@ -51,8 +64,19 @@ class SQLCloud(IDataConnector):
         return data
 
     def print(self, table : str = None):
-        # selT = bg.white+fg.black
-        # selC = bg.lightgrey+fg.cyan
+        """
+                 Print
+
+        Funkcja dla konsolowego wykorzystywania
+        Wypisuje poszczegulne kolumne dla list-
+        y tabel w podlączonej do konstrukotora
+        bazy danych.
+
+        :param table:
+        :return:
+
+        @Serhii Riznychuk
+        """
         Header = lambda name="Tables": cd.bold+bg.black+fg.cyan+"{:^11}".format(name)+cd.reset+"   "
         print(Header()+Header("Columns")+"\n"+"\n".join([bg.white+fg.black+"{:<11}{} : {}".format(x, cd.reset,"|".join([bg.black+"{:^16}".format(str(z))+cd.reset for z in values])) for x, values in self.DBRepr.items()]))
 
@@ -99,10 +123,11 @@ class SQLCloud(IDataConnector):
 
         @Serhii Riznychuk
         """
-        String = "def update_" + tableName + "(**sets):\n"
+        String = "def update_" + tableName + "(self, **sets):\n"
         String = String + "\tdef functionInside(**whr):\n"
         String = String + "\t\tsql = \"UPDATE `" + tableName + """` SET "+", ".join(("`"+key+"`=%s" for key, value in sets.items()))+" WHERE "+" AND ".join(("`"+key+"`=%s" for key, v in whr.items()))\n"""
         String = String + "\t\t__cursor = self._connector.cursor()\n"
+        # String = String + "\t\tprint(sql)\n"
         String = String + "\t\t__cursor.execute(sql, (([value for key, value in sets.items()]+[value for key, value in whr.items()])))\n"
         String = String + "\t\tself._connector.commit()\n"
         String = String + "\t\t__cursor.close()\n"
@@ -154,6 +179,7 @@ class SQLCloud(IDataConnector):
         :return: function
 
         @Serhii Riznychuk
+        @Mikolaj Rychel
         """
         String = "def like_" + tableName + "(self, **likes):\n"
         String = String + "\tsql=\"SELECT * FROM `" + tableName + "`\"\n"
@@ -164,7 +190,6 @@ class SQLCloud(IDataConnector):
         String = String + "\t__cursor.execute(sql, tuple(( likes[key] for key, value in likes.items())))\n"
         String = String + "\treturn __cursor.fetchall()\n"
         String = String + "self.like_" + tableName + " = MethodType(like_" + tableName + ", self)\n"
-        # print(String)
         try:
             exec(String)
             return getattr(self, "like_"+tableName)
@@ -195,7 +220,6 @@ class SQLCloud(IDataConnector):
         String = String + "\t__cursor.close()\n"
         String = String + "\treturn 0\n"
         String = String + "self.delete_" + tableName + " = MethodType(delete_" + tableName + ", self)\n"
-        print(String)
         try:
             exec(String)
             return getattr(self, "delete_" + tableName)
@@ -205,6 +229,20 @@ class SQLCloud(IDataConnector):
             return None
 
     def merge(self, *args, where: dict={}) -> dict:
+        """
+            Merge
+
+        Analog SQL inner join
+        regula podania argumentów:
+        *args: [tabela, columna, tabela, columna, tabela...]
+        gdzie: (dlugosc args) % 2 != 0
+
+        :param args: lista lączonych tabel .
+        :return: lączona lista danych
+
+        @Serhii Riznychuk
+        @Mikolaj Rychel
+        """
         before = lambda _id: str(args[args.index(_id)-1])
         after = lambda _id: str(args[args.index(_id)+1])
         concatinate = lambda tableName, _id: str(tableName)+"."+str(_id)

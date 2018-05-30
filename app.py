@@ -25,6 +25,7 @@ from static.blueprints.loginORregistry import loginORregistry
 from static.blueprints.renderTrashbox import renderTrashbox
 from static.blueprints.includeRender import includeRender
 from static.blueprints.ajaxAction import ajaxAction
+from static.blueprints.searchEngine import searchEngine
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -35,6 +36,7 @@ app.register_blueprint(loginORregistry)
 app.register_blueprint(renderTrashbox)
 app.register_blueprint(includeRender)
 app.register_blueprint(ajaxAction)
+app.register_blueprint(searchEngine)
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
