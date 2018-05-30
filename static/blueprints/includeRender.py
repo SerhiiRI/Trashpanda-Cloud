@@ -92,8 +92,14 @@ def upload_file():
 def pathFixer(path, gid):
     print('PathFixer: {0} {1}'.format(path, gid))
     paths = path.split('/')
-    paths.remove('')
-    paths.remove('home')
+    try:
+        paths.remove('')
+    except:
+        print('Nie znaleziono pustych znakow.')
+    try:
+        paths.remove('home')
+    except:
+        print('Nie znaleziono klucza home.')
     paths.pop()
     print("Fix list: {0}".format(paths))
     finalPath = '/' + gid + '/'
