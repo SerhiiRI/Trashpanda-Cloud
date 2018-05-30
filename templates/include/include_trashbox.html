@@ -10,7 +10,7 @@
 
     {#  Wypisanie aktualnej ścieżki, czyli tej w któirej znajduje się użytkownik  #}
     <span style="font-size: 1.2rem;">
-        Katalog: /{{ currentdir }}
+        Katalog: {{ currentdir }}
         <br>
         <div style="margin-top: 10px"><aaz
                 onclick="openmanuQuick('newDir', '{{ currentdir }}')">- Stwórz nowy katalog -</aaz></div>
@@ -52,6 +52,7 @@
 
     {#  PopUp z opcjami dotyczącymi wyświerlonego rekordu z plikiem/katalogiem po najechaniu myszą #}
     <div class="popmenu" id="popmenu" onmouseleave="closemenu('popmenu')">
+        <input type="button" class="btn" name="download" value="Pobierz" onclick="download()">
         <input type="button" class="btn" name="open" value="Otwórz" onclick="openit()">
     </div>
 
