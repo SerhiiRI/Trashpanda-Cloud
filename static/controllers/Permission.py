@@ -40,7 +40,7 @@ class Permission:
         return decorated
 
     @staticmethod
-    @Log(LogType.INFO, 105, "Brutforce login", printToConsole=False)
+    @Log(LogType.INFO, 105, "Ponowne logowania", printToConsole=False)
     def dataBaseAuthentificate(func):
         '''
         :Nazwa: dataBaseAuthentificate

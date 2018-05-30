@@ -79,7 +79,7 @@ def render():
                [t.__next__() for z in range(int(lenght / 2 - 1) - x)]) + "\n"
        return String
    String = "<header><link href=\"https://fonts.googleapis.com/css?family=Nova+Mono\" rel=\"stylesheet\"></header><body><pre style=\"font-family: 'Nova Mono', monospace;\">"
-   String = String + dupa + createrectangle(dlugosc - 2) + "<br> Люблю тебе!</pre></body>"
+   String = String + dupa + createrectangle(dlugosc - 2) + "<br> Dla N.</pre></body>"
    return String
 
 

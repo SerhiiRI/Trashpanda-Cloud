@@ -177,6 +177,91 @@ class Log(object):
               +color(" SYSTEM MESSAGE ")+self._DATA_SET["code"][ int(self._DATA_SET["codenumber"]) ]\
               +color(" MESSAGE ")+self._DATA_SET["message"]\
               +color(" ARGUMENTS ")+" ".join(str(vname)+"='"+str(vvalue)+"'" for vname, vvalue in self._DATA_SET["arguments_list"])+"\n"
+
+        return Log
+
+    # TODO: quick converter <dict()> type to XML
+    def _createDataXML(self):
+        raise NotImplementedError
+
+    # TODO: quick converter <dict()> type to JSON
+    def _createDataJSON(self):
+        raise NotImplementedError
+
+    # TODO: quick converter <dict()> to compress string line No more 200 symbols
+    def _createKeyValue(self):
+        raise NotImplementedError
+
+    # TODO: Only for console represents view readable <dict()> type
+    def _createReadable(self):
+        raise NotImplementedError
+
+    def _backParser(self, oneOfFormat):
+        raise NotImplementedError
+
+
+class ExceptionLog(object):
+    # setup list function for map collision in
+    _func_pipeline = list()
+    _DATA_SET = dict()
+
+    def __init__(self, logtype: tuple, statusCode : int, message : str, printToConsole=False, ServerFile=FILES["logs"]["server_file"]):
+        # a, b, c, d = tuple()
+        self.SystemFilePath, self.printToConsole, self.codeCategory, self.CODES = logtype
+        # a, b, c, d = 1, 2, 3, 4
+        self.message, self.statusCode, self.ServerFile = message, statusCode, ServerFile
+        self.printToConsole = printToConsole
+
+    def __call__(self, func):
+        """
+             Log Decorator
+        :param func: function to change
+        """
+        @wraps(func)
+        def decorator(*argv,**kwargs):
+            self._makeDataSET(func)(func.__name__, *argv, **kwargs)
+            self._DATA_SET["functionname"] = "Exception:"+argv[0].__class__.__name__
+            with open(self.SystemFilePath, "a+") as file:
+                file.write(self._createLine())
+            if(self.printToConsole):
+                print(self._createLine(colorise=self.printToConsole))
+            return func(*argv, **kwargs)
+        return decorator
+
+    def _makeDataSET(self, func):
+        self._DATA_SET["functionname"] = func.__name__
+
+        def metadata(fname: str, *args, **kwargs):
+            """ Używam karringu tylko dla przezroczystości wykorzystywania """
+            # destination log-file path
+            self._DATA_SET["filename"] = fname
+            # current data and time
+            self._DATA_SET["datetime"] = str(datetime.now())
+            # types of log( error, critical, info, warning)
+            self._DATA_SET["logtype"] = self.CODES["type"]
+            # VT1000 colorize for console output
+            self._DATA_SET["fcolor"] = self.CODES["fcolor"]
+            # -//-
+            self._DATA_SET["bcolor"] = self.CODES["bcolor"]
+            # InScope Log() message to destination
+            self._DATA_SET["message"] = self.message
+            # GLOBAL CODE - not used
+            self._DATA_SET["globalcodenumber"] = self.codeCategory + "x" + str(self.statusCode)
+            # status code of category
+            self._DATA_SET["codenumber"] = str(self.statusCode)
+            # lista kodów przeslanych lącznie z ślownikeim
+            self._DATA_SET["code"] = self.CODES
+
+        return metadata
+
+    def _createLine(self, colorise = False) -> str:
+        color = lambda x : (self._DATA_SET["fcolor"]+self._DATA_SET["bcolor"]+x+cd.reset) if colorise==True else x
+        Log = color("FUNCTION NAME ")+self._DATA_SET["functionname"]\
+              +color(" TYPE ")+self._DATA_SET["logtype"]\
+              +color(" TIME ")+self._DATA_SET["datetime"]\
+              +color(" CODE ")+self._DATA_SET["globalcodenumber"]\
+              +color(" SYSTEM MESSAGE ")+self._DATA_SET["code"][ int(self._DATA_SET["codenumber"]) ]\
+              +color(" MESSAGE ")+self._DATA_SET["message"]+"\n"
         return Log
 
     # TODO: quick converter <dict()> type to XML
