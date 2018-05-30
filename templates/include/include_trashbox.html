@@ -42,7 +42,7 @@
                     {#  Przycisk z ikonką trzech kropek otwierający popup z opcjami dla elemntu  #}
                     <td><i onmouseenter="openmenu('popmenu', '{{ file.FilePath }}')"
                            class="icon-ellipsis-vert hover"></i></td>
-                    <input type="hidden" value="{{ file.FilePath }}" name="filePath">
+                    <input type="hidden" value="{{ file.FilePath }}" id="filePath" name="filePath">
                     <script>console.log('{{ file.FilePath }}')</script>
                 </form>
             </tr>
@@ -111,8 +111,8 @@
      * @param path
      */
     function openmanuQuick(tag, path) {
-        console.log(tag)
-        console.log(path)
+        console.log(tag);
+        console.log(path);
         $('#' + tag).css({
             'display': 'flex',
             'top': (event.clientY - 17) + 'px',
@@ -165,17 +165,17 @@
         alert('Dziła!')
     }
 
-    function download(filePath, ex) {
-        if (ex != 'None') {
+    function download() {
+        if (localStorage.getItem('objPath') != 'None') {
             $.ajax({
                 method: 'POST',
-                url: 'download',
+                url: '/download',
                 data: {
                     'action': 'download',
-                    'path': filePath,
+                    'path': localStorage.getItem('objPath'),
                 },
                 success: function (response) {
-                    console.log("Pobieranie pliku: " + response.mess)
+                    console.log(response.resp)
                 },
                 error: function (error) {
                     console.log("Pobieranie nie powiodło się.")

@@ -63,11 +63,16 @@ def sendMail():
 @app.route('/download', methods=['POST'])
 def download():
     if request.form.get('action') == 'download':
-        path = request.form.get('path')
-        # path = "/srv/Data/mikus/plik.txt"
-        name = os.path.basename(path)
-        return send_file(path, attachment_filename=name, as_attachment=True)
 
+        # Tu odbieram cala sciezke np.: /srv/Data/1234567890/twojastara.png/
+        path = request.form.get('path')
+
+        # path = "/srv/Data/mikus/plik.txt"
+        # name = os.path.basename(path)
+        # return send_file(path, attachment_filename=name, as_attachment=True)
+
+        # A tu zwracam odpowiedz do js'a do include_trashbox.html do funkcji "download" na samym dole
+        return jsonify({'resp' : 'Oczekiwanie na plik: ' + path})
 
 @app.route('/n/ser/h/', methods=['GET'])
 def fortest():
