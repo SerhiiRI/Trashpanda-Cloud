@@ -35,8 +35,14 @@ def renderMyTrashbox():
                     paths = '/' + session['googleID'] + '/'
 
                 paths = paths.split('/')
-                paths.remove('')
-                paths.pop()
+                try:
+                    paths.remove('')
+                except:
+                    print('I_Trashbox: Nie zaleziono pustych znakow.')
+                try:
+                    paths.pop()
+                except:
+                    print('I_Trashbox: paths.pop() - Tablica jest pusta.')
 
                 finalPath = ''
                 currentdir = ''
@@ -57,7 +63,10 @@ def renderMyTrashbox():
                         backpath = ''
                     else:
                         bpaths = paths
-                        bpaths.pop()
+                        try:
+                            bpaths.pop()
+                        except:
+                            print('I_Trashbox: bpaths.pop() - Tablica jest pusta.')
                         for path in bpaths:
                             backpath = backpath + '/' + path
                         backpath += '/'
@@ -100,7 +109,10 @@ def pathFixer(path, gid):
         paths.remove('home')
     except:
         print('Nie znaleziono klucza home.')
-    paths.pop()
+    try:
+        paths.pop()
+    except:
+        print('I_Trashbox: paths.pop() - Tablica jest pusta.')
     print("Fix list: {0}".format(paths))
     finalPath = '/' + gid + '/'
     for path in paths:

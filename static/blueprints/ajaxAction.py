@@ -9,12 +9,16 @@ def pathFixer(path, gid):
     try:
         paths.remove('')
     except:
-        print('Nie znaleziono pustych znakow.')
+        print('ajaxAction: paths.remove() - Nie znaleziono pustych znakow.')
     try:
         paths.remove('home')
     except:
-        print('Nie znaleziono klucza home.')
+        print('ajaxAction: paths.remove(home) - Nie znaleziono klucza home.')
     paths.pop()
+    try:
+        paths.pop()
+    except:
+        print('ajaxAction: paths.pop() - Lista jest pusta.')
     print("Fix list: {0}".format(paths))
     finalPath = '/' + gid + '/'
     for path in paths:
