@@ -50,7 +50,7 @@ def getMounts():
     DIRS = list()
 
     while True:
-        DIRECTORY = input()
+        DIRECTORY = input("Podaj sciezke: np. /srv")
 
         if not testForExistence(DIRECTORY):
             if askForCreating():
@@ -113,25 +113,27 @@ def askForSkip():
         return False
 
 def askForRepo():
-    return str(input("Podaj lokalne repozytorium docker'a"))
+    return str(input("Podaj lokalne repozytorium docker'a \n"))
 
-def startDocker(DIRS: list, port, repo: str):
+def startDocker(DIRS: list, port):
     docker_start = "sudo docker run -it -p "
     PORT = str(port) + ":5000 "
 
     mounted = ""
     for item in DIRS:
-        mounted = mounted + "-v" + item + ":" + item + ":Z \\ "
+        mounted = mounted + "-v " + item + ":" + item + ":Z "
 
-    return docker_start + PORT + mounted + askForRepo()
+    repo = askForRepo()
+    return docker_start + PORT + mounted + repo
 
 
 
 ''' MAIN '''
 print("Status code tworzenia folderow: {0}".format(makedirs()))
-PORT = print(str(getPort()))
+PORT = str(getPort())
 DIRS = getMounts()
 
-Command = startDocker(DIRS, PORT, askForRepo())
+Command = startDocker(DIRS, PORT)
+print(Command)
 os.system(Command)
 
