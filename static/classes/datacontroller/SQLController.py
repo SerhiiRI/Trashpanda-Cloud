@@ -99,10 +99,11 @@ class SQLCloud(IDataConnector):
 
         @Serhii Riznychuk
         """
-        String = "def update_" + tableName + "(**sets):\n"
+        String = "def update_" + tableName + "(self, **sets):\n"
         String = String + "\tdef functionInside(**whr):\n"
         String = String + "\t\tsql = \"UPDATE `" + tableName + """` SET "+", ".join(("`"+key+"`=%s" for key, value in sets.items()))+" WHERE "+" AND ".join(("`"+key+"`=%s" for key, v in whr.items()))\n"""
         String = String + "\t\t__cursor = self._connector.cursor()\n"
+        # String = String + "\t\tprint(sql)\n"
         String = String + "\t\t__cursor.execute(sql, (([value for key, value in sets.items()]+[value for key, value in whr.items()])))\n"
         String = String + "\t\tself._connector.commit()\n"
         String = String + "\t\t__cursor.close()\n"
@@ -164,7 +165,6 @@ class SQLCloud(IDataConnector):
         String = String + "\t__cursor.execute(sql, tuple(( likes[key] for key, value in likes.items())))\n"
         String = String + "\treturn __cursor.fetchall()\n"
         String = String + "self.like_" + tableName + " = MethodType(like_" + tableName + ", self)\n"
-        # print(String)
         try:
             exec(String)
             return getattr(self, "like_"+tableName)
@@ -195,7 +195,6 @@ class SQLCloud(IDataConnector):
         String = String + "\t__cursor.close()\n"
         String = String + "\treturn 0\n"
         String = String + "self.delete_" + tableName + " = MethodType(delete_" + tableName + ", self)\n"
-        print(String)
         try:
             exec(String)
             return getattr(self, "delete_" + tableName)
