@@ -12,7 +12,7 @@ def isRegistered(google_id) -> bool:
         return False
 
 
-@Log(LogType.INFO, 106, "Add new user", printToConsole=False)
+#@Log(LogType.INFO, 106, "Add new user", printToConsole=False)
 def Register(google_id : str, full_name : str, google_email : str, google_token : str) -> bool:
     if (not isRegistered(google_id)):
         idUserType = "1"

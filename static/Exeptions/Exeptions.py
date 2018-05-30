@@ -2,7 +2,7 @@ from static.tool.Logs import Log, LogType
 
 
 class PermissionDenied(Exception):
-    @Log(LogType.CRITICAL, 1, "-", printToConsole=False)
+    #@Log(LogType.CRITICAL, 1, "-", printToConsole=False)
     def __int__(self):
         pass
     def __str__(self):
