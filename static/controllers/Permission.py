@@ -18,7 +18,7 @@ class Permission:
     @Serhii Riznychuk
     '''
     @staticmethod
-    #@Log(LogType.INFO, 103, "Login to the system", printToConsole=True)
+    @Log(LogType.INFO, 103, "Login to the system", printToConsole=True)
     def login(f):
         """
         :Nazwa: Login
