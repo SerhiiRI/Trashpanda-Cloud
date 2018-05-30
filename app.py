@@ -7,10 +7,11 @@ from time import sleep
 
 from static.blueprints.pathFix import pathFixer
 from static.controllers.Permission import Permission
-from static.tool.Logs import Log, LogType
+# from static.tool.Logs import Log, LogType
 from static.tool.FileManager import FileManager
 from static.controllers.FileController import FileController
 from static.classes.Registration import Register, isRegistered
+from flask_mail import Mail, Message
 
 from static.classes.FileUpload import FileUpload
 
@@ -37,6 +38,26 @@ app.register_blueprint(includeRender)
 app.register_blueprint(ajaxAction)
 app.register_blueprint(searchEngine)
 
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'trashpandacloud@gmail.com'
+app.config['MAIL_PASSWORD'] = 'TrashPanda1'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+mail = Mail()
+mail.init_app(app)
+
+
+@app.route('/sendMail', methods=['POST'])
+def sendMail():
+
+    tresc = request.form.get('message')
+    podpis = request.form.get('podpis')
+    msg = Message("Message from user: " + podpis, sender='trashpandacloud@gmail.com',
+                  recipients=['trashpandacloud@gmail.com'])
+    msg.body = tresc + '\n' + podpis
+    mail.send(msg)
+    return 'Send message.'
 
 
 @app.route('/download', methods=['POST'])
@@ -48,30 +69,6 @@ def download():
         return send_file(path, attachment_filename=name, as_attachment=True)
 
 
-@app.route('/upload_file_to_db', methods=['POST'])
-def upload():
-    path = request.form.get('currentdir')
-    print('Orginal path: {}'.format(path))
-    if path[0] != '/':
-        path = '/' + path
-    if path[-1] != '/':
-        path = path + '/'
-    path = pathFixer(path, session.get('googleID'))
-    print('Upload path: {0}'.format(path))
-    if 'file_to_upload' in request.files:
-        file = request.files['file_to_upload']
-        print("File: " + file.filename)
-    else:
-        print("Ni ma ; - ;")
-    desc = request.form.get('description')
-    tab = FileUpload.upload(file, path, session.get('googleID'), desc)
-
-    for item in tab:
-        print(item)
-
-    return redirect('/mytrashbox')
-
-
 @app.route('/n/ser/h/', methods=['GET'])
 def fortest():
     from static.controllers.AdminControllers.main import render
@@ -79,7 +76,7 @@ def fortest():
 
 
 @Permission.login
-@Log(LogType.INFO, 2, "-", printToConsole=False)
+# @Log(LogType.INFO, 2, "-", printToConsole=False)
 def startServer():
     if __name__ == '__main__':
         app.run(debug=True, host="0.0.0.0", port=5000)

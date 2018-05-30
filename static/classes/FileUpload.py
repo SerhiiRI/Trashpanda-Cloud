@@ -110,6 +110,7 @@ class FileUpload():
                     except:
                         print("SQL FAKAP")
             else:
+                print('Resoult 1, go to else')
                 pathA = result[0][6]
                 pathB = Destination_DIR
                 FileManager.createLink(pathA, pathB)

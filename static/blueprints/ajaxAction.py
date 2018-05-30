@@ -1,9 +1,31 @@
 from flask import Blueprint, request, jsonify, session
 from static.tool.FileManager import FileManager
-from static.blueprints.pathFix import pathFixer
 
 ajaxAction = Blueprint('ajaxAction', __name__, template_folder='templates')
 
+def pathFixer(path, gid):
+    print('PathFixer: {0} {1}'.format(path, gid))
+    paths = path.split('/')
+    try:
+        paths.remove('')
+        print("Remove: {}".format(path))
+    except:
+        print('ajaxAction: paths.remove() - Nie znaleziono pustych znakow.')
+    try:
+        paths.remove('home')
+        print("Remove home: {}".format(path))
+    except:
+        print('ajaxAction: paths.remove(home) - Nie znaleziono klucza home.')
+    try:
+        paths.pop()
+        print("Pop: {}".format(path))
+    except:
+        print('ajaxAction: paths.pop() - Lista jest pusta.')
+    print("Fix list: {0}".format(paths))
+    finalPath = '/' + gid + '/'
+    for path in paths:
+        finalPath += path + '/'
+    return finalPath
 
 @ajaxAction.route('/ajax_action', methods=['POST'])
 def sessionControler():

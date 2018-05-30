@@ -252,7 +252,7 @@ class SQLCloud(IDataConnector):
             sql = sql + " AND ".join([ "{}={}".format(concatinate(before(id), id), concatinate(after(id), id)) for id in args[1::2]])
             if(len(where) > 0):
                 sql = sql + " AND " + " AND ".join(["{}={}".format(key,str(where[key])) for key, _ in where.items()])
-            #print(sql)
+            print(sql)
             cursor = self._connector.cursor()
             cursor.execute(sql)
             # cursor.close()

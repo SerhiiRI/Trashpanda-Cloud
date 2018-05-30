@@ -22,7 +22,7 @@
         <thead>
         <tr>
             {#  backpath przetrzymuje ścieżkę prowadzącą do strony poprzedniej  #}
-            <th><a href="/{{ backpath }}"><i class="icon-left-big"></i></a></th>
+            <th><a onclick="backpath('{{ backpath }}')"><i class="icon-left-big"></i></a></th>
             <th>Nazwa</th>
             <th>Rozmiar</th>
             <th>Opcje</th>
@@ -31,8 +31,8 @@
         <tbody>
         {#  Wypisanie przekazanych elementów katalogu  #}
         {% for file in files %}
-            <tr>
-                <form action="/mytrashbox" method="post" ondblclick="">
+            <tr ondblclick="openmenu('popmenu', '{{ file.FilePath }}')">
+                <form action="/mytrashbox" method="post">
                     {#  Ikona odpowiadająca typowi pliku  #}
                     <td><i class="icon-{{ file.Icon }}"></i></td>
 
@@ -53,7 +53,6 @@
     {#  PopUp z opcjami dotyczącymi wyświerlonego rekordu z plikiem/katalogiem po najechaniu myszą #}
     <div class="popmenu" id="popmenu" onmouseleave="closemenu('popmenu')">
         <input type="button" class="btn" name="open" value="Otwórz" onclick="openit()">
-        <input type="button" name="close" value="Zamknij" onclick="closemenu('popmenu')">
     </div>
 
     {#  Nowy katalog #}
@@ -72,23 +71,35 @@
         showPanelPost('upload', "{{ currentdir }}")
     }
 
+    function openit(){
+        var sufix = localStorage.getItem('objPath');
+        console.log('ObjPath: ' + sufix);
+        showPanelPost('trashbox', sufix);
+    }
+
+    function backpath(where){
+        console.log('back to: ' + where);
+        showPanelPost('trashbox', where);
+    }
+
     /**
      * Open pop menu
      * @param tag
      * @param path
      */
     function openmenu(tag, path) {
-        console.log(tag)
-        console.log(path)
+        console.log(tag);
+        console.log(path);
+        localStorage.setItem('objPath',path);
         $('#' + tag).css({
             'display': 'flex',
             'top': (event.clientY - 17) + 'px',
-            'left': (event.clientX - 100) + 'px',
+            'left': (event.clientX - 50) + 'px',
             'width': '200px'
         });
         $('#' + tag).animate({
             opacity: 1,
-            left: (event.clientX - 150) + 'px',
+            left: (event.clientX - 100) + 'px',
         }, {duration: 500});
         console.log('pop open');
     }
