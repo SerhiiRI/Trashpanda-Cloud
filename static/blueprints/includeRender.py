@@ -1,6 +1,5 @@
 from flask import Blueprint, session, render_template, redirect, request
 
-from static.blueprints.pathFix import pathFixer
 from static.blueprints.testFile import getTestFiles
 from static.blueprints.testFile import getEmptyFiles
 from static.classes.FileUpload import FileUpload
@@ -32,7 +31,7 @@ def renderMyTrashbox():
 
                 if paths == '':
                     return "<script>goTo('/');</script>"
-                if paths == 'home' or paths == '/srv/Data/home/' or paths == '/srv/Data/' + session['googleID'] + '/':
+                if paths == 'home' or paths == '/home/' or paths == '/srv/Data/home/' or paths == '/srv/Data/' + session['googleID'] + '/':
                     paths = '/' + session['googleID'] + '/'
 
                 paths = paths.split('/')
@@ -40,18 +39,21 @@ def renderMyTrashbox():
                 paths.pop()
 
                 finalPath = ''
+                currentdir = ''
                 backpath = ''
 
                 x=0
                 for path in paths:
                     if path != 'srv' and path != 'Data':
                         finalPath = finalPath + '/' + path
+                        if path == session['googleID']:
+                            currentdir += '/home/'
+                        else:
+                            currentdir += path + '/'
                 finalPath += '/'
 
                 if len(paths) > 1:
-                    currentdir = paths[-1]
                     if currentdir == session.get('googleID'):
-                        currentdir = 'home'
                         backpath = ''
                     else:
                         bpaths = paths
@@ -86,6 +88,18 @@ def upload_file():
     print("py currentdir: " + currentdir)
     return render_template('include/include_upload.html', currentdir=currentdir)
 
+
+def pathFixer(path, gid):
+    print('PathFixer: {0} {1}'.format(path, gid))
+    paths = path.split('/')
+    paths.remove('')
+    paths.remove('home')
+    paths.pop()
+    print("Fix list: {0}".format(paths))
+    finalPath = '/' + gid + '/'
+    for path in paths:
+        finalPath += path + '/'
+    return finalPath
 
 @includeRender.route('/upload_file_to_db', methods=['POST'])
 def upload():
