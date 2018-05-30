@@ -8,15 +8,17 @@ def pathFixer(path, gid):
     paths = path.split('/')
     try:
         paths.remove('')
+        print("Remove: {}".format(path))
     except:
         print('ajaxAction: paths.remove() - Nie znaleziono pustych znakow.')
     try:
         paths.remove('home')
+        print("Remove home: {}".format(path))
     except:
         print('ajaxAction: paths.remove(home) - Nie znaleziono klucza home.')
-    paths.pop()
     try:
         paths.pop()
+        print("Pop: {}".format(path))
     except:
         print('ajaxAction: paths.pop() - Lista jest pusta.')
     print("Fix list: {0}".format(paths))
