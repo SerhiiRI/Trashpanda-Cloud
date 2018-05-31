@@ -129,9 +129,18 @@ def startDocker(DIRS: list, port):
 
 
 ''' MAIN '''
+
+test = str(input("Would you like to use default configuration ? y/n"))
 print("Status code tworzenia folderow: {0}".format(makedirs()))
-PORT = str(getPort())
-DIRS = getMounts()
+
+if test != "y":
+    PORT = str(getPort())
+    DIRS = getMounts()
+else:
+    PORT = "80"
+    DIRS = list()
+    DIRS.append("/srv")
+    DIRS.append("/var/log/trashpanda")
 
 Command = startDocker(DIRS, PORT)
 print(Command)
