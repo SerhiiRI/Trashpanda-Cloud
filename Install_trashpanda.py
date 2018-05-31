@@ -115,7 +115,7 @@ def askForSkip():
 def askForRepo():
     return str(input("Podaj lokalne repozytorium docker'a \n"))
 
-def startDocker(DIRS: list, port):
+def startDocker(DIRS: list, port, repo):
     docker_start = "sudo docker run -it -p "
     PORT = str(port) + ":5000 "
 
@@ -123,7 +123,7 @@ def startDocker(DIRS: list, port):
     for item in DIRS:
         mounted = mounted + "-v " + item + ":" + item + ":Z "
 
-    repo = askForRepo()
+
     return docker_start + PORT + mounted + repo
 
 
@@ -136,13 +136,15 @@ print("Status code tworzenia folderow: {0}".format(makedirs()))
 if test != "y":
     PORT = str(getPort())
     DIRS = getMounts()
+    repo = askForRepo()
 else:
     PORT = "80"
     DIRS = list()
     DIRS.append("/srv")
     DIRS.append("/var/log/trashpanda")
+    repo = "morfeu5z/trashpanda-cloud"
 
-Command = startDocker(DIRS, PORT)
+Command = startDocker(DIRS, PORT, repo)
 print(Command)
 os.system(Command)
 
