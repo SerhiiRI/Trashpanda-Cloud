@@ -130,7 +130,7 @@ def startDocker(DIRS: list, port, repo):
 
 ''' MAIN '''
 
-test = str(input("Would you like to use default configuration ? y/n"))
+test = str(input("Would you like to use default configuration ? y/n \n"))
 print("Status code tworzenia folderow: {0}".format(makedirs()))
 
 if test != "y":
