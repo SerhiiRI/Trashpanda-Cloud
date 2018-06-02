@@ -3,7 +3,6 @@
 import _pickle as pickle
 import threading
 from multiprocessing import Queue
-from .Process import Process
 from .Controller import Controller
 from static.classes.datacontroller.IDataManager import IDataConnector
 from static.classes.Pipeline.Container import Container
@@ -62,10 +61,10 @@ class PipeBuilder(IDataConnector):
                 PipeBuilder
     """
 
-    __queue = Queue()
+    queue = list()
     __table = None
 
-    def __init__(self, function, controller: str ):
+    def __init__(self, agentPort, controller: str ):
         """
                       __init__
           __Konstruktor__ klasy PipeBuilder
@@ -86,9 +85,8 @@ class PipeBuilder(IDataConnector):
         IDataConnector.__init__(self, DataBase="pipeline")
         # controller - sterownik i glówny architekt przejśćia po obciążeniach procesora
         # funkcja do wykonywania przez procesor
-        self.function = function
+        self.__table = "Agent{}".format(str(agentPort))
         self.pathToController = controller
-        self.__table = function.__name__
         self._createTable()
 
     def _createTable(self):
@@ -103,9 +101,9 @@ class PipeBuilder(IDataConnector):
         :return: True
         @Serhii Riznychuk
         """
-        sql = "CREATE TABLE IF NOT EXISTS `%s` (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, obj TEXT NOT NULL)"
+        sql = "CREATE TABLE IF NOT EXISTS "+self.__table+" (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, function varchar(50) NOT NULL,  args TEXT NOT NULL)"
         __cursor = self._connector.cursor()
-        __cursor.execute(sql, ([self.__table]))
+        __cursor.execute(sql, ())
         self._connector.commit()
         return True
 
@@ -125,7 +123,7 @@ class PipeBuilder(IDataConnector):
         self._connector.commit()
         return True
 
-    def addProcess(self, *args):
+    def addProcess(self, function:str, *args):
         """
                     Add Object
         ----------------------------------
@@ -137,38 +135,25 @@ class PipeBuilder(IDataConnector):
         @Serhii Riznychuk
         """
         import codecs
-        import copyreg
-        tempProcessObject = Process(self.function)
-        pickle_lock = threading.Lock()
-        def serialize_it(not_serialized_object):
-            # pickle.dump - serializacja objektu
-
-            pickle_lock.acquire()
-            try:
-                #stringProcessObject = codecs.encode(pickle.dumps(not_serialized_object), "base64").decode()
-                # stringProcessObject = pickle.dumps(tempProcessObject).decode()
-                stringProcessObject = pickle.dumps(tempProcessObject).decode()
-                # stringProcessObject = copyreg.pickle(Process, not_serialized_object), "base64").decode()
-            finally:
-                pickle_lock.release()
-            return stringProcessObject
-        print(serialize_it(tempProcessObject))
-        sql = "INSERT INTO `"+self.__table+"`(`object`) VALUES (%s)"
+        pickled_arguments = (codecs.encode(pickle.dumps(args), "base64").decode())
+        stringProcessObject = str(pickled_arguments)
+        print(stringProcessObject)
+        sql = "INSERT INTO {} (`function`, `args`) VALUES (%s, %s)".format(self.__table)
         __cursor = self._connector.cursor()
-        __cursor.execute(sql, ([serialize_it(tempProcessObject)]))
-        #self._connector.commit()
+        __cursor.execute(sql, tuple((function, stringProcessObject)))
+        self._connector.commit()
         __cursor.close()
-        del (tempProcessObject)
 
 
-    def buildQueue(self) -> Queue:
-        sql = "SELECT count(*) FROM `{}`".format(self.__table)
+
+    def buildQueue(self) -> list:
+        sql = "SELECT count(*) FROM {}".format(self.__table)
         __cursor = self._connector.cursor()
-        __cursor.execute(sql, tuple((self.__table)))
-        count = __cursor.fetchall()
+        __cursor.execute(sql, ())
+        count = __cursor.fetchall()[0][0]
         for _ in range(count):
-            self.__queue.put(Container(self.__table, Controller(self.pathToController)))
-        return self.__queue
+            self.queue.append(Container(self.__table, Controller(self.pathToController)))
+
 
 """    
     __data = list()
@@ -189,11 +174,6 @@ class PipeBuilder(IDataConnector):
 
 print([x for x in PipeLine([1, 2, 3, 4])])
 """
-def factorial(n):
-        if n == 0:
-            return 1
-        else:
-            return n * factorial(n - 1)
 
 """
 from subprocess import Popen, PIPE
