@@ -1,4 +1,5 @@
 from static.classes.Pipeline.dictionary.agent import agent as clientSet
+from static.classes.Pipeline.dictionary.ValueConfigurations import constant_values as comparator
 import socket
 import random
 import pickle
@@ -7,37 +8,55 @@ import codecs
 
 class Agent:
 
-    def __init__(self):
+    def __init__(self, price : int = 100):
         """
         Creating ID to client, and wainting for love... waiting for love... tu-tu-tu
         :var ClientID
         """
+        self.critical_price = 100
+        self.pref_price = price
         self.ClientID = str(random.randint(0, 100))
-        self.resources = clientSet["machine"]
+        self.resources = clientSet
         self.count_of_function = ( "factorial", str(random.randint(0, 5000)) )
+        self.PAGENT = list()
 
-    def hand_shacking(self, target_host: str="0.0.0.0", target_port: int=9999):
+    def hand_shacking(self, type_hs, target_port: int, target_host: str="0.0.0.0"):
         host = target_host
         port = target_port
-        #request = 'info|Hello, i am client with id [{:^4}]'.format(self.ClientID)
-        #request = bytearray(request, encoding="unicode-escape")
+        data = self.sendTo(host, port, self.generateDictOrder(type_hs)).split("|")
+        print(data)
+        return data
 
-        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client.connect((host, port))
-        request = 'machine|'+codecs.encode(pickle.dumps(self.resources), "base64").decode()
-        client.send(bytearray(str(request), encoding="unicode-escape"))
-        response = client.recv(4096)
-        print("[+] Otrzymane parametry: {}".format(str(response, encoding="utf-8")))
-        client.close()
+    def accept(self):
+        vaga= 1
+        for x in range(len(self.PAGENT) - 1):
+            vaga +=0.1
+            print(self.PAGENT[x])
+            if(float(self.PAGENT[x][3]) < self.pref_price):
+                return self.PAGENT[x][0]
+        return self.PAGENT[len(self.PAGENT)-1][0]
 
-        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client.connect((host, port))
-        request = 'order|' + codecs.encode(pickle.dumps(self.count_of_function), "base64").decode()
-        client.send(bytearray(str(request), encoding="unicode-escape"))
-        response = client.recv(4096)
-        print("[+] Otrzymane parametry: {}".format(str(response, encoding="utf-8")))
-        client.close()
+    def generateDictOrder(self, req_type:str):
+        return req_type+'|' + codecs.encode(pickle.dumps(self.resources), "base64").decode()
 
-
-        if(input("decyzja o przeslaniu ceny (y/n) ?") == 'n'):
-            return
+    def sendTo(self, host, port, requst):
+        client = socket.socket
+        try:
+            try:
+                client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                client.connect((host, int(port)))
+            except ConnectionError as socketConnectionError:
+                print(socketConnectionError, " the host {} can not be reached".format(host))
+                raise IOError
+            print(requst)
+            client.send(bytearray(requst, encoding="unicode-escape"))
+            responce = client.recv(2048)
+            return str(responce, encoding="unicode-escape")
+        except IOError as socketError:
+            print(socketError, " problem with sending message to server")
+            client.close()
+        except Exception as othertype:
+            print("Problem innego typu ", othertype)
+        except KeyboardInterrupt:
+            print("[k] Keyboard stop")
+        return None
