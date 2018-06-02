@@ -2,21 +2,24 @@
 # from os import popen
 # from static.tool.console.vt1000 import ForeGround as fg, BackGround as bg, FormatCode as cd
 # import npyscreen
-
+import static.configs.EnvConf
 from static.classes.Pipeline.Agents.ClientAgent import Agent
+import argparse
 
-client = Agent()
-client.hand_shacking(target_host="0.0.0.0", target_port=9999)
+parser = argparse.ArgumentParser(description="Create agent")
+# parser.add_argument("-i", '--ip', action="store", dest="host", default='0.0.0.0', help="choose HOST-address  agent")
+parser.add_argument("-p", "--port", action="store", dest="ports", help="chose PORT-s to connect")
 
-
-
-
-
-
-
-
-
-
+if __name__ == '__main__':
+    args = parser.parse_args()
+    if not vars(args):
+        print("Zle parametry")
+    else:
+        ports = args.ports.split(",")
+        client = Agent(40)
+        for port in ports:
+            client.PAGENT.append(client.hand_shacking(target_host="0.0.0.0", target_port=int(port), type_hs="order"))
+        client.hand_shacking(target_host="0.0.0.0", target_port=client.accept() ,type_hs="accept")
 
 """
 ten skrypt genteruje symulacje użytkowników 
