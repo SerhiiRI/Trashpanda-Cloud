@@ -9,18 +9,16 @@ agent = {
     # jaka ta waga będzie miala znaczenia.
     # W programie te wartośći wypelnia mega-inteligentna funkcja
     # random((range(0,101, 1)))
-    "info": {
-        "id": random.randint(0, 10000),
-    },
+    "id": random.randint(0, 10000),
+    "fun": random.choice(["factorial", "bublesort", "searching"]),
     "machine": {
-        "cpu": random.randint(0, 101),
-        "disk": random.randint(0, 101),
-        "ram": random.randint(0, 101),
+        "cpu": random.randint(0, 100) + 1,
+        "disk": random.randint(0, 100) + 1,
+        "ram": random.randint(0, 100) + 1
     },
     "function": {
-        "factorial": random.randint(0, 101),
-        "ls": random.randint(0, 101),
-        "mv": random.randint(0, 101)
+        "factorial": random.randint(1, 100)+1,
+        "bublesort": random.randint(1, 100)+1,
+        "searching": random.randint(1, 100)+1
     },
-    "price": 0
 }
