@@ -1,5 +1,5 @@
-from multiprocessing import Queue
 from static.classes.Pipeline.PipeBuilder import PipeBuilder
+from static.classes.Pipeline.Controller import ControllerServer
 import socket
 import threading
 import pickle
@@ -10,8 +10,12 @@ import random
 class Agent:
 
     def __init__(self, dictionary, host: str="0.0.0.0", port: int=9999):
+
+        self.manager = PipeBuilder(9999, "/home/serhii/Projects/llapCloudFlask/static/tool/Binary/cpuController")
+        self.CPUserver = ControllerServer("/home/serhii/Projects/llapCloudFlask/static/tool/Binary/cpuController")
+        self.CPUserver.start()
+
         self.AgentDictionary = dictionary
-        self.MainQueue = Queue()
         # ip and port to listening
         self.bind_ip = host
         self.bind_port = port
@@ -34,6 +38,13 @@ class Agent:
         elif(selfproto == "accept"):
             data = pickle.loads(codecs.decode(data.encode(), "base64"))
             responce = bytearray("{}|{}".format(self.bind_ip, self.bind_port), encoding="unicode-escape")
+            ### test function value
+            self.manager.addProcess("factorial", 5)
+            self.manager.addProcess("bublesort", [1, 2, 3, 4, 5])
+            self.manager.addProcess("searching", ["a", "d", "f"], "dasf")
+            self.manager.buildQueue()
+            print(" RUN FOREST RUN!!!!")
+            self.run()
         else:
             responce = bytearray("[!] EMPTY REQUEST")
         print("[^] Wysylania packeta z powrotem")
@@ -80,34 +91,26 @@ class Agent:
                 client_handler = threading.Thread(target=self.__handle_client, args=(client,))
                 client_handler.start()
             except KeyboardInterrupt:
-                print("[!] Server keyboard interrupt, starting listening")
+                print("[!] Server keyboard interrupt, stoping listening")
+                self.__del__()
                 break
 
     # ------------{PIPE-MANAGER}-------------#
 
-    def _defineFunctionality(self, function, pathToController): # self.PipeBuilder = PipeBuilder(factorial "/home/serhii/Projects/llapCloudFlask/static/tool/Binary/cpuController")
-        del (self.MainQueue)
-        self.Builder = PipeBuilder(function, pathToController)
-        self.MainQueue = self.Builder.buildQueue()
+    def run(self) -> int:
+        if self.CPUserver.CPU > 0 and self.CPUserver.CPU < 90:
+            for i in range(self.manager.queue.__len__()):
+                try:
 
-    def _run(self) -> int:
-        if(self.MainQueue.qsize() == 0):
-            return -1
-        iteration = 0
-        while(1):
-            try:
-                container = self.MainQueue.get(block=True)
-                if container.start():
-                    raise Exception("[*] Load")
-                iteration += 1
-            except Exception as e:
-                print(e)
-                del(self.MainQueue)
-                break
-        return iteration
+                    self.manager.queue[i].start()
+                    del (self.manager.queue[i])
+                except Exception as e:
+                    print(e)
+                    break
+        return 0
 
-    def _ObliczniaWykonywanejWagi(self):
-        pass
+    def __del__(self):
 
-
-
+        self.CPUserver.TThread.do_run = False
+        self.manager.deleteTable()
+        self.CPUserver.join()
