@@ -81,7 +81,7 @@ int main(int argc, char **argv){
     diff_idle = idle-prev_idle;
     diff_total = total-prev_total;
     usage = (float)(((float)(1000*(diff_total-diff_idle))/(float)diff_total+5)/(float)10);
-    printf("\r%6.2f", usage);
+    printf("%6.2f", usage);
     fflush(stdout);
 
     prev_total = total;
