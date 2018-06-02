@@ -107,7 +107,7 @@ class PipeBuilder(IDataConnector):
         self._connector.commit()
         return True
 
-    def _deleteTable(self):
+    def deleteTable(self):
         """
         private: DeleteTable
         ----------------------------
@@ -117,9 +117,9 @@ class PipeBuilder(IDataConnector):
 
         @Serhii Rinzychuk
         """
-        sql = "DROP TABLE %s"
+        sql = "DROP TABLE {}".format(self.__table)
         __cursor = self._connector.cursor()
-        __cursor.execute(sql, ([self.__table]))
+        __cursor.execute(sql, ())
         self._connector.commit()
         return True
 
