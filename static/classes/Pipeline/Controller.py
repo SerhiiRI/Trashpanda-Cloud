@@ -1,6 +1,8 @@
 from static.tool.FileManager import FileManager
 from subprocess import Popen, PIPE
 from functools import wraps
+from threading import Thread
+from threading import current_thread
 
 
 class Controller(object):
@@ -40,18 +42,27 @@ class Controller(object):
         try:
             controllerProcess = Popen((self.__PathToSystemCommand), shell=True, stdout=PIPE)
             controllerProcess.wait()
-            controllerProcess.communicate()
-            if controllerProcess.returncode:
-                raise IOError
-            output = controllerProcess.communicate()
-            loadProcent = output[1]
-            print(loadProcent)
+            output = str(controllerProcess.communicate()[0], encoding="unicode-escape")
+            loadProcent = float(output.lstrip())
+            print("[CPU]: {}%".format(loadProcent))
         except BrokenPipeError as message:
-            print("Zjebaleś spok!... zjebaleś")
             print(message)
         except Exception as message:
             print(message)
         return True if lambda_cmpr(float(loadProcent)) else False
+
+    def proc_stat(self) -> float:
+        loadProcent = 0
+        try:
+            controllerProcess = Popen((self.__PathToSystemCommand), shell=True, stdout=PIPE)
+            controllerProcess.wait()
+            output = str(controllerProcess.communicate()[0], encoding="unicode-escape")
+            loadProcent = float(output.lstrip())
+        except BrokenPipeError as message:
+            print(message)
+        except Exception as message:
+            print(message)
+        return loadProcent
 
     def VerifyDecorator(self, lambda_cmpr):
         def FunctionLogic(function):
@@ -62,12 +73,9 @@ class Controller(object):
                 try:
                     controllerProcess = Popen((self.__PathToSystemCommand), shell=True, stdout=PIPE)
                     controllerProcess.wait()
-                    controllerProcess.communicate()
-                    if controllerProcess.returncode:
-                        raise IOError
-                    output = controllerProcess.communicate()
-                    loadProcent = output[1]
-                    print(loadProcent)
+                    output = str(controllerProcess.communicate()[0], encoding="unicode-escape")
+                    loadProcent = float(output.lstrip())
+                    print("[CPU]: {}%".format(loadProcent))
                 except BrokenPipeError as message:
                     print("Zjebaleś spok!... zjebaleś")
                     print(message)
@@ -76,3 +84,19 @@ class Controller(object):
                 return function(*args, **kwargs) if lambda_cmpr(float(loadProcent)) else error()
             return wraper
         return FunctionLogic
+
+
+class ControllerServer(Thread):
+
+    def __init__(self, path):
+        self.controller = Controller(path)
+        self.CPU = 0
+        self.TThread = current_thread()
+        Thread.__init__(self)
+
+    def run(self):
+        #while(1):
+        #    self.CPU = self.controller.proc_stat()
+        while getattr(self.TThread , "do_run", True):
+            self.CPU = self.controller.proc_stat()
+
