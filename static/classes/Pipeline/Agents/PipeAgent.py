@@ -1,6 +1,6 @@
 from static.classes.Pipeline.PipeBuilder import PipeBuilder
 from static.classes.Pipeline.Controller import ControllerServer
-
+from os import environ as ENV
 import socket
 import threading
 import pickle
@@ -12,7 +12,7 @@ class Agent:
 
     def __init__(self, dictionary, host: str="0.0.0.0", port: int=9999):
 
-        self.manager = PipeBuilder(port, "/home/serhii/Projects/llapCloudFlask/static/tool/Binary/cpuController")
+        self.manager = PipeBuilder(port, ENV['CLOUD_PROJECT_PATH']+"/static/tool/Binary/cpuController")
         self.CPUserver = ControllerServer("/home/serhii/Projects/llapCloudFlask/static/tool/Binary/cpuController" )
         self.CPUserver.start()
         self.Lock = threading.RLock
