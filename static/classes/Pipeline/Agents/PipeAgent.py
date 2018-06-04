@@ -81,7 +81,7 @@ class Agent:
         function = (x(factorial) + x(bublesort) + x(searching)) / 3
         self.Machine_price=((self.AgentDictionary["machine"]["cpu"] + self.AgentDictionary["machine"]["disk"] + self.AgentDictionary["machine"]["ram"]) / 3)
         self.User_price = ((dictionary["function"]["factorial"]+ dictionary["function"]["bublesort"]+ dictionary["function"]["searching"] / 3))
-        return "{}|{:.2f}|{:.2f}|".format(self.bind_port, machine,  function)
+        return "{}|{:.2f}|{:.2f}|".format(ENV["piport"], machine,  function)
 
     def generate_price(self):
         price = random.randint(1, 11) / 10 * ((self.Machine_price + self.User_price) / 2)
