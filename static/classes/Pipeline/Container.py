@@ -1,24 +1,23 @@
 from static.classes.datacontroller.IDataManager import IDataConnector
 from .AvailableFunctions.FunctionList import functionList
-from .Controller import Controller
+from .Controller import ControllerCPU
 from .Threading import ThreadWithReturnValue
 import threading
 import codecs
 import pickle
 
-#
-class Container(threading.Thread, IDataConnector):
-    #class Container(IDataConnector):
-    # def __init__(self, table, dependProcess="/home/serhii/Projects/llapCloudFlask/static/tool/Binary/cpuController"):
 
-    def __init__(self, table, controller : Controller):
-        print("_________________BUILDING CONTAINER__________________")
+class Container(threading.Thread, IDataConnector):
+
+    def __init__(self, table, controller: ControllerCPU):
+        print("[*] Container building")
         self.table = table
         self.controller = controller
-        #
         threading.Thread.__init__(self)
         IDataConnector.__init__(self, DataBase="pipeline")
         self.id, self.function, self.process_argument = self.__getProcess()[0]
+        # Dodawania funkcji do kontenera
+        # print(self.id, self.function)
         self.__delProcess(self.id)
 
     def __getProcess(self):
@@ -44,34 +43,25 @@ class Container(threading.Thread, IDataConnector):
 
         @Serhii Riznychuk
         """
-        import codecs
         sql = "INSERT INTO {} (`function`, `args`) VALUES (%s, %s)".format(self.table)
         __cursor = self._connector.cursor()
         __cursor.execute(sql, tuple((function, process_argumnet)))
         self._connector.commit()
         __cursor.close()
 
-
     def run(self):
-
-        #print(self.__getProcess())
         stringArgumnet = self.process_argument.rstrip()
         args = pickle.loads(codecs.decode(stringArgumnet.encode(), "base64"))
-        # TODO multiselect to lambda
-        if self.controller.verify(lambda x: x > 30):
+        if self.controller.verify():
             print("Critical Server Error")
             self.__addProcess(self.function, self.process_argument)
             return False
         process = ThreadWithReturnValue(target=functionList[self.function], args=args)
         try:
-            print("Arguments: ", args)
             process.start()
             print(process.join())
             self.__delProcess(object_id=id)
         except Exception:
             self.__addProcess(self.function, self.process_argument)
-            print(Exception)
             raise RuntimeError("[!] Nie udalo ci sie odpalic proces {} o id".format(id), )
-        finally:
-            del(self.controller); del(process)
         return True

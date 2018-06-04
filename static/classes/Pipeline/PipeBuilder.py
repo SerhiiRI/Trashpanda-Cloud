@@ -3,9 +3,10 @@
 import _pickle as pickle
 import threading
 from multiprocessing import Queue
-from .Controller import Controller
+from .Controller import ControllerCPU
 from static.classes.datacontroller.IDataManager import IDataConnector
 from static.classes.Pipeline.Container import Container
+from collections import deque
 """
 
 PipelineBuilder
@@ -16,7 +17,7 @@ PipelineBuilder
  |  2. Kontrolla oraz zabiezpiecznia Kontenera procesowego, który jest  |
  |  - zbadany po stronie PipelineBuildera                               |
  |  3. Zapisywania serializowanych objektów do bazy danych              |
- |_____________________________________________________________________/
+ |___________________________nn__________________________________________/
 
   ___________________________Start-life______
  /                                           \
@@ -45,8 +46,8 @@ PipelineBuilder
 
 _______________________________________Contaner:_________
 
-1. Process, w śriodeczku którego jest zapakowana Funkcja 
-   Podciągana z SQL serializowanego objektu
+1. Thread-class, w śriodeczku którego jest zapakowana Funkcja 
+   Podciągana parametrami z SQL-objektu 
 2. Controller Przejścia 
    Funkcja odpalona zad pomącą subprocesu odczytuje  
    parameter zezwolenia dla każdego przejścia po 
@@ -123,7 +124,7 @@ class PipeBuilder(IDataConnector):
         self._connector.commit()
         return True
 
-    def addProcess(self, function:str, *args):
+    def addProcess(self, function: str, *args):
         """
                     Add Object
         ----------------------------------
@@ -134,51 +135,44 @@ class PipeBuilder(IDataConnector):
 
         @Serhii Riznychuk
         """
+        print(args)
         import codecs
         pickled_arguments = (codecs.encode(pickle.dumps(args), "base64").decode())
         stringProcessObject = str(pickled_arguments)
         print(stringProcessObject)
         sql = "INSERT INTO {} (`function`, `args`) VALUES (%s, %s)".format(self.__table)
         __cursor = self._connector.cursor()
+        print("add Function, [{}]".format(function))
         __cursor.execute(sql, tuple((function, stringProcessObject)))
         self._connector.commit()
         __cursor.close()
 
-
-
-    def buildQueue(self) -> list:
+    def buildQueue(self, mechanic_of_cpu, cpu_percent) -> deque:
+        lock = threading.Semaphore(value=1)
+        lock.acquire()
         sql = "SELECT count(*) FROM {}".format(self.__table)
         __cursor = self._connector.cursor()
         __cursor.execute(sql, ())
         count = __cursor.fetchall()[0][0]
-        for _ in range(count):
-            self.queue.append(Container(self.__table, Controller(self.pathToController)))
+        self.queue.clear()
+        for z in range(count):
+            self.queue.append(Container(self.__table, ControllerCPU(mechanic_of_cpu, cpu_percent)))
+        lock.release()
 
-
-"""    
-    __data = list()
-    def __init__(self, data):
-        self.data = data
-        self.lenOfData = len(data)
-
-    def __iter__(self):
-        return self
-
-    def __next__(self):
-        if self.lenOfData <= 0 :
-            raise StopIteration
-        else:
-            self.lenOfData -=1
-        return self.data[self.lenOfData-1]*self.data[self.lenOfData-1]
-
-
-print([x for x in PipeLine([1, 2, 3, 4])])
-"""
-
-"""
-from subprocess import Popen, PIPE
-proc = Popen(("/home/serhii/Projects/llapCloudFlask/static/tool/Binary/cpuController",), shell=True, stdout=PIPE)
-proc.wait()
-res = proc.communicate()
-print("result", res[0].decode("utf-8"))
-"""
+    """    
+        __data = list()
+        def __init__(self, data):
+            self.data = data
+            self.lenOfData = len(data)
+    
+        def __iter__(self):
+            return self
+    
+        def __next__(self):
+            if self.lenOfData <= 0 :
+                raise StopIteration
+            else:
+                self.lenOfData -=1
+            return self.data[self.lenOfData-1]*self.data[self.lenOfData-1]
+    
+    """
