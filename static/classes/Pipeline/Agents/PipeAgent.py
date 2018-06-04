@@ -38,7 +38,7 @@ class Agent:
             responce = bytearray(self.compatible(data)+self.generate_price(), encoding="unicode-escape")
         elif(selfproto == "accept"):
             data = pickle.loads(codecs.decode(data.encode(), "base64"))
-            responce = bytearray("{}|{}".format(self.bind_ip, self.bind_port), encoding="unicode-escape")
+            responce = bytearray("{}|{}".format(self.bind_ip, ENV["piport"]), encoding="unicode-escape")
             ### test function value
             for _ in range(data["function"]["factorial"]):
                 self.manager.addProcess("factorial", 5)
