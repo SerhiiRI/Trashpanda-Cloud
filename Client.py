@@ -72,7 +72,7 @@ if __name__ == '__main__':
         print("Zle parametry")
     else:
         ports = args.ports.split(",")
-        client = Agent(client, 40)
+        client = Agent(client, 10)
         for port in ports:
             client.PAGENT.append(client.hand_shacking(target_host=args.host, target_port=int(port), type_hs="order"))
         client.hand_shacking(target_host=args.host, target_port=client.accept(), type_hs="accept")
