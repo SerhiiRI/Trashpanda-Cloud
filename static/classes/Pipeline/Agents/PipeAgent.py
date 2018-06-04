@@ -22,7 +22,7 @@ class Agent:
         self.bind_ip = host
         self.bind_port = port
 
-        self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
+        self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.bind((self.bind_ip, self.bind_port))
         try:
             self.server.listen(6)
