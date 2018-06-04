@@ -62,8 +62,9 @@ cena = int(input(":"))
 """
 
 
+
 parser = argparse.ArgumentParser(description="Create agent")
-parser.add_argument("-i", '--ip', action="store", dest="host", default='0.0.0.0', help="choose HOST-address  agent")
+parser.add_argument("-i", '--ip', action="store", dest="host", help="choose HOST-address  agent")
 parser.add_argument("-p", "--port", action="store", dest="ports", help="chose PORT-s to connect")
 if __name__ == '__main__':
     args = parser.parse_args()
@@ -73,8 +74,9 @@ if __name__ == '__main__':
         ports = args.ports.split(",")
         client = Agent(client, 40)
         for port in ports:
-            client.PAGENT.append(client.hand_shacking(target_host="0.0.0.0", target_port=int(port), type_hs="order"))
-        client.hand_shacking(target_host="0.0.0.0", target_port=client.accept(), type_hs="accept")
+            client.PAGENT.append(client.hand_shacking(target_host=args.host, target_port=int(port), type_hs="order"))
+        client.hand_shacking(target_host=args.host, target_port=client.accept(), type_hs="accept")
+
 
 """
 
