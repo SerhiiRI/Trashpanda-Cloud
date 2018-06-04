@@ -5,6 +5,10 @@ from static.classes.Pipeline.dictionary.agent import agent
 from static.classes.Pipeline.Agents.PipeAgent import Agent
 import argparse
 
+from os import environ
+import os
+
+environ["CLOUD_PROJECT_PATH"] = "/server"
 parser = argparse.ArgumentParser(description="Create PipeLine-agent")
 parser.add_argument("-i", '--ip', action="store", dest="host", default='0.0.0.0', help="choose HOST-address to your agent")
 parser.add_argument("-p", "--port", action="store", dest="port", default=9999, type=int, help="chose PORT to you ")
