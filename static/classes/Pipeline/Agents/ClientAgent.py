@@ -54,7 +54,7 @@ class Agent:
         client = socket.socket
         try:
             try:
-                client = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
+                client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 client.connect((host, int(port)))
             except ConnectionError as socketConnectionError:
                 print(socketConnectionError, " the host {} can not be reached".format(host))
