@@ -147,7 +147,7 @@ class PipeBuilder(IDataConnector):
         self._connector.commit()
         __cursor.close()
 
-    def buildQueue(self, mechanic_of_cpu, cpu_percent) -> deque:
+    def buildQueue(self, mechanic_of_cpu, cpu_percent):
         lock = threading.Semaphore(value=1)
         lock.acquire()
         sql = "SELECT count(*) FROM {}".format(self.__table)
