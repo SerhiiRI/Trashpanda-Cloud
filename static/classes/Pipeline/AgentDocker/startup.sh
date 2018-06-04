@@ -1,5 +1,4 @@
 #!/bin/bash
-
 git clone https://github.com/SerhiiRI/Trashpanda-Cloud.git /server
 gcc -Wall -o /server/static/tool/Binary/cpuController /server/static/tool/Binary/Test.c
 cd /server
