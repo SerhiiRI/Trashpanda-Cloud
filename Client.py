@@ -6,8 +6,9 @@ import static.configs.EnvConf
 from static.classes.Pipeline.Agents.ClientAgent import Agent
 import argparse
 import random
-
-client = {
+import os
+import copy
+clientD = {
     # Przy poprawnej realizacji wartość tego pola musi definiować
     # progama automatycznie, zależąć od tego, o jakiej specyfika-
     # cji wymagań agenta byla zrobiono. Tzn, zrozumienie proceśów
@@ -17,7 +18,7 @@ client = {
     # jaka ta waga będzie miala znaczenia.
     # W programie te wartośći wypelnia mega-inteligentna funkcja
     # random((range(0,101, 1)))
-    "id": random.randint(0, 10000),
+    "id": 0,
     "machine": {
         "cpu": 16,
         "disk": 10,
@@ -58,24 +59,44 @@ client["function"]["bublesort"] = int(input("Sortowanie:"))
 client["function"]["searching"] = int(input("Search:"))
 print("Preferowana cena(200 zl max)")
 cena = int(input(":"))
-
 """
-
-
+import sys
+from static.classes.Pipeline.Threading import ThreadWithReturnValue
 
 parser = argparse.ArgumentParser(description="Create agent")
 parser.add_argument("-i", '--ip', action="store", dest="host", help="choose HOST-address  agent")
 parser.add_argument("-p", "--port", action="store", dest="ports", help="chose PORT-s to connect")
+parser.add_argument("-m", "--money", action="store", dest="money", default=50, type=int, help="Money to Client Agent")
+parser.add_argument("-c", "--count-agent", action="store", dest="count", default=1, type=int, help="Count client agents")
 if __name__ == '__main__':
     args = parser.parse_args()
     if not vars(args):
         print("Zle parametry")
     else:
         ports = args.ports.split(",")
-        client = Agent(client, 10)
-        for port in ports:
-            client.PAGENT.append(client.hand_shacking(target_host=args.host, target_port=int(port), type_hs="order"))
-        client.hand_shacking(target_host=args.host, target_port=client.accept(), type_hs="accept")
+        switch = dict()
+        clients = list()
+        for count in range(args.count):
+            clients.append(Agent(copy.deepcopy(clientD), args.money, args.host, ports))
+
+        for count in range(args.count):
+            switch[count] = clients[count].start()
+
+
+        os.system("clear")
+        print(switch)
+        print("Prosze wybierz Wirtualną maszyne do wykonywania polecenia:")
+        print("----------------------------------------------------------")
+        for key, data in switch.items():
+            print(">{key:2}| {host}:{port}, in price{price}".format(key=str(key), host=switch[key][0], port=data[1], price=data[2]))
+        print("----------------------------------------------------------")
+        sys.exit(1)
+        selected = int(input("Wybierz WM>").strip())
+        while selected not in switch.keys():
+            selected = int(input("Wybierz WM>").strip())
+        print("Koniec")
+        clients[selected].hand_shacking(target_host=switch[selected][0], target_port=switch[selected][1], type_hs="accept")
+
 
 
 """
