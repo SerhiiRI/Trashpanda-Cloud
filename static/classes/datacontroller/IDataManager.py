@@ -35,6 +35,9 @@ class IDataConnector(object):
         except (MySQLdb.Error, MySQLdb.Warning) as errorMessage:
             self._connector = None
 
+    def __del__(self):
+        self._connector.close()
+
 
 
 

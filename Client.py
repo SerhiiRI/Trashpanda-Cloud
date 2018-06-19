@@ -5,6 +5,7 @@
 import static.configs.EnvConf
 from static.classes.Pipeline.Agents.ClientAgent import Agent
 import argparse
+from multiprocessing import Queue
 import random
 import os
 import copy
@@ -20,9 +21,9 @@ clientD = {
     # random((range(0,101, 1)))
     "id": 0,
     "machine": {
-        "cpu": 16,
-        "disk": 10,
-        "ram": 10,
+        "cpu": 75,
+        "disk": 99,
+        "ram": 50,
     },
     "function": {
         "factorial": 2,
@@ -37,29 +38,29 @@ select = {
     "4": 1
 }
 cena = 123
-"""
+
+def inp(fun):
+    print("Podaj ilość wykonywanych funkcyj {}(1-100)".format(fun))
+    x = 0
+    try:
+        x = int(input("> "))
+    except:
+        x = -1
+    while x == -1 or x > 100 or x < 1:
+        print("blad!")
+        x =int(input("> "))
+    return x
+
 import os
 os.system("clear")
 z, b = os.popen("stty size", mode="r").read().split()
 print("{:-^{x}}".format("MAIN", x=b))
 print("{:^{x}}".format("Szukamy wirtualną maczyne:", x=b))
-print("Obciążania procesora: \n(1)high\n(2)middle\n(3)low\n")
-cpu = input(">")
-client["machine"]["cpu"] = select[cpu]
-print("Potrzebujesz zużycia dysku? \n(1)high\n(2)middle\n(3)low\n(4)Operacje wylącznie liczbowe\n")
-cpu = input(">")
-client["machine"]["disk"] = select[cpu]
-print("Potrzebujesz zużycia pamięci operacyjnej?\n(1)high\n(2)middle\n(3)low\n(4)Operacje wylącznie liczbowe\n")
-cpu = input(">")
-client["machine"]["ram"] = select[cpu]
-print("Niesty nie zdążylem napisać Input dla \nfunkcyj, to poprostu określi poszczególą \nilość operacyj dla każdej z funkcji\n")
 print("(1-100) bądż grzecznym i nie\n pisz nic zpoza zakresu bo mi sie \nlieni robić na to obsluge")
-client["function"]["factorial"] = int(input("Silnia:"))
-client["function"]["bublesort"] = int(input("Sortowanie:"))
-client["function"]["searching"] = int(input("Search:"))
-print("Preferowana cena(200 zl max)")
-cena = int(input(":"))
-"""
+clientD["function"]["factorial"] = inp("silni")
+clientD["function"]["bublesort"] = inp("sortownaia")
+clientD["function"]["searching"] = inp("Wyszukiwania")
+cena = 30
 import sys
 from static.classes.Pipeline.Threading import ThreadWithReturnValue
 
@@ -74,23 +75,30 @@ if __name__ == '__main__':
         print("Zle parametry")
     else:
         ports = args.ports.split(",")
+
         switch = dict()
         clients = list()
+        threads = list()
         for count in range(args.count):
-            clients.append(Agent(copy.deepcopy(clientD), args.money, args.host, ports))
+            clients.append(Agent(copy.deepcopy(clientD), cena, args.host, ports))
 
         for count in range(args.count):
-            switch[count] = clients[count].start()
+            threads.append(ThreadWithReturnValue(target=clients[count].run))
 
-
+        for count in range(args.count):
+            threads[count].start()
+        for count in range(args.count):
+            switch[count] = threads[count].join()
         os.system("clear")
-        print(switch)
+        #print(switch)
         print("Prosze wybierz Wirtualną maszyne do wykonywania polecenia:")
         print("----------------------------------------------------------")
+        it = 0
         for key, data in switch.items():
-            print(">{key:2}| {host}:{port}, in price{price}".format(key=str(key), host=switch[key][0], port=data[1], price=data[2]))
+
+            it += 1
+            print(">{key:2}| {host}:{port}, in price{price} time: {time}".format(key=str(it), host=data[0], port=data[1], price=data[2], time=data[3]))
         print("----------------------------------------------------------")
-        sys.exit(1)
         selected = int(input("Wybierz WM>").strip())
         while selected not in switch.keys():
             selected = int(input("Wybierz WM>").strip())

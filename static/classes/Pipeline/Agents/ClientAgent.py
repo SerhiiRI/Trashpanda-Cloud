@@ -7,7 +7,7 @@ import codecs
 import copy
 
 
-class Agent(ThreadWithReturnValue):
+class Agent:#(ThreadWithReturnValue):
 
     def __init__(self, client_set : dict,  price: int = 100, host="0.0.0.0", ports=list()):
         """
@@ -28,7 +28,7 @@ class Agent(ThreadWithReturnValue):
         self.ClientID = str(random.randint(0, 100))
         self.count_of_function = ( "factorial", str(random.randint(0, 5000)))
         self.PAGENT = list()
-        super(Agent, self).__init__()
+        #super(Agent, self).__init__()
 
     def run(self):
         print(self.resources)
@@ -37,14 +37,14 @@ class Agent(ThreadWithReturnValue):
             float_range = lambda Iterator: Iterator % LIMIT
             i = 0
             while (1):
-                yield self.ports[i] if not LIMIT else self.ports[int(float_range(i))]
+                yield self.ports[i] if not LIMIT else self.ports[random.randint(0, LIMIT-1)]
                 i += 1
         counter = iterator()
         for port in counter:
             print("------------ID CLIENTA > "+str(self.resources["id"]))
-            Switch, Price = self.hand_shacking(target_host=self.host, target_port=port, type_hs=self.Brain.GetHandShackingType(port=port))
-            if Switch:
-                return tuple((self.host, port, Price))
+            Switch = self.hand_shacking(target_host=self.host, target_port=port, type_hs=self.Brain.GetHandShackingType(port=port))
+            if Switch[0]:
+                return tuple((self.host, port, Switch[1], Switch[2]))
 
     def hand_shacking(self, type_hs, target_port: int, target_host: str="0.0.0.0"):
         host = target_host
@@ -59,7 +59,7 @@ class Agent(ThreadWithReturnValue):
             print("[ Finalize ] {}:{} cena{} status: {}".format(*data))
         else:
             print("[  ERR  ]> Please count of data ")
-        return (True, data[2]) if type_hs == "finalize" else (False, 0)
+        return (True, data[2], data[3]) if type_hs == "finalize" else (False, 0)
 
     def generateDictOrder(self, req_type: str, port: int):
         #print(self.resources)

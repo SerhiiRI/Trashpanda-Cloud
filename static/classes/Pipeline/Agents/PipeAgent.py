@@ -51,35 +51,46 @@ class Agent:
             responce = bytearray(ENV["piport"]+"|"+self.Brain.getstartprice(compatible), encoding="unicode-escape")
 
         elif selfproto == "order":
-            self.Brain.update(data["id"], compatible, data["price"], False)
+            self.Brain.update(data["id"], False)
             # add new price
-            responce = bytearray(ENV["piport"]+"|"+self.Brain.getprice(data["id"]), encoding="unicode-escape")
-            print("[ORDER] price {}".format(self.Brain.getprice(data["id"])))
+            prc = self.Brain.getprice(compatible, data["id"])
+            responce = bytearray(ENV["piport"]+"|"+prc, encoding="unicode-escape")
+            print("[ORDER] price {}".format(prc))
         elif selfproto == "finalize":
             # update agent info
-            self.Brain.update(data["id"], compatible, data["price"], False)
-            responce = bytearray("{}|{}|{}|{}".format(self.bind_ip, self.bind_port, data["price"], "Oczekiwania zlecenia"), encoding="unicode-escape")
-            print("[ Finalize ] {}:{} cena> {} status> {}".format(self.bind_ip, self.bind_port, data["price"], "Oczekiwania zlecenia"))
+            self.Brain.update(data["id"], True)
+            responce = bytearray("{}|{}|{}|{}".format(self.bind_ip, self.bind_port, data["price"], "{:.8f}".format(self.GetTime(compatible, data))), encoding="unicode-escape")
+            print("[ Finalize ] {}:{} cena[{}] czas [{}]".format(self.bind_ip, self.bind_port, data["price"], "Oczekiwania zlecenia"))
         elif(selfproto == "accept"):
             # self
-            self.Brain.update(data["id"], compatible, data["price"], True)
+            self.Brain.update(data["id"], True)
 
             ### test function value
-            for _ in range(data["function"]["factorial"]):
+            for _ in range(5):#data["function"]["factorial"]):
                 self.manager.addProcess("factorial", 5)
-            for _ in range(data["function"]["bublesort"]):
+            for _ in range(5):#data["function"]["bublesort"]):
                 self.manager.addProcess("bublesort", list(range(random.randint(1,10))))
-            for _ in range(data["function"]["searching"]):
+            for _ in range(5):#data["function"]["searching"]):
                 self.manager.addProcess("searching", [random.choice("qwertyusdfghjklxcvbnm") for _ in range(random.randint(5, 10))], random.choice("qwertyusdfghjklxcvbnm"))
 
             self.manager.buildQueue(mechanic_of_cpu=self.CPUserver.get_cpu, cpu_percent=self.generate_critical_cpu(data=data))
 
             self.run()
             responce = bytearray("{}|{}|Finished".format(self.bind_ip, ENV["piport"]), encoding="unicode-escape")
-        else:
-            responce = bytearray("[!] EMPTY REQUEST")
+        #else:
+        #    responce = bytearray("[!] EMPTY REQUEST")
         client_socket.send(responce)
         client_socket.close()
+
+    def GetTime(self, compatible, dictionary):
+        cpu = self.AgentDictionary["machine"]["cpu"] / 100
+        disk = self.AgentDictionary["machine"]["disk"] / 100
+        ram = self.AgentDictionary["machine"]["ram"] / 100
+        encja = (cpu * disk * ram) / 3
+        return encja * dictionary["function"]["factorial"] / 100 * dictionary["function"]["bublesort"] * dictionary["function"]["searching"] /100 / 100
+
+
+
 
     def compatible(self, dictionary):
         """
@@ -107,6 +118,12 @@ class Agent:
         factorial = self.AgentDictionary["function"]["factorial"] / dictionary["function"]["factorial"]*100
         bublesort = self.AgentDictionary["function"]["bublesort"] / dictionary["function"]["bublesort"]*100
         searching = self.AgentDictionary["function"]["searching"] / dictionary["function"]["searching"]*100
+        cpu = cpu if cpu < 100 else 100
+        disk = disk if disk < 100 else 100
+        ram = ram if ram < 100 else 100
+        factorial = factorial if factorial < 100 else 100
+        bublesort = bublesort if bublesort < 100 else 100
+        searching = searching if searching < 100 else 100
         return (((x(cpu) + x(disk) + x(ram)) / 3) + (x(factorial) + x(bublesort) + x(searching)) / 3) /2
         #self.Machine_price=((self.AgentDictionary["machine"]["cpu"] + self.AgentDictionary["machine"]["disk"] + self.AgentDictionary["machine"]["ram"]) / 3)
         #self.User_price = ((dictionary["function"]["factorial"]+ dictionary["function"]["bublesort"]+ dictionary["function"]["searching"] / 3))
